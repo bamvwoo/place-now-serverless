@@ -1,10 +1,16 @@
 import './App.css'
+import Aside from './components/Aside'
+import Header from './components/Header'
+import Home from './pages/Home'
 
-function App() {
+export default function App() {
   return (
     <>
+      <Header />
+      <main>
+        <Aside />
+        <Home />
+      </main>
     </>
   )
 }
-
-export default App
