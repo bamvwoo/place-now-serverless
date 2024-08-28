@@ -50,7 +50,10 @@ export default function Header() {
             <img id="mainLogo" src={logo} alt="Logo" width="150" height="auto" />
             {
                 user ? (
-                    <button onClick={logout}>로그아웃</button>
+                    <div>
+                        <span>{ user.username }</span>
+                        <button onClick={logout}>로그아웃</button>
+                    </div>
                 ) : (
                     <button onClick={login}>로그인</button>
                 )
