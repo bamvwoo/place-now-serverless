@@ -11,17 +11,17 @@ export default function Header() {
 
     useEffect(() => {
         if (token) {
-        axios.get('/api/user', {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-        .then(response => {
-            setUser(response.data);
-        })
-        .catch(error => {
-            console.error('Not authenticated', error);
-        });
+            axios.get('/api/user', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                setUser(response.data);
+            })
+            .catch(error => {
+                console.error('Not authenticated', error);
+            });
         }
     }, [token]);
 
