@@ -11,7 +11,7 @@ export default function Header() {
 
     useEffect(() => {
         if (token) {
-            axios.get('/api/user', {
+            axios.get('/api/auth/user', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -26,7 +26,7 @@ export default function Header() {
     }, [token]);
 
     const login = () => {
-        axios.post('/api/login', { username: 'user', password: 'password' })
+        axios.post('/api/auth/login', { username: 'user', password: 'password' })
         .then(response => {
             setToken(response.data.token);
             localStorage.setItem('token', response.data.token);
@@ -51,7 +51,7 @@ export default function Header() {
             {
                 user ? (
                     <div>
-                        <span>{ user.username }</span>
+                        <span>{ user.nickname }({ user.username })</span>
                         <button onClick={logout}>로그아웃</button>
                     </div>
                 ) : (

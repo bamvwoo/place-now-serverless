@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
-export default function PlaceList() {
+export default function PlaceList({ setSelectedPlace }) {
 
     const [places, setPlaces] = useState([]);
-        
+
     useEffect(() => {
         axios.get('/api/place')
         .then(response => {
@@ -13,13 +13,17 @@ export default function PlaceList() {
         });
     }, []);
 
+    const handleSetSelectedPlace = (place) => {
+        setSelectedPlace(place);
+    }
+
     return (
-        <>
+        <div>
             <ul>
                 {
                     places.length > 0 ? (
                         places.map(place => (
-                            <li key={place._id}>
+                            <li key={place._id} onClick={ () => handleSetSelectedPlace(place) }>
                                 <h2>{place.name}</h2>
                                 <p>{place.description}</p>
                             </li>
@@ -29,6 +33,6 @@ export default function PlaceList() {
                     )
                 }
             </ul>
-        </>
+        </div>
     )
 }

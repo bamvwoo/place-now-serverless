@@ -1,9 +1,21 @@
-import { connectToDatabase } from "../lib/mongodb.js";
+import { connectToDatabase } from "../../lib/mongodb.js";
 import jwt from 'jsonwebtoken';
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
         // const { username, password } = req.body;
+
+        const username = 'anonymous_' + Math.floor(Math.random() * 1000);
+
+        // 사용자 인증 로직 (예: 데이터베이스 조회)
+        /*
+        if (username === 'user' && password === 'password') {
+            const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            res.status(200).json({ token });
+        } else {
+            res.status(401).json({ error: 'Invalid credentials' });
+        }
+        */
 
         const { database } = await connectToDatabase("common_api");
 
@@ -16,22 +28,14 @@ export default async function handler(req, res) {
         const randomNoun = await nounsCollection.aggregate([{ $sample: { size: 1 } }]).toArray();
 
         // 랜덤한 adjective와 noun을 조합하여 문자열 생성
-        const randomString = `${randomAdjective[0].value} ${randomNoun[0].value}`;
+        const nickname = `${randomAdjective[0].value} ${randomNoun[0].value}`;
 
-        // 사용자 인증 로직 (예: 데이터베이스 조회)
-        const username = randomString;
-
-        // 사용자 인증 로직 (예: 데이터베이스 조회)
-        /*
-        if (username === 'user' && password === 'password') {
-            const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '1h' });
-            res.status(200).json({ token });
-        } else {
-            res.status(401).json({ error: 'Invalid credentials' });
+        const payload = {
+            username,
+            nickname
         }
-        */
 
-        const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.status(200).json({ token, username });
     } else {
         res.status(405).json({ error: 'Method not allowed' });
