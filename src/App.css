@@ -1,15 +1,27 @@
 :root {
     --global-header-height: 70px;
+
+    --main-std-dark-color: #444;
+	--main-std-light-color: #d2d2d2;
 }
 
-#root {
+#root:has(#wrapper.dark-mode) {
+    background-color: var(--main-std-dark-color);
+}
+
+#root:has(#wrapper.light-mode) {
+    background-color: var(--main-std-light-color);
+}
+
+#wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100vw;
+    width: 80vw;
     height: 100vh;
     overflow: hidden;
+    margin: 0 auto;
 }
 
 header {
@@ -36,6 +48,11 @@ main {
     }
 }
 
-footer {
-
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    bottom: 30px;
+    right: 10vw;
 }

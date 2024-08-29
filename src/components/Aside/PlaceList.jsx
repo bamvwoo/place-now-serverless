@@ -13,7 +13,7 @@ export default function PlaceList({ setSelectedPlace }) {
         });
     }, []);
 
-    const handleSetSelectedPlace = (place) => {
+    const enterPlaceChatRoom = (place) => {
         setSelectedPlace(place);
     }
 
@@ -23,7 +23,7 @@ export default function PlaceList({ setSelectedPlace }) {
                 {
                     places.length > 0 ? (
                         places.map(place => (
-                            <li key={place._id} onClick={ () => handleSetSelectedPlace(place) }>
+                            <li key={place._id} onClick={ () => enterPlaceChatRoom(place) }>
                                 <h2>{place.name}</h2>
                                 <p>{place.description}</p>
                             </li>

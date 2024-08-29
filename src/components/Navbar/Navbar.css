@@ -1,0 +1,69 @@
+.open-chat-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50% 50% 50% 0;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+}
+
+.dark-mode .open-chat-btn {
+    background: linear-gradient(310deg, #f40000, #0490ed);
+    background-size: 150% 150%;
+    background-position: 0 50%;
+}
+
+.light-mode .open-chat-btn {
+    background: linear-gradient(310deg, #fa7373, #5fb8f4);
+    background-size: 150% 150%;
+    background-position: 0 50%;
+}
+
+@keyframes backgroundGradient {
+	50% {
+		background-position: 100% 50%;
+	}
+}
+
+.open-chat-btn:hover,
+.open-chat-btn.selected {
+    animation: backgroundGradient 3s ease alternate infinite;
+}
+
+@keyframes openChatBtnClicked {
+    0% {
+        scale: 1;
+        transition-timing-function: ease-out;
+    }
+
+    20% {
+        transform: scaleY(0.9);
+        transition-timing-function: ease-in;
+    }
+
+    40% {
+        transform: scaleX(0.9);
+    }
+
+    80% {
+        scale: 1.1;
+        transition-timing-function: ease-out;
+    }
+
+    80% {
+        scale: 1;
+    }
+}
+
+.open-chat-btn.clicked {
+    animation: .5s openChatBtnClicked !important;
+}
+
+.open-chat-btn > span {
+    font-style: italic;
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    margin-left: -5px;
+}

@@ -3,7 +3,7 @@ import axios from 'axios';
 import logoLight from "../assets/images/logo-light.png";
 import logoDark from "../assets/images/logo-dark.png";
 
-export default function Header() {
+export default function Header({ mode }) {
 
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -42,8 +42,7 @@ export default function Header() {
         setUser(null);
     };
 
-    const [isDarkMode, setDarkMode] = useState(false);
-    const logo = isDarkMode ? logoLight : logoDark;
+    const logo = mode === 'dark-mode' ? logoLight : logoDark;
 
     return (
         <header>

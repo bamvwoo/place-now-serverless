@@ -1,3 +1,4 @@
+import { connectToDatabase } from "../../lib/mongodb.js";
 import Pusher from 'pusher';
 
 const pusher = new Pusher({
@@ -9,11 +10,21 @@ const pusher = new Pusher({
 });
 
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
+  if (req.method === 'GET') {
+    const roomId = req.params.roomId;
+
+
+    const { database } = await connectToDatabase();
+    const collection = database.collection("messages");
+
+
+
+    res.status(200).json([ {}, {}, {} ]);
+  } else if (req.method === 'POST') {
     const { roomId, message } = req.body;
 
     // Pusher를 사용하여 특정 채널로 메시지 브로드캐스트
-    await pusher.trigger(`chat-${roomId}`, 'message', {
+    await pusher.trigger(`${roomId}`, 'message', {
       message,
     });
 

@@ -26,20 +26,23 @@ export default function ChatRoom({ place }) {
             });
         }
 
+        // 메세지 초기화 -> 추후 메세지 불러오기로 변경
+        setMessages([]); 
+
         // Pusher 클라이언트 설정
         const pusher = new Pusher(import.meta.env.VITE_PUSHER_KEY, {
             cluster: import.meta.env.VITE_PUSHER_CLUSTER,
         });
 
-        const channel = pusher.subscribe(`chat-${roomId}`);
+        const channel = pusher.subscribe(`${roomId}`);
         channel.bind('message', (data) => {
             setMessages((prevMessages) => [...prevMessages, data.message]);
         });
 
         return () => {
-            pusher.unsubscribe(`chat-${roomId}`);
+            pusher.unsubscribe(`${roomId}`);
         };
-    }, [roomId, token]);
+    }, [ place ]);
 
     const sendMessage = async () => {
         if (input.trim()) {
