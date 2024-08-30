@@ -10,15 +10,11 @@ const pusher = new Pusher({
 });
 
 export default async function handler(req, res) {
+  const { database } = await connectToDatabase();
+  const collection = database.collection("messages");
+
   if (req.method === 'GET') {
     const roomId = req.params.roomId;
-
-
-    const { database } = await connectToDatabase();
-    const collection = database.collection("messages");
-
-
-
     res.status(200).json([ {}, {}, {} ]);
   } else if (req.method === 'POST') {
     const { roomId, message } = req.body;
