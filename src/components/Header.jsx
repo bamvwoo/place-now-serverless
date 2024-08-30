@@ -1,48 +1,22 @@
-import { useState, useEffect } from "react"
-import axios from 'axios';
 import logoLight from "../assets/images/logo-light.png";
 import logoDark from "../assets/images/logo-dark.png";
+import { useAuth } from "../context/AuthContext";
+import { useEffect, useState } from "react";
 
-export default function Header({ mode }) {
-
-    const [user, setUser] = useState(null);
-    const [token, setToken] = useState(localStorage.getItem('token') || '');
-    const [isLoading, setIsLoading] = useState(true);
+export default function Header() {
+    const [ mode, setMode ] = useState(localStorage.getItem('mode') || 'light-mode');
+    const { user, login, logout } = useAuth();
+    const logo = mode === 'dark-mode' ? logoLight : logoDark;
 
     useEffect(() => {
-        if (token) {
-            axios.get('/api/auth/user', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-            .then(response => {
-                setUser(response.data);
-            })
-            .catch(error => {
-                console.error('Not authenticated', error);
-            });
-        }
-    }, [token]);
+        document.getElementById('wrapper').className = mode;
+    }, [ mode ]);
 
-    const login = () => {
-        axios.post('/api/auth/login', { username: 'user', password: 'password' })
-        .then(response => {
-            setToken(response.data.token);
-            localStorage.setItem('token', response.data.token);
-        })
-        .catch(error => {
-            console.error('Failed to login', error);
-        });
+    const toggleMode = () => {
+        const newMode = mode === 'light-mode' ? 'dark-mode' : 'light-mode';
+        setMode(newMode);
+        localStorage.setItem('mode', newMode);
     };
-
-    const logout = () => {
-        setToken('');
-        localStorage.removeItem('token');
-        setUser(null);
-    };
-
-    const logo = mode === 'dark-mode' ? logoLight : logoDark;
 
     return (
         <header>
@@ -50,13 +24,14 @@ export default function Header({ mode }) {
             {
                 user ? (
                     <div>
-                        <span>{ user.nickname }({ user.username })</span>
-                        <button onClick={logout}>로그아웃</button>
+                        <span>{ user.name }({ user.userId })</span>
+                        <button onClick={ logout }>로그아웃</button>
                     </div>
                 ) : (
-                    <button onClick={login}>로그인</button>
+                    <button onClick={ () => login() }>로그인</button>
                 )
             }
+            <button onClick={ toggleMode }>{ mode === 'light-mode' ? '다크모드' : '라이트모드' }</button>
         </header>
     )
 }

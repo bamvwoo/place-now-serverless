@@ -1,31 +1,32 @@
 import { useState, useEffect } from "react";
-import axios from 'axios';
+import { axiosInstance } from "../../context/AuthContext";
 
-export default function PlaceList({ setSelectedPlace }) {
+export default function PlaceList({ setSelectedPlace, setChatRooms }) {
 
     const [places, setPlaces] = useState([]);
 
     useEffect(() => {
-        axios.get('/api/place')
+        axiosInstance.get('/api/place')
         .then(response => {
-            console.log(response.data);
             setPlaces(response.data);
+        })
+        .catch(error => {
+            console.error('Failed to fetch places', error);
         });
     }, []);
 
-    const enterPlaceChatRoom = (place) => {
+    const handleSetSelectedPlace = (place) => {
         setSelectedPlace(place);
     }
 
     return (
-        <div>
+        <section>
             <ul>
                 {
                     places.length > 0 ? (
                         places.map(place => (
-                            <li key={place._id} onClick={ () => enterPlaceChatRoom(place) }>
+                            <li key={place._id} onClick={ () => handleSetSelectedPlace(place) }>
                                 <h2>{place.name}</h2>
-                                <p>{place.description}</p>
                             </li>
                         ))
                     ) : (
@@ -33,6 +34,6 @@ export default function PlaceList({ setSelectedPlace }) {
                     )
                 }
             </ul>
-        </div>
+        </section>
     )
 }

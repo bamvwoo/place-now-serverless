@@ -1,3 +1,4 @@
+import { verifyToken } from "../lib/authUtil.js";
 import { connectToDatabase } from "../lib/mongodb.js";
 import mongoose from 'mongoose';
 
@@ -13,6 +14,8 @@ export default async function handler(req, res) {
             } else {
                 result = await collection.find({}).toArray();
             }
+        } else if (req.method === 'POST') {
+            verifyToken(req);
         } else {
             return res.status(405).json({ error: 'Method not allowed' });
         }

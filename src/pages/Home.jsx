@@ -1,7 +1,13 @@
 import { useState } from "react";
+import PlaceListHeader from "../components/Home/PlaceListHeader";
+import PlaceListDetail from "../components/Home/PlaceDetail";
+import PlaceList from "../components/Home/PlaceList";
 
-export default function Home() {
+export default function Home({ setChatRooms }) {
 
+    const [ selectedPlace, setSelectedPlace ] = useState(null);
+
+    /*
     const [file, setFile] = useState(null);
     const [message, setMessage] = useState('');
 
@@ -43,12 +49,21 @@ export default function Home() {
             setMessage('File upload failed.');
         }
     };
+    */
 
     return (
-        <section>
-            <input type="file" onChange={handleFileChange} />
-            {/* <button onClick={handleUpload}>Upload to S3</button> */}
-            <p>{message}</p>
-        </section>
+        <main>
+            <div>
+                <PlaceListHeader />
+                <PlaceList setSelectedPlace={ setSelectedPlace } setChatRooms={ setChatRooms } />
+            </div>
+            <PlaceListDetail selectedPlace={ selectedPlace } setChatRooms={ setChatRooms } />
+
+            {/* <section>
+                <input type="file" onChange={handleFileChange} />
+                <button onClick={handleUpload}>Upload to S3</button>
+                <p>{message}</p>
+            </section> */}
+        </main>
     )
 }

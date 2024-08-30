@@ -1,24 +1,26 @@
 import { useState } from "react"
+import { Routes, Route } from 'react-router-dom';
 import './App.css'
-import Aside from './components/Aside/Aside'
 import Header from './components/Header'
+import Footer from "./components/Footer/Footer"
 import Home from './pages/Home'
-import Navbar from "./components/Navbar/Navbar"
+import { AuthProvider } from './context/AuthContext';
+import { ChatProvider } from "./context/ChatContext";
 
 export default function App() {
-
-  const [mode, setMode] = useState("dark-mode");
-
   return (
-    <>
-      <div id="wrapper" className={ mode }>
-        <Header mode={ mode }/>
-        <main>
-          <Aside />
-          <Home />
-        </main>
-        <Navbar />
-      </div>
-    </>
+    <AuthProvider>
+      <ChatProvider>
+        <div id="wrapper">
+          <Header />
+
+          <Routes>
+            <Route path="/" element={<Home />} />
+          </Routes>
+
+          <Footer />
+        </div>
+      </ChatProvider>
+    </AuthProvider>
   )
 }

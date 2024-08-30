@@ -14,7 +14,8 @@ const placeImagesSchema = new mongoose.Schema({
 const placeSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     region: {
         type: String,
@@ -22,7 +23,8 @@ const placeSchema = new mongoose.Schema({
     },
     address: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     images: {
         type: [placeImagesSchema],
@@ -49,6 +51,6 @@ const placeSchema = new mongoose.Schema({
     timestamps: true
 });
 
-const Place = mongoose.models.Place || mongoose.model('Place', placeSchema);
+const Place = mongoose.model('Place', placeSchema);
 
 export default Place;

@@ -1,31 +1,15 @@
 import { useState, useEffect } from 'react';
 import Pusher from 'pusher-js';
 import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
 
-export default function ChatRoom({ place }) {
-    const [user, setUser] = useState(null);
-    const [token, setToken] = useState(localStorage.getItem('token') || '');
+export default function ChatRoom({ roomId, quitRoom }) {
+    const { user } = useAuth();
 
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
 
-    const roomId = `chat-${place._id}`;
-
     useEffect(() => {
-        if (token) {
-            axios.get('/api/auth/user', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-            .then(response => {
-                setUser(response.data);
-            })
-            .catch(error => {
-                console.error('Not authenticated', error);
-            });
-        }
-
         // 메세지 초기화 -> 추후 메세지 불러오기로 변경
         setMessages([]); 
 
@@ -37,16 +21,18 @@ export default function ChatRoom({ place }) {
         const channel = pusher.subscribe(`${roomId}`);
         channel.bind('message', (data) => {
             setMessages((prevMessages) => [...prevMessages, data.message]);
+
+            // 마지막 읽은 시간 업데이트
         });
 
         return () => {
             pusher.unsubscribe(`${roomId}`);
         };
-    }, [ place ]);
+    }, [ roomId ]);
 
     const sendMessage = async () => {
         if (input.trim()) {
-            const message = `${user.nickname}: ${input}`;
+            const message = `${user.name}: ${input}`;
             await axios.post('/api/message', { roomId, message: message });
             setInput(''); // 입력 필드 초기화
         }
@@ -54,7 +40,7 @@ export default function ChatRoom({ place }) {
 
     return (
         <div>
-            { place.name } { roomId }
+            { roomId }
             <div className="chat-room">
                 { 
                     messages.map((msg, idx) => (
@@ -67,7 +53,8 @@ export default function ChatRoom({ place }) {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Type a message..."
             />
-            <button onClick={sendMessage}>Send</button>
+            <button onClick={ sendMessage }>Send</button>
+            <button onClick={ quitRoom }>Back</button>
         </div>
     )
 }
