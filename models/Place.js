@@ -20,6 +20,10 @@ const placeSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    address: {
+        type: String,
+        required: true
+    },
     images: {
         type: [placeImagesSchema],
         default: []
