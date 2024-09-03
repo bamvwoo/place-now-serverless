@@ -8,7 +8,7 @@ const RootContainer = styled.main`
     form {
         width: 100%;
         height: 100%;
-        padding: 10% 20%;
+        padding: 15% 30%;
     }
 
     form > div {
@@ -25,9 +25,17 @@ const FormInputContainer = styled.div`
         width: 100%;
         height: 40px;
         padding: 0 10px;
-        border: 1px solid var(--main-std-dark-color);
+        border: 1px solid #d2d2d2;
         border-radius: 5px;
         background-color: #fff;
+        margin-bottom: 10px;
+        font-size: 1rem;
+    }
+
+    h4 {
+        margin-bottom: 15px;
+        font-size: 1.5rem;
+        font-weight: 600;
     }
 `;
 
@@ -42,14 +50,18 @@ const FormButtonContainer = styled.div`
     }
 
     button {
-        width: 48%;
+        width: calc(50% - 10px);
         height: 100%;
-        border: 1px solid var(--main-std-dark-color);
+        border: none;
+        font-size: 1rem;
+        font-weight: 600;
         border-radius: 5px;
         cursor: pointer;
+        background-color: #e2e2e2;
 
         &[type="submit"] {
-            background-color: blue;
+            background-color: var(--main-std-blue-color);
+            margin-left: 10px;
         }
     }
 `;
@@ -90,6 +102,7 @@ export default function Registration() {
                     {
                         step === 2 ? (
                             <>
+                                <h4>장소의 이름을 입력해주세요</h4>
                                 <input type="text"
                                     placeholder="장소명"
                                     { 
@@ -118,7 +131,10 @@ export default function Registration() {
 
                     {
                         step === 3 ? (
-                            <ImageUploader required="장소 이미지를 첨부해주세요" thumbnailEnabled={ true } />
+                            <>
+                                <h4>장소 이미지를 첨부해주세요</h4>
+                                <ImageUploader required="장소 이미지를 첨부해주세요" thumbnailEnabled={ true } />
+                            </>
                         ) : null
                     }
                     </FormInputContainer>
