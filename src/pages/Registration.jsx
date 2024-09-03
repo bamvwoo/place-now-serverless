@@ -3,12 +3,14 @@ import { useForm, FormProvider } from "react-hook-form";
 import styled from "styled-components";
 import ImageUploader from "../components/Registration/ImageUploader";
 import AddressSelector from "../components/Registration/AddressSelector";
+import Lottie from "lottie-react";
+import CompletedAnimation from "../assets/lottie/animation-completed.json";
 
 const RootContainer = styled.main`
     form {
         width: 100%;
         height: 100%;
-        padding: 15% 30%;
+        padding: 10% 30%;
     }
 
     form > div {
@@ -64,6 +66,20 @@ const FormButtonContainer = styled.div`
             margin-left: 10px;
         }
     }
+`;
+
+const ResultContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+`;
+
+const LottieContainer = styled.div`
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
 `;
 
 export default function Registration() {
@@ -137,15 +153,28 @@ export default function Registration() {
                             </>
                         ) : null
                     }
+
+                    {
+                        step === 4 ? (
+                            <ResultContainer>
+                                <LottieContainer>
+                                    <Lottie animationData={ CompletedAnimation } />
+                                </LottieContainer>
+
+                                <h4>등록 신청이 완료되었어요</h4>
+                                <h5>등록이 승인되면 이메일로 알려드릴게요</h5>
+                            </ResultContainer>
+                        ) : null
+                    }
                     </FormInputContainer>
 
                     <FormButtonContainer>
                         {
-                            step > 1 ? (
+                            step > 1 && step < 4 ? (
                                 <button type="button" onClick={ () => { setStep(step - 1) } } >이전</button>
                             ) : null
                         }
-                        <button type="submit">{ step === 3 ? "등록" : "다음" }</button>
+                        <button type="submit">{ step < 3 ? "다음" : (step < 4 ? "등록" : "완료") }</button>
                     </FormButtonContainer>
                 </form>
             </RootContainer>
