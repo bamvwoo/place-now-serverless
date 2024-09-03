@@ -7,6 +7,7 @@ export const axiosInstance = axios.create();
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const [user, setUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     // 요청 인터셉터 설정
@@ -23,6 +24,7 @@ export function AuthProvider({ children }) {
     verifyToken().then(decoded => {
       if (decoded) {
         setUser(decoded);
+        setIsAdmin(decoded.role === 'admin');
       }
     });
   }, [token]);
@@ -30,7 +32,9 @@ export function AuthProvider({ children }) {
   const login = (username, password) => {
     axios.post('/api/auth', { username, password })
       .then(response => {
-        setUser(response.data.payload);
+        const payload = response.data.payload;
+        setUser(payload);
+        setIsAdmin(payload.role === 'admin');
         setToken(response.data.token);
         localStorage.setItem('token', response.data.token);
       })
@@ -40,9 +44,10 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => {
+    setUser(null);
+    setIsAdmin(false);
     setToken('');
     localStorage.removeItem('token');
-    setUser(null);
   };
 
   const verifyToken = async () => {
@@ -57,13 +62,12 @@ export function AuthProvider({ children }) {
         return response.data;
       } catch (error) {
         console.error('Failed to verify token', error);
-        throw error;
       }
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ user, token, login, logout, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );

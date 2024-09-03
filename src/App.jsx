@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { Routes, Route } from 'react-router-dom';
 import './App.css'
 import Header from './components/Header'
@@ -6,6 +5,8 @@ import Footer from "./components/Footer/Footer"
 import Home from './pages/Home'
 import { AuthProvider } from './context/AuthContext';
 import { ChatProvider } from "./context/ChatContext";
+import Signup from "./pages/Signup";
+import Registration from "./pages/Registration";
 
 export default function App() {
   return (
@@ -15,7 +16,9 @@ export default function App() {
           <Header />
 
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={ <Home /> } />
+            <Route path="/user/signup" element={ <Signup /> } />
+            <Route path="/place/registration" element={ <Registration /> } />
           </Routes>
 
           <Footer />

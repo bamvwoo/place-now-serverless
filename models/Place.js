@@ -1,5 +1,19 @@
 import mongoose from 'mongoose';
 
+const placeAddressSchema = new mongoose.Schema({
+    postCode: {
+        type: String,
+        required: true
+    },
+    address: {
+        type: String,
+        required: true
+    },
+    detailedAddress: {
+        type: String
+    }
+});
+
 const placeImagesSchema = new mongoose.Schema({
     url: {
         type: String,
@@ -22,9 +36,8 @@ const placeSchema = new mongoose.Schema({
         required: true
     },
     address: {
-        type: String,
-        required: true,
-        unique: true
+        type: placeAddressSchema,
+        required: true
     },
     images: {
         type: [placeImagesSchema],
