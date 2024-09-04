@@ -1,6 +1,7 @@
 import { verifyToken } from "../lib/authUtil.js";
 import { connectToDatabase } from "../lib/mongodb.js";
 import mongoose from 'mongoose';
+import { upload } from "../lib/uploadUtil.js";
 
 export default async function handler(req, res) {
     try {
@@ -22,12 +23,16 @@ export default async function handler(req, res) {
                 const user = verifyToken(req);
                 
                 const place = req.body;
+                const files = place.images;
+
+                delete place.image;
+
                 const isUpdate = place.id ? true : false;
 
-                const images = place.images;
-                for (const index in images) {
-                    console.log(images[index]);
-                }
+                
+
+                // const images = upload(place.images);
+
             } catch (error) {
                 console.error(error);
                 return res.status(401).json({ error: 'Unauthorized' });
