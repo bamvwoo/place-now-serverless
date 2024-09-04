@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
 export const axiosInstance = axios.create();
@@ -9,6 +10,8 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     // 요청 인터셉터 설정
     axiosInstance.interceptors.request.use(
@@ -17,6 +20,18 @@ export function AuthProvider({ children }) {
         return config;
       },
       error => {
+        return Promise.reject(error);
+      }
+    );
+
+    // 응답 인터셉터 설정
+    axiosInstance.interceptors.response.use(
+      response => response,
+      error => {
+        if (error.response && error.response.status) {
+          const status = error.response.status;
+          navigate(`/error/${status}`);
+        }
         return Promise.reject(error);
       }
     );

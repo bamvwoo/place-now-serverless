@@ -3,8 +3,8 @@ import { useForm, FormProvider } from "react-hook-form";
 import styled from "styled-components";
 import ImageUploader from "../components/Registration/ImageUploader";
 import AddressSelector from "../components/Registration/AddressSelector";
-import Lottie from "lottie-react";
-import CompletedAnimation from "../assets/lottie/animation-completed.json";
+import { axiosInstance } from "../context/AuthContext";
+import ResultContent from "../components/Common/ResultContent";
 
 const RootContainer = styled.main`
     form {
@@ -68,28 +68,30 @@ const FormButtonContainer = styled.div`
     }
 `;
 
-const ResultContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-`;
-
-const LottieContainer = styled.div`
-    width: 100px;
-    height: 100px;
-    margin-bottom: 20px;
-`;
-
 export default function Registration() {
     const methods = useForm();
     const { register, handleSubmit, getValues, formState: { errors } } = methods;
 
     const [ step, setStep ] = useState(1);
+    const [ isLoading, setIsLoading ] = useState(false);
 
     const onValid = (data) => {
-        setStep(step + 1);
+        if (step === 3) {
+            setIsLoading(true);
+
+            axiosInstance.post('/api/place', data)
+            .then((response) => {
+                setIsLoading(false);
+                setStep(step + 1);
+            })
+            .catch((error) => {
+                
+            });
+        } else if (step === 4) {
+            location.href = '/';
+        } else {
+            setStep(step + 1);
+        }
     };
 
     const onInvalid = (errors) => {
@@ -107,16 +109,25 @@ export default function Registration() {
             <RootContainer>
                 <form onSubmit={ handleSubmit(onValid, onInvalid) }>
                     <FormInputContainer>
+                        
                     {
-                        step === 1 ? (
+                        step === 0 && (
+                            <>
+                            </>
+                        )
+                    }
+
+                    {
+                        step === 1 && (
                             <>
                                 <h4>이 장소가 어디에 있나요?</h4>
                                 <AddressSelector />
                             </>
-                        ) : null
+                        )
                     }
+
                     {
-                        step === 2 ? (
+                        step === 2 && (
                             <>
                                 <h4>장소의 이름을 입력해주세요</h4>
                                 <input type="text"
@@ -127,7 +138,7 @@ export default function Registration() {
                                             maxLength: { value: 50, message: '장소명은 최대 50자까지 입력할 수 있어요' }
                                         })
                                     }
-                                    value={ getValues("detailedAddress") }
+                                    defaultValue={ getValues("detailedAddress") }
                                 />
                                 { errors.name ? <p>{ errors.name.message }</p> : null }
 
@@ -142,39 +153,57 @@ export default function Registration() {
                                     <i className="fa-solid fa-circle-question"></i>
                                 </label>
                             </>
-                        ) : null
+                        )
                     }
 
                     {
-                        step === 3 ? (
+                        step === 3 && !isLoading && (
                             <>
                                 <h4>장소 이미지를 첨부해주세요</h4>
                                 <ImageUploader required="장소 이미지를 첨부해주세요" thumbnailEnabled={ true } />
                             </>
-                        ) : null
+                        )
                     }
 
                     {
-                        step === 4 ? (
-                            <ResultContainer>
-                                <LottieContainer>
-                                    <Lottie animationData={ CompletedAnimation } />
-                                </LottieContainer>
+                        step === 3 && isLoading && (
+                            <ResultContent loading={ true } loop={ false } />
+                        )
+                    }
 
-                                <h4>등록 신청이 완료되었어요</h4>
-                                <h5>등록이 승인되면 이메일로 알려드릴게요</h5>
-                            </ResultContainer>
-                        ) : null
+                    {
+                        step === 4 && (
+                            <ResultContent success={
+                                { 
+                                    title: "등록 신청이 완료되었어요", 
+                                    subTitle: "등록이 승인되면 이메일로 알려드릴게요" 
+                                }}
+                                loop={ false }
+                            />
+                        )
                     }
                     </FormInputContainer>
 
                     <FormButtonContainer>
-                        {
-                            step > 1 && step < 4 ? (
-                                <button type="button" onClick={ () => { setStep(step - 1) } } >이전</button>
-                            ) : null
+                        { 
+                            !isLoading && (
+                                <>
+                                    {
+                                        (step > 1 && step < 4) && (
+                                            <button type="button" onClick={ () => { setStep(step - 1) } } >이전</button>
+                                        )
+                                    }
+
+                                    <button type="submit">
+                                        { 
+                                            step < 3 ? "다음" : 
+                                            step < 4 ? "등록" : 
+                                            "완료" 
+                                        }
+                                    </button>
+                                </>
+                            )
                         }
-                        <button type="submit">{ step < 3 ? "다음" : (step < 4 ? "등록" : "완료") }</button>
                     </FormButtonContainer>
                 </form>
             </RootContainer>
