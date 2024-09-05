@@ -3,7 +3,8 @@
 
     --main-std-dark-bg-color: #333;
 	--main-std-light-bg-color: #f2f2f2;
-    --main-std-blue-color: #91d3ff;
+    /* --main-std-blue-color: #91d3ff; */
+    --main-std-blue-color: #2ebae0;
 }
 
 #root:has(#wrapper.dark-mode) {
