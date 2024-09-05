@@ -36,27 +36,27 @@ export function AuthProvider({ children }) {
       }
     );
 
-    verifyToken().then(decoded => {
-      if (decoded) {
-        setUser(decoded);
-        setIsAdmin(decoded.role === 'admin');
+    getUser().then(result => {
+      if (result) {
+        setUser(result);
+        setIsAdmin(result.role === 'administrator');
       }
     }).catch(error => {
       logout();
     });
   }, [token]);
 
-  const login = (username, password) => {
-    axios.post('/api/auth', { username, password })
+  const login = (userId, password) => {
+    axios.post('/api/login', { userId, password })
       .then(response => {
-        const payload = response.data.payload;
-        setUser(payload);
-        setIsAdmin(payload.role === 'admin');
+        const user = response.data.user;
+        setUser(user);
+        setIsAdmin(user.role === 'admin');
         setToken(response.data.token);
         localStorage.setItem('token', response.data.token);
       })
       .catch(error => {
-        console.error('Failed to login', error);
+        throw error;
       });
   };
 
@@ -68,14 +68,13 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('token');
   };
 
-  const verifyToken = async () => {
+  const getUser = async () => {
     if (token) {
-      const response = await axios.get('/api/auth', {
+      const response = await axios.get('/api/user', {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-
       return response.data;
     }
   };

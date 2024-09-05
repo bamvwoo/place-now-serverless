@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import styled from "styled-components";
 import ImageUploader from "../components/Registration/ImageUploader";
 import AddressSelector from "../components/Registration/AddressSelector";
 import { axiosInstance } from "../context/AuthContext";
 import ResultContent from "../components/Common/ResultContent";
+import { useNavigate } from "react-router-dom";
 
 const RootContainer = styled.main`
     form {
@@ -71,6 +72,7 @@ const FormButtonContainer = styled.div`
 export default function Registration() {
     const methods = useForm();
     const { register, handleSubmit, getValues, formState: { errors } } = methods;
+    const navigate = useNavigate();
 
     const [ step, setStep ] = useState(1);
     const [ isLoading, setIsLoading ] = useState(false);
@@ -96,7 +98,7 @@ export default function Registration() {
                 setStep(step + 1);
             });
         } else if (step === 4) {
-            location.href = '/';
+            navigate('/');
         } else {
             setStep(step + 1);
         }
@@ -108,9 +110,6 @@ export default function Registration() {
             // errors[key].ref
         }
     };
-
-    useEffect(() => {
-    });
 
     return (
         <FormProvider {...methods}>
