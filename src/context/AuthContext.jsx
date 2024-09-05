@@ -41,6 +41,8 @@ export function AuthProvider({ children }) {
         setUser(decoded);
         setIsAdmin(decoded.role === 'admin');
       }
+    }).catch(error => {
+      logout();
     });
   }, [token]);
 
@@ -59,6 +61,7 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => {
+    console.log("logged out.");
     setUser(null);
     setIsAdmin(false);
     setToken('');
@@ -67,17 +70,13 @@ export function AuthProvider({ children }) {
 
   const verifyToken = async () => {
     if (token) {
-      try {
-        const response = await axios.get('/api/auth', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
+      const response = await axios.get('/api/auth', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
 
-        return response.data;
-      } catch (error) {
-        console.error('Failed to verify token', error);
-      }
+      return response.data;
     }
   };
 

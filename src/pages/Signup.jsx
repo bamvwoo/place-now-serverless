@@ -1,5 +1,10 @@
+import styled from "styled-components";
+
+const RootContainer = styled.main`
+`;
+
 export default function Signup() {
     return (
-        <main></main>
+        <RootContainer></RootContainer>
     )
 }

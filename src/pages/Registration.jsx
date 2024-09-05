@@ -10,7 +10,7 @@ const RootContainer = styled.main`
     form {
         width: 100%;
         height: 100%;
-        padding: 10% 30%;
+        padding: 15% 30%;
     }
 
     form > div {
@@ -79,13 +79,21 @@ export default function Registration() {
         if (step === 3) {
             setIsLoading(true);
 
-            axiosInstance.post('/api/place', data)
+            const formData = new FormData();
+            for (const key in data) {
+                if (key === 'images') {
+                    Array.from(data[key]).forEach(file => {
+                        formData.append('images', file);
+                    });
+                } else {
+                    formData.append(key, data[key]);
+                }
+            }
+
+            axiosInstance.post('/api/place', formData)
             .then((response) => {
                 setIsLoading(false);
                 setStep(step + 1);
-            })
-            .catch((error) => {
-                
             });
         } else if (step === 4) {
             location.href = '/';
@@ -167,7 +175,7 @@ export default function Registration() {
 
                     {
                         step === 3 && isLoading && (
-                            <ResultContent loading={ true } loop={ false } />
+                            <ResultContent loading={ true } />
                         )
                     }
 
@@ -178,7 +186,7 @@ export default function Registration() {
                                     title: "등록 신청이 완료되었어요", 
                                     subTitle: "등록이 승인되면 이메일로 알려드릴게요" 
                                 }}
-                                loop={ false }
+                                loop="false"
                             />
                         )
                     }

@@ -21,7 +21,7 @@ export default function ImageUploader ({ name, required, thumbnailEnabled }) {
     const [ previews, setPreviews ] = useState([]);
 
     const handleImagesChange = (event) => {
-        const newPreviews = [...previews];
+        const newPreviews = [];
 
         const files = event.target.files;
         for (const index in files) {

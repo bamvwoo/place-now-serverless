@@ -19,6 +19,10 @@ const placeImagesSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    fileName: {
+        type: String,
+        required: true
+    },
     thumbnail: {
         type: Boolean,
         default: false
