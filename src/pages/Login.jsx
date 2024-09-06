@@ -2,31 +2,30 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import FormContainer from "../components/Common/Form/FormContainer";
-import FormInputContainer from "../components/Common/Form/FormInputContainer";
+import FormContentContainer from "../components/Common/Form/FormContentContainer";
 import FormButtonContainer from "../components/Common/Form/FormButtonContainer";
+import { useState } from "react";
+import FormInput from "../components/Common/Form/FormInput";
 
 export default function Login() {
-    const methods = useForm();
-    const { register, getValues, setValue, formState: { errors } } = methods;
+    const methods = useForm({ reValidateMode: "onBlur" });
+    const { getValues } = methods;
+
     const navigate = useNavigate();
     const { login } = useAuth();
 
-    const handleLogin = async () => {
-        setValue("isCorrect", "");
+    const [ isCorrect, setIsCorrect ] = useState(null);
 
+    const onValid = async (data) => {
         const { userId, password } = getValues();
-        try {
-            await login(userId, password);
-            setValue("isCorrect", "true");
-            return true;
-        } catch(error) {
-            setValue("isCorrect", "false");
-            return false;
-        }
-    };
 
-    const onValid = (data) => {
-        navigate(-1);
+        login(userId, password)
+            .then((result) => {
+                navigate(-1);
+            })
+            .catch((error) => {
+                setIsCorrect(false);
+            });
     };
 
     const onInvalid = (errors) => {
@@ -34,43 +33,16 @@ export default function Login() {
 
     return (
         <FormContainer methods={ methods } onValid={ onValid } onInvalid={ onInvalid }>
-            <FormInputContainer>
-                <input type="text" 
-                    placeholder="아이디" 
-                    { 
-                        ...register("userId", { 
-                            required: "아이디를 입력해주세요" 
-                        }) 
-                    } 
-                />
-                { errors.userId && <span>{ errors.userId.message }</span> }
+            <FormContentContainer>
+                <p>또는</p>
 
-                <input type="password"
-                    placeholder="비밀번호"
-                    { 
-                        ...register("password", { 
-                            required: "비밀번호를 입력해주세요" 
-                        }) 
-                    }
-                />
-                { errors.password && <span>{ errors.password.message }</span> }
+                { isCorrect !== null && !isCorrect && <span>아이디와 비밀번호를 확인해주세요</span> }
 
-                <input type="hidden"
-                    { 
-                        ...register("isCorrect", {
-                            required: "아이디와 비밀번호를 확인해주세요",
-                            validate: async () => {
-                                const isValid = await handleLogin();
-                                return isValid || "아이디와 비밀번호를 확인해주세요";
-                            }
-                        }) 
-                    }
-                />
-                { errors.isCorrect && <span>{ errors.isCorrect.message }</span> }
-            </FormInputContainer>
+                <FormInput type="text" name="userId" required="아이디를 입력해주세요" placeholder="아이디" />
+                <FormInput type="password" name="password" required="비밀번호를 입력해주세요" placeholder="비밀번호" />
+            </FormContentContainer>
 
             <FormButtonContainer>
-                <button type="button" onClick={ () => navigate('/signup') }>등록</button>
                 <button type="submit">로그인</button>
             </FormButtonContainer>
         </FormContainer>

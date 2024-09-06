@@ -12,20 +12,29 @@ const RootContainer = styled.div`
     }
 
     button {
-        width: calc(50% - 5px);
+        flex: 1;
         height: 40px;
         border: none;
         font-size: 1rem;
         font-weight: 500;
         border-radius: 5px;
         cursor: pointer;
-        background-color: #e2e2e2;
-        color: #f2f2f2;
+        background-color: transparent;
+        transition: .1s ease-in-out;
 
         &[type="submit"] {
-            background-color: var(--main-std-blue-color);
-            margin-left: 10px;
+            color: var(--main-std-blue-color);
+            border: 1px solid var(--main-std-blue-color);
         }
+
+        &[type="submit"]:hover {
+            color: var(--main-std-light-font-color);
+            background-color: var(--main-std-blue-color);
+        }
+    }
+
+    button + button {
+        margin-left: 10px;
     }
 `;
 

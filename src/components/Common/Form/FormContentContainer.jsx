@@ -10,15 +10,29 @@ const RootContainer = styled.div`
         width: 100%;
     }
 
-    input[type=text], input[type=password], input[type=email], select {
+    input::placeholder {
+        color: #d2d2d2;
+    }
+
+    input:not([type^=hidden]):not([type^=checkbox]), select {
         width: 100%;
         height: 40px;
         padding: 0 10px;
+        font-weight: 400;
         border: 1px solid #d2d2d2;
         border-radius: 5px;
         background-color: #fff;
         margin-bottom: 10px;
         font-size: 1rem;
+        transition: .1s ease-in-out;
+    }
+
+    input:not([type^=hidden]):not([type^=checkbox]):focus, select:focus {
+        border: 1px solid var(--main-std-dark-bg-color);
+    }
+
+    input:not([type^=hidden]):not([type^=checkbox]).form-is-invalid, select.form-is-invalid {
+        border: 1px solid red;
     }
 
     h4 {
@@ -28,12 +42,10 @@ const RootContainer = styled.div`
     }
 `;
 
-export default function FormInputContainer({ children }) {
+export default function FormContentContainer({ children }) {
     return (
         <RootContainer>
-            <div>
-                { children }
-            </div>
+            { children }
         </RootContainer>
     );
 }

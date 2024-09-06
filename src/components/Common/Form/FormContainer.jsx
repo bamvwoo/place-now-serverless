@@ -8,11 +8,15 @@ export default function FormContainer({ children, methods, onValid, onInvalid, w
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            width: ${ wide ? "35vw" : "20vw"};
+            width: ${ wide ? "500px" : "300px"};
             height: auto;
             max-height: 60vh;
             margin: auto;
             overflow: hidden;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
         }
 
         form > div {
@@ -22,10 +26,18 @@ export default function FormContainer({ children, methods, onValid, onInvalid, w
 
     const { handleSubmit } = methods;
 
+    const handleOnValid = (data) => {
+        onValid(data);
+    }
+
+    const handleOnInvalid = (errors) => {
+        onInvalid(errors);
+    }
+
     return (
         <FormProvider {...methods}>
             <RootContainer>
-                <form onSubmit={ handleSubmit(onValid, onInvalid) }>
+                <form onSubmit={ handleSubmit(handleOnValid, handleOnInvalid) }>
                     { children }
                 </form>
             </RootContainer>

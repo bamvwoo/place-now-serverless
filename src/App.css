@@ -2,9 +2,12 @@
     --global-header-height: 70px;
 
     --main-std-dark-bg-color: #333;
-	--main-std-light-bg-color: #f2f2f2;
-    /* --main-std-blue-color: #91d3ff; */
-    --main-std-blue-color: #2ebae0;
+	--main-std-light-bg-color: #fff;
+
+    --main-std-dark-font-color: #333;
+    --main-std-light-font-color: #fff;
+
+    --main-std-blue-color: #1585a4;
 }
 
 #root:has(#wrapper.dark-mode) {

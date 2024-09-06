@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Header() {
     const [ mode, setMode ] = useState(localStorage.getItem('mode') || 'light-mode');
-    const { user, login, logout } = useAuth();
+    const { user, logout, isAdmin } = useAuth();
     const logo = mode === 'dark-mode' ? logoLight : logoDark;
 
     const navigate = useNavigate();
@@ -32,6 +32,12 @@ export default function Header() {
                     </div>
                 ) : (
                     <button onClick={ () => navigate('/login') }>로그인</button>
+                )
+            }
+
+            {
+                user && isAdmin && (
+                    <button onClick={ () => navigate('/admin') }>관리자</button>
                 )
             }
             <button onClick={ toggleMode }>{ mode === 'light-mode' ? '다크모드' : '라이트모드' }</button>

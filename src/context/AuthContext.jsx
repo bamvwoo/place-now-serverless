@@ -46,14 +46,16 @@ export function AuthProvider({ children }) {
     });
   }, [token]);
 
-  const login = (userId, password) => {
-    axios.post('/api/login', { userId, password })
+  const login = async (userId, password) => {
+    return axios.post('/api/login', { userId, password })
       .then(response => {
         const user = response.data.user;
         setUser(user);
-        setIsAdmin(user.role === 'admin');
+        setIsAdmin(user.role === 'administrator');
         setToken(response.data.token);
         localStorage.setItem('token', response.data.token);
+
+        return user;
       })
       .catch(error => {
         throw error;

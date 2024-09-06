@@ -6,7 +6,7 @@ import { axiosInstance } from "../context/AuthContext";
 import ResultContent from "../components/Common/ResultContent";
 import { useNavigate } from "react-router-dom";
 import FormContainer from "../components/Common/Form/FormContainer";
-import FormInputContainer from "../components/Common/Form/FormInputContainer";
+import FormContentContainer from "../components/Common/Form/FormContentContainer";
 import FormButtonContainer from "../components/Common/Form/FormButtonContainer";
 
 export default function Registration() {
@@ -53,7 +53,7 @@ export default function Registration() {
 
     return (
         <FormContainer methods={ methods } onValid={ onValid } onInvalid={ onInvalid } wide={ true }>
-            <FormInputContainer>
+            <FormContentContainer>
                 {
                     step === 0 && (
                         <>
@@ -126,7 +126,7 @@ export default function Registration() {
                         />
                     )
                 }
-            </FormInputContainer>
+            </FormContentContainer>
 
             <FormButtonContainer>
                 { 
