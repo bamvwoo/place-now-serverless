@@ -14,8 +14,22 @@ const LoginButton = styled.button`
 `;
 
 export default function GoogleOAuthContainer() {
-    const clientId = import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID;
+    const CLIENT_ID = import.meta.env.VITE_OAUTH_GOOGLE_CLIENT_ID;
 
+    return (
+        <>
+            {
+                CLIENT_ID && (
+                    <GoogleOAuthProvider clientId={ CLIENT_ID }>
+                        <GoogleLoginButton />
+                    </GoogleOAuthProvider>
+                )
+            }
+        </>
+    )
+}
+
+const GoogleLoginButton = () => {
     const handleGoogleLoginSuccess = (response) => {
         console.log(response);
     };
@@ -24,32 +38,15 @@ export default function GoogleOAuthContainer() {
 
     };
 
-    return (
-        <>
-            {
-                clientId && (
-                    <GoogleOAuthProvider clientId={clientId}>
-                        <GoogleLoginButton
-                            onSuccess={handleGoogleLoginSuccess}
-                            onFailure={handleGoogleLoginFailure}
-                        />
-                    </GoogleOAuthProvider>
-                )
-            }
-        </>
-    )
-}
-
-const GoogleLoginButton = ({ onSuccess, onFailure }) => {
-    const googleLogin = useGoogleLogin({
-        onSuccess,
-        onError: onFailure,
+    const loginByGoogle = useGoogleLogin({
+        onSuccess: handleGoogleLoginSuccess,
+        onError: handleGoogleLoginFailure
     });
 
     return (
-        <LoginButton onClick={() => googleLogin()} >
+        <LoginButton onClick={() => loginByGoogle()} >
             <img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1648777274/noticon/uupi5ephlcx4f82axldc.png" />
-            Google 로 로그인
+            Google로 로그인
         </LoginButton>
     );
 }

@@ -46,24 +46,21 @@ export function AuthProvider({ children }) {
     });
   }, [token]);
 
-  const login = async (userId, password) => {
-    return axios.post('/api/login', { userId, password })
-      .then(response => {
-        const user = response.data.user;
-        setUser(user);
-        setIsAdmin(user.role === 'administrator');
-        setToken(response.data.token);
-        localStorage.setItem('token', response.data.token);
-
-        return user;
-      })
-      .catch(error => {
-        throw error;
-      });
+  const generateToken = async (email, password) => {
+    if (token) {
+      return token;
+    } else {
+      return axios.post('/api/auth', { email, password })
+        .then(response => {
+          return response.data;
+        })
+        .catch(error => {
+          throw error;
+        });
+    }
   };
 
   const logout = () => {
-    console.log("logged out.");
     setUser(null);
     setIsAdmin(false);
     setToken('');
@@ -82,7 +79,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, isAdmin }}>
+    <AuthContext.Provider value={{ user, token, generateToken, logout, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );

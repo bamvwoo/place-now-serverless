@@ -8,6 +8,7 @@ import { useState } from "react";
 import FormInput from "../components/Common/Form/FormInput";
 import styled from "styled-components";
 import GoogleOAuthContainer from "../components/Login/GoogleOAuthContainer";
+import NaverOAuthContainer from "../components/Login/NaverOAuthContainer";
 
 const AuthContainer = styled.div`
     & > button {
@@ -53,18 +54,17 @@ export default function Login() {
     const navigate = useNavigate();
     const { login } = useAuth();
 
-    const [ isAuthenticated, setIsAuthenticated ] = useState(null);
+    const [ isSuccess, setIsSuccess ] = useState(null);
     const [ isEmailLoginEnabled, setIsEmailLoginEnabled ] = useState(false);
 
     const onValid = async (data) => {
-        const { userId, password } = getValues();
-
-        login(userId, password)
+        const { email, password } = getValues();
+        login(email, password)
             .then((result) => {
-                navigate(-1);
+                window.location.href = `/auth?token=${result}`;
             })
             .catch((error) => {
-                setIsAuthenticated(false);
+                setIsSuccess(false);
             });
     };
 
@@ -75,10 +75,11 @@ export default function Login() {
         <FormContainer methods={ methods } onValid={ onValid } onInvalid={ onInvalid }>
             <FormContentContainer>
                 {
-                    isAuthenticated !== null && !isAuthenticated && <span>로그인 정보를 확인해주세요</span>
+                    isSuccess !== null && !isSuccess && <span>로그인 정보를 확인해주세요</span>
                 }
                 <AuthContainer>
                     <GoogleOAuthContainer />
+                    <NaverOAuthContainer />
                 </AuthContainer>
 
                 {
@@ -93,7 +94,7 @@ export default function Login() {
                 {
                     isEmailLoginEnabled && (
                         <AuthContainer>
-                            <FormInput type="text" name="userId" required="아이디를 입력해주세요" placeholder="이메일" />
+                            <FormInput type="text" name="email" required="이메일을 입력해주세요" placeholder="이메일" />
                             <FormInput type="password" name="password" required="비밀번호를 입력해주세요" placeholder="비밀번호" />
                         </AuthContainer>
                     )
