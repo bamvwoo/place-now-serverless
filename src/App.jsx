@@ -10,6 +10,37 @@ import Registration from "./pages/Registration";
 import Error from './pages/Error';
 import Login from './pages/Login';
 import Auth from './pages/Auth';
+import styled from "styled-components";
+
+export const PageWrapper = styled.main`
+  display: flex;
+  width: 100%;
+  height: calc(100% - var(--global-header-height));
+
+  $:has(> aside) {
+    flex-direction: row;
+  }
+
+  $:not(:has(> aside)) {
+    flex-direction: column;
+  }
+
+  & > aside {
+      width: 30%;
+      height: 100%;
+  }
+  
+  & > section {
+      width: 100%;
+      height: 100%;
+  }
+
+  $ > aside + section {
+      width: 70%;
+      height: 100%;
+  }
+
+`;
 
 export default function App() {
   return (

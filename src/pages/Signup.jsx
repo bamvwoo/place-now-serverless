@@ -4,18 +4,7 @@ import styled from "styled-components";
 import ResultContent from "../components/Common/ResultContent";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-const RootContainer = styled.main`
-    form {
-        width: 100%;
-        height: 100%;
-        padding: 15% 30%;
-    }
-
-    form > div {
-        width: 100%;
-    }
-`;
+import { PageWrapper } from "../App";
 
 const FormInputContainer = styled.div`
     display: flex;
@@ -133,7 +122,7 @@ export default function Signup() {
     };
 
     return (
-        <RootContainer>
+        <PageWrapper>
             <form onSubmit={ handleSubmit(onValid, onInvalid) }>
                 <FormInputContainer>
                     {
@@ -258,6 +247,6 @@ export default function Signup() {
                     }
                 </FormButtonContainer>
             </form>
-        </RootContainer>
+        </PageWrapper>
     )
 }

@@ -1,13 +1,8 @@
-import styled from "styled-components";
 import ResultContent from "../components/Common/ResultContent";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
-
-const RootContainer = styled.main`
-    display: flex;
-    flex-direction: column;
-`;
+import { PageWrapper } from "../App";
 
 export default function Auth() {
 
@@ -26,8 +21,8 @@ export default function Auth() {
     }, [ type ]);
 
     return (
-        <RootContainer>
+        <PageWrapper>
             <ResultContent loading={ true } />
-        </RootContainer>
+        </PageWrapper>
     );
 }

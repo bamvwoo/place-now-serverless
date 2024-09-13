@@ -1,8 +1,8 @@
 import { FormProvider } from "react-hook-form";
 import styled from "styled-components";
 
-export default function FormContainer({ children, methods, onValid, onInvalid, wide }) {
-    const RootContainer = styled.main`
+export default function Form({ children, methods, onValid, onInvalid, wide }) {
+    const Wrapper = styled.div`
         form {
             display: flex;
             flex-direction: column;
@@ -13,9 +13,6 @@ export default function FormContainer({ children, methods, onValid, onInvalid, w
             max-height: 60vh;
             margin: auto;
             overflow: hidden;
-            border-radius: 10px;
-            background-color: #f9f9f9;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
             padding: 20px;
         }
 
@@ -36,11 +33,11 @@ export default function FormContainer({ children, methods, onValid, onInvalid, w
 
     return (
         <FormProvider {...methods}>
-            <RootContainer>
+            <Wrapper>
                 <form onSubmit={ handleSubmit(handleOnValid, handleOnInvalid) }>
                     { children }
                 </form>
-            </RootContainer>
+            </Wrapper>
         </FormProvider>
     );
 }

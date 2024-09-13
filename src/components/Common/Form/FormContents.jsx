@@ -42,7 +42,7 @@ const RootContainer = styled.div`
     }
 `;
 
-export default function FormContentContainer({ children }) {
+export default function FormContents({ children }) {
     return (
         <RootContainer>
             { children }

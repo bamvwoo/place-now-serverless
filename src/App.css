@@ -37,22 +37,6 @@ header {
     height: var(--global-header-height);
 }
 
-main {
-    display: flex;
-    width: 100%;
-    height: calc(100% - var(--global-header-height));
-
-    & > aside {
-        width: 30%;
-        height: 100%;
-    }
-
-    & > section {
-        width: 70%;
-        height: 100%;
-    }
-}
-
 nav {
     display: flex;
     justify-content: space-between;

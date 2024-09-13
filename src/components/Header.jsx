@@ -3,6 +3,8 @@ import logoDark from "../assets/images/logo-dark.png";
 import { useAuth } from "../context/AuthContext";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Modal from "./Common/Modal/Modal";
+import Login from "../pages/Login";
 
 export default function Header() {
     const [ mode, setMode ] = useState(localStorage.getItem('mode') || 'light-mode');
@@ -31,7 +33,9 @@ export default function Header() {
                         <button onClick={ logout }>로그아웃</button>
                     </div>
                 ) : (
-                    <button onClick={ () => navigate('/login') }>로그인</button>
+                    <Modal openText="로그인">
+                        <Login />
+                    </Modal>
                 )
             }
 
@@ -40,7 +44,7 @@ export default function Header() {
                     <button onClick={ () => navigate('/admin') }>관리자</button>
                 )
             }
-            <button onClick={ toggleMode }>{ mode === 'light-mode' ? '다크모드' : '라이트모드' }</button>
+            {/* <button onClick={ toggleMode }>{ mode === 'light-mode' ? '다크모드' : '라이트모드' }</button> */}
         </header>
     )
 }

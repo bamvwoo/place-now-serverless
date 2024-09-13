@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import FormContainer from "../components/Common/Form/FormContainer";
-import FormContentContainer from "../components/Common/Form/FormContentContainer";
+import Form from "../components/Common/Form/Form";
+import FormContents from "../components/Common/Form/FormContents";
 import FormButtonContainer from "../components/Common/Form/FormButtonContainer";
 import { useState } from "react";
 import FormInput from "../components/Common/Form/FormInput";
@@ -72,41 +72,43 @@ export default function Login() {
     };
 
     return (
-        <FormContainer methods={ methods } onValid={ onValid } onInvalid={ onInvalid }>
-            <FormContentContainer>
-                {
-                    isSuccess !== null && !isSuccess && <span>로그인 정보를 확인해주세요</span>
-                }
-                <AuthContainer>
-                    <GoogleOAuthContainer />
-                    <NaverOAuthContainer />
-                </AuthContainer>
+        <>
+            <Form methods={ methods } onValid={ onValid } onInvalid={ onInvalid }>
+                <FormContents>
+                    {
+                        isSuccess !== null && !isSuccess && <span>로그인 정보를 확인해주세요</span>
+                    }
+                    <AuthContainer>
+                        <GoogleOAuthContainer />
+                        <NaverOAuthContainer />
+                    </AuthContainer>
 
-                {
-                    !isEmailLoginEnabled && (
-                        <GuideTextContainer>
-                            <span>또는</span>
-                            <span onClick={ () => setIsEmailLoginEnabled(true) }>이메일 로그인하기</span>
-                        </GuideTextContainer>
-                    )
-                }
+                    {
+                        !isEmailLoginEnabled && (
+                            <GuideTextContainer>
+                                <span>또는</span>
+                                <span onClick={ () => setIsEmailLoginEnabled(true) }>이메일 로그인하기</span>
+                            </GuideTextContainer>
+                        )
+                    }
+
+                    {
+                        isEmailLoginEnabled && (
+                            <AuthContainer>
+                                <FormInput type="text" name="email" required="이메일을 입력해주세요" placeholder="이메일" />
+                                <FormInput type="password" name="password" required="비밀번호를 입력해주세요" placeholder="비밀번호" />
+                            </AuthContainer>
+                        )
+                    }
+                </FormContents>
 
                 {
                     isEmailLoginEnabled && (
-                        <AuthContainer>
-                            <FormInput type="text" name="email" required="이메일을 입력해주세요" placeholder="이메일" />
-                            <FormInput type="password" name="password" required="비밀번호를 입력해주세요" placeholder="비밀번호" />
-                        </AuthContainer>
-                    )
+                        <FormButtonContainer>
+                            <button type="submit">로그인</button>
+                        </FormButtonContainer>)
                 }
-            </FormContentContainer>
-
-            {
-                isEmailLoginEnabled && (
-                    <FormButtonContainer>
-                        <button type="submit">로그인</button>
-                    </FormButtonContainer>)
-            }
-        </FormContainer>
+            </Form>
+        </>
     )
 }
