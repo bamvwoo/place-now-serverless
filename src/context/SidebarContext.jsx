@@ -63,10 +63,12 @@ export function SidebarProvider({ children }) {
   const openSidebar = (content) => {
     setIsOpen(true);
     setIsClosing(false);
+    setContent(content);
   };
 
   const closeSidebar = () => {
     setIsClosing(true);
+    setContent(null);
     setTimeout(() => {
       setIsOpen(false);
     }, 700);
@@ -89,8 +91,16 @@ export function SidebarProvider({ children }) {
     setContent(content);
     setRightPosition(marginRightValue);
 
-    return () => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        closeSidebar();
+      }
+    };
 
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [ isOpen, content ]);
 
