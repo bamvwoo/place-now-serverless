@@ -10,6 +10,7 @@ import Registration from "./pages/Registration";
 import Error from './pages/Error';
 import Auth from './pages/Auth';
 import styled from "styled-components";
+import { SidebarProvider } from './context/SidebarContext';
 
 export const ContentWrapper = styled.main`
   display: flex;
@@ -46,19 +47,21 @@ export default function App() {
     <AuthProvider>
       <ChatProvider>
         <div id="wrapper">
-          <Header />
+          <SidebarProvider>
+            <Header />
 
-          <ContentWrapper>
-            <Routes>
-              <Route path="/" element={ <Home /> } />
-              <Route path="/auth/:type?" element={ <Auth /> } />
-              <Route path="/signup" element={ <Signup /> } />
-              <Route path="/registration/:placeId?" element={ <Registration /> } />
-              <Route path="/error/:status?" element={ <Error /> } />
-            </Routes>
-          </ContentWrapper>
+            <ContentWrapper>
+              <Routes>
+                <Route path="/" element={ <Home /> } />
+                <Route path="/auth/:type?" element={ <Auth /> } />
+                <Route path="/signup" element={ <Signup /> } />
+                <Route path="/registration/:placeId?" element={ <Registration /> } />
+                <Route path="/error/:status?" element={ <Error /> } />
+              </Routes>
+            </ContentWrapper>
 
-          <Footer />
+            <Footer />
+          </SidebarProvider>
         </div>
       </ChatProvider>
     </AuthProvider>

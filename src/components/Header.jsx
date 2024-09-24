@@ -3,9 +3,11 @@ import logoDark from "../assets/images/logo-dark.png";
 import { useAuth } from "../context/AuthContext";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Modal, { ModalOpenButton } from "./Common/Modal/Modal";
+import Modal from "./Common/Modal/Modal";
 import Login from "./Login/Login";
 import styled from "styled-components";
+import { useChat } from "../context/ChatContext";
+import { useSidebar } from "../context/SidebarContext";
 
 const ProfileContainer = styled.div`
     display: flex;
@@ -14,52 +16,32 @@ const ProfileContainer = styled.div`
     gap: 5px;
     cursor: pointer;
     position: relative;
+    padding: 5px 7px;
+    border-radius: 5px;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #fff;
+    }
 
     & > img {
         border-radius: 50%;
-    }
-`;
-
-const ProfileDropDownContainer = styled.div`
-    display: flex;
-    padding: 7px 7px 7px 10px;
-    border-radius: 5px;
-    transition: .2s ease-in-out;
-
-    &:hover {
-        background-color: #444;
-        color: white;
-    }
-        
-    & > span {
         margin-right: 5px;
     }
 
-    & > i {
-        font-size: 0.8rem;
+    &:has(> div) {
+        padding: 5px 12px 5px 7px;
     }
 `;
 
-const ProfileDropDownList = styled.ul`
+const UnreadMark = styled.div`
     position: absolute;
-    top: 50px;
-    right: 10px;
-    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.05);
-    padding: 15px;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    justify-content: center;
-    align-items: center;
-    
-    .dark-mode & {
-        background-color: #777;
-    }
-
-    .light-mode & {
-        background-color: white;
-    }
+    top: 12px;
+    right: 5px;
+    width: 5px;
+    height: 5px;
+    background-color: red;
+    border-radius: 50%;
 `;
 
 export default function Header() {
@@ -67,6 +49,9 @@ export default function Header() {
     const [ isDropDownOpen, setIsDropDownOpen ] = useState(false);
 
     const { user, logout, isAdmin } = useAuth();
+    const { unreadMessages } = useChat();
+    const { toggleSidebar } = useSidebar();
+
     const logo = mode === 'dark-mode' ? logoLight : logoDark;
 
     const navigate = useNavigate();
@@ -100,22 +85,12 @@ export default function Header() {
             <img id="mainLogo" src={logo} alt="Logo" width="150" height="auto" onClick={ () => { location.href = '/' } } />
             {
                 user ? (
-                    <ProfileContainer>
+                    <ProfileContainer onClick={ () => { toggleSidebar() } }>
                         <img src={ user.profile } alt="Profile" width="40" height="40" />
-
-                        <ProfileDropDownContainer ref={ dropDownRef } onClick={ handleDropDownOpen }>
-                            <span>{ user.name }</span>
-                            <i className="fa-solid fa-chevron-down"></i>
-                            
-                        </ProfileDropDownContainer>
-
-                        {
-                            isDropDownOpen && (
-                                <ProfileDropDownList>
-                                    <li>마이페이지</li>
-                                    <li onClick={ logout }>로그아웃</li>
-                                </ProfileDropDownList>
-                            )
+                        <span>{ user.name }</span>
+                        { 
+                            unreadMessages > 0 && 
+                            <UnreadMark></UnreadMark> 
                         }
                     </ProfileContainer>
                 ) : (
