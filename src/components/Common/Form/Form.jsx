@@ -13,7 +13,6 @@ export default function Form({ children, methods, onValid, onInvalid, wide }) {
             max-height: 60vh;
             margin: auto;
             overflow: hidden;
-            padding: 20px;
         }
 
         form > div {

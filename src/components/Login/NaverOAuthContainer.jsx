@@ -1,16 +1,4 @@
-import styled from "styled-components";
-
-const LoginButton = styled.button`
-    --main-color: #03C75A;
-
-    color: var(--main-color);
-    border: 1px solid var(--main-color);
-
-    &:hover {
-        background-color: var(--main-color);
-        color: white;
-    }
-`;
+import OAuthButton from "./OAuthButton";
 
 export default function NaverOAuthContainer() {
     const CLIENT_ID = import.meta.env.VITE_OAUTH_NAVER_CLIENT_ID;
@@ -27,10 +15,10 @@ export default function NaverOAuthContainer() {
         <>
             {
                 CLIENT_ID && (
-                    <LoginButton onClick={ () => loginByNaver() } >
+                    <OAuthButton onClick={ () => loginByNaver() }>
                         <img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1644169460/noticon/frvhykszxhjz4asz77oi.png" />
-                        네이버로 로그인
-                    </LoginButton>
+                        <span>네이버로 시작</span>
+                    </OAuthButton>
                 )
             }
         </>

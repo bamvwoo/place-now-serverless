@@ -1,9 +1,16 @@
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
-    userId: {
+    email: {
         type: String,
-        required: true,
+        unique: true
+    },
+    googleId: {
+        type: String,
+        unique: true
+    },
+    naverId: {
+        type: String,
         unique: true
     },
     role: {
@@ -16,13 +23,14 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     password: {
-        type: String,
-        required: true
+        type: String
     },
-    email: {
+    phone: {
         type: String,
-        required: true,
         unique: true
+    },
+    profile: {
+        type: String
     }
 }, {
     timestamps: true

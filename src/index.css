@@ -66,6 +66,10 @@ a {
 	text-decoration: none;
 }
 
+a:visited {
+	color: inherit;
+}
+
 button {
 	border: none;
 	background-color: transparent;

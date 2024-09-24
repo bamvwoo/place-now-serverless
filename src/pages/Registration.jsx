@@ -6,9 +6,6 @@ import { axiosInstance } from "../context/AuthContext";
 import ResultContent from "../components/Common/ResultContent";
 import { useNavigate } from "react-router-dom";
 import Form from "../components/Common/Form/Form";
-import FormContents from "../components/Common/Form/FormContents";
-import FormButtonContainer from "../components/Common/Form/FormButtonContainer";
-import { PageWrapper } from "../App";
 
 export default function Registration() {
     const methods = useForm();
@@ -53,105 +50,98 @@ export default function Registration() {
     };
 
     return (
-        <PageWrapper>
-            <Form methods={ methods } onValid={ onValid } onInvalid={ onInvalid } wide={ true }>
-                <FormContents>
-                    {
-                        step === 0 && (
-                            <>
-                            </>
-                        )
-                    }
+        <Form methods={ methods } onValid={ onValid } onInvalid={ onInvalid } wide={ true }>
+            {
+                step === 0 && (
+                    <>
+                    </>
+                )
+            }
 
-                    {
-                        step === 1 && (
-                            <>
-                                <h4>이 장소가 어디에 있나요?</h4>
-                                <AddressSelector />
-                            </>
-                        )
-                    }
+            {
+                step === 1 && (
+                    <>
+                        <h4>이 장소가 어디에 있나요?</h4>
+                        <AddressSelector />
+                    </>
+                )
+            }
 
-                    {
-                        step === 2 && (
-                            <>
-                                <h4>장소의 이름을 입력해주세요</h4>
-                                <input type="text"
-                                    placeholder="장소명"
-                                    { 
-                                        ...register("name", {
-                                            required: '장소명을 입력해주세요',
-                                            maxLength: { value: 50, message: '장소명은 최대 50자까지 입력할 수 있어요' }
-                                        })
-                                    }
-                                    defaultValue={ getValues("detailedAddress") }
-                                />
-                                { errors.name ? <p>{ errors.name.message }</p> : null }
+            {
+                step === 2 && (
+                    <>
+                        <h4>장소의 이름을 입력해주세요</h4>
+                        <input type="text"
+                            placeholder="장소명"
+                            { 
+                                ...register("name", {
+                                    required: '장소명을 입력해주세요',
+                                    maxLength: { value: 50, message: '장소명은 최대 50자까지 입력할 수 있어요' }
+                                })
+                            }
+                            defaultValue={ getValues("detailedAddress") }
+                        />
+                        { errors.name ? <p>{ errors.name.message }</p> : null }
 
-                                <label>
-                                    <input type="checkbox"
-                                        {
-                                            ...register("admin")
-                                        }
-                                    />
-
-                                    이 장소의 관리자예요
-                                    <i className="fa-solid fa-circle-question"></i>
-                                </label>
-                            </>
-                        )
-                    }
-
-                    {
-                        step === 3 && !isLoading && (
-                            <>
-                                <h4>장소 이미지를 첨부해주세요</h4>
-                                <ImageUploader required="장소 이미지를 첨부해주세요" thumbnailEnabled={ true } />
-                            </>
-                        )
-                    }
-
-                    {
-                        step === 3 && isLoading && (
-                            <ResultContent loading={ true } />
-                        )
-                    }
-
-                    {
-                        step === 4 && (
-                            <ResultContent success={
-                                { 
-                                    title: "등록 신청이 완료되었어요", 
-                                    subTitle: "등록이 승인되면 이메일로 알려드릴게요" 
-                                }}
-                                loop="false"
-                            />
-                        )
-                    }
-                </FormContents>
-
-                <FormButtonContainer>
-                    { 
-                        !isLoading && (
-                            <>
+                        <label>
+                            <input type="checkbox"
                                 {
-                                    (step > 1 && step < 4) && (
-                                        <button type="button" onClick={ () => { setStep(step - 1) } } >이전</button>
-                                    )
+                                    ...register("admin")
                                 }
+                            />
 
-                                <button type="submit">
-                                    { 
-                                        step < 3 ? "다음" : 
-                                        step < 4 ? "등록" : 
-                                        "완료" 
-                                    }
-                                </button>
-                            </>
-                        )
-                    }
-                </FormButtonContainer>
-            </Form>
-        </PageWrapper>
+                            이 장소의 관리자예요
+                            <i className="fa-solid fa-circle-question"></i>
+                        </label>
+                    </>
+                )
+            }
+
+            {
+                step === 3 && !isLoading && (
+                    <>
+                        <h4>장소 이미지를 첨부해주세요</h4>
+                        <ImageUploader required="장소 이미지를 첨부해주세요" thumbnailEnabled={ true } />
+                    </>
+                )
+            }
+
+            {
+                step === 3 && isLoading && (
+                    <ResultContent loading={ true } />
+                )
+            }
+
+            {
+                step === 4 && (
+                    <ResultContent success={
+                        { 
+                            title: "등록 신청이 완료되었어요", 
+                            subTitle: "등록이 승인되면 이메일로 알려드릴게요" 
+                        }}
+                        loop="false"
+                    />
+                )
+            }
+            { 
+                !isLoading && (
+                    <>
+                        {
+                            (step > 1 && step < 4) && (
+                                <button type="button" onClick={ () => { setStep(step - 1) } } >이전</button>
+                            )
+                        }
+
+                        <button type="submit">
+                            { 
+                                step < 3 ? "다음" : 
+                                step < 4 ? "등록" : 
+                                "완료" 
+                            }
+                        </button>
+                    </>
+                )
+            }
+        </Form>
     )
 }

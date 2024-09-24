@@ -8,11 +8,10 @@ import { ChatProvider } from "./context/ChatContext";
 import Signup from "./pages/Signup";
 import Registration from "./pages/Registration";
 import Error from './pages/Error';
-import Login from './pages/Login';
 import Auth from './pages/Auth';
 import styled from "styled-components";
 
-export const PageWrapper = styled.main`
+export const ContentWrapper = styled.main`
   display: flex;
   width: 100%;
   height: calc(100% - var(--global-header-height));
@@ -49,14 +48,15 @@ export default function App() {
         <div id="wrapper">
           <Header />
 
-          <Routes>
-            <Route path="/" element={ <Home /> } />
-            <Route path="/login" element={ <Login /> } />
-            <Route path="/auth/:type?" element={ <Auth /> } />
-            <Route path="/signup" element={ <Signup /> } />
-            <Route path="/registration/:placeId?" element={ <Registration /> } />
-            <Route path="/error/:status?" element={ <Error /> } />
-          </Routes>
+          <ContentWrapper>
+            <Routes>
+              <Route path="/" element={ <Home /> } />
+              <Route path="/auth/:type?" element={ <Auth /> } />
+              <Route path="/signup" element={ <Signup /> } />
+              <Route path="/registration/:placeId?" element={ <Registration /> } />
+              <Route path="/error/:status?" element={ <Error /> } />
+            </Routes>
+          </ContentWrapper>
 
           <Footer />
         </div>

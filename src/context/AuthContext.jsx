@@ -36,28 +36,26 @@ export function AuthProvider({ children }) {
       }
     );
 
-    getUser().then(result => {
-      if (result) {
-        setUser(result);
-        setIsAdmin(result.role === 'administrator');
-      }
-    }).catch(error => {
-      logout();
-    });
-  }, [token]);
-
-  const generateToken = async (email, password) => {
-    if (token) {
-      return token;
-    } else {
-      return axios.post('/api/auth', { email, password })
-        .then(response => {
-          return response.data;
-        })
-        .catch(error => {
-          throw error;
-        });
+    const localToken = token || localStorage.getItem('token');
+    if (localToken) {
+      login(localToken);
     }
+  }, [ token ]);
+
+  const login = (token) => {
+    axios.post("/api/login", { token })
+      .then((response) => {
+        const user = response.data;
+
+        setToken(token);
+        setIsAdmin(user.role === 'administrator');
+        setUser(user);
+        localStorage.setItem('token', token);
+      })
+      .catch((error) => {
+        console.error(error);
+        logout();
+      });
   };
 
   const logout = () => {
@@ -67,19 +65,8 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('token');
   };
 
-  const getUser = async () => {
-    if (token) {
-      const response = await axios.get('/api/user', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      return response.data;
-    }
-  };
-
   return (
-    <AuthContext.Provider value={{ user, token, generateToken, logout, isAdmin }}>
+    <AuthContext.Provider value={{ user, token, login, logout, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );

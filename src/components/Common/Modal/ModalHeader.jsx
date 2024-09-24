@@ -1,14 +1,23 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+const rotate = keyframes`
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+`;
 
 const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 30px;
+    height: 25px;
     border-radius: 20px 20px 0 0;
-    padding: 20px 10px;
     border: none;
+    margin-bottom: 10px;
 
     & > span {
         font-size: 0.8rem;
@@ -16,28 +25,23 @@ const Wrapper = styled.div`
 
     & > button {
         font-size: 1.5rem;
-        color: #00C1A2;
+        color: #444;
+    }
+
+    & > button:hover {
+        & > i {
+            animation: ${rotate} 1s ease-in-out 1;
+        }
     }
 `;
 
 export default function ModalHeader({ title, closeText, handleClose }) {
-
-    const handleMouseEnter = (e) => {
-        e.target.classList.remove('fa-regular');
-        e.target.classList.add('fa-solid');
-    };
-
-    const handleMouseLeave = (e) => {
-        e.target.classList.remove('fa-solid');
-        e.target.classList.add('fa-regular');
-    };
-
     return (
         <Wrapper>
             <span>{ title }</span>
             <button type="button" onClick={ handleClose }>
                 {
-                    closeText || <i className="fa-regular fa-circle-xmark" onMouseEnter={ handleMouseEnter } onMouseLeave={ handleMouseLeave } ></i>
+                    closeText || <i className="fa-solid fa-xmark"></i>
                 }
             </button>
         </Wrapper>

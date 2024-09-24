@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import ResultContent from "../components/Common/ResultContent";
 import { useParams } from "react-router-dom";
-import { PageWrapper } from "../App";
 
 const ButtonContainer = styled.div`
     display: flex;
@@ -30,7 +29,7 @@ export default function Error() {
     }, [status]);
 
     return (
-        <PageWrapper>
+        <>
             <ResultContent 
                 fail={ { "title": status, "subTitle" : message } }
                 loop="false"
@@ -40,6 +39,6 @@ export default function Error() {
                 <button type="button" onClick={ () => window.history.back() }>이전 페이지로</button>
                 <button type="button" onClick={ () => window.location.href = "/" }>홈으로</button>
             </ButtonContainer>
-        </PageWrapper>
+        </>
     );
 }
