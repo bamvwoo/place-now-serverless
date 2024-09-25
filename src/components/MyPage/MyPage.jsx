@@ -3,6 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useWindow } from "../../context/WindowContext";
 import ContentSwitcher from "./ContentSwitcher";
 import { useEffect, useState } from "react";
+import ChatRoomList from "./ChatRoomList";
 
 const Wrapper = styled.div`
     display: flex;
@@ -17,19 +18,26 @@ const LogoutButton = styled.button`
     border: 1px solid #444;
     padding: 7px 12px;
     border-radius: 5px;
+    transition: .2s ease-in-out;
+
+    &:hover {
+        background-color: #444;
+        color: #fff;
+    }
 `;
 
 export default function MyPage() {
 
-    const [ activeContent, setActiveContent ] = useState(null);
+    const contents = [
+        { title: '채팅', content: <ChatRoomList /> },
+        { title: '내 정보', content: <div>내 정보입니다</div> },
+        { title: '설정', content: <div>설정입니다</div> }
+    ];
+
+    const [ activeContent, setActiveContent ] = useState(contents[0]);
 
     const { logout } = useAuth();
     const { closeSidebar } = useWindow();
-
-    const contents = [
-        { title: '마이페이지', content: <div>마이페이지입니다</div> },
-        { title: '채팅', content: <div>채팅입니다</div> }
-    ]
 
     const handleLogout = (e) => {
         e.preventDefault();
@@ -38,9 +46,13 @@ export default function MyPage() {
         closeSidebar();
     };
 
+    useEffect(() => {
+    }, [ activeContent ]);
+
     return (
         <Wrapper>
-            <ContentSwitcher contents={ contents } activeContent={ activeContent } setActiveContent={ setActiveContent }></ContentSwitcher>
+            <ContentSwitcher contents={ contents } activeContent={ activeContent } setActiveContent={ setActiveContent } />
+            { activeContent.content }
             <LogoutButton onClick={ handleLogout }>로그아웃</LogoutButton>
         </Wrapper>
     )

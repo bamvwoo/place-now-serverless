@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
 
-const TitleTab = styled.ul`
+const TabList = styled.ul`
     display: flex;
     justify-content: flex-start;
     align-items: center;
     padding: 0;
     margin: 0;
-    gap: 5px;
+    gap: 10px;
     width: 100%;
     overflow: hidden;
     white-space: nowrap;
@@ -25,31 +25,46 @@ const TitleTab = styled.ul`
     }
 
     & > li.active {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         color: #444;
     }
 `;
 
 export default function ContentSwitcher({ contents, activeContent, setActiveContent }) {
 
-    const activeContentRef = useRef(null);
+    const tabListRef = useRef(null);
+    const activeTabRef = useRef(null);
 
-    const switchContent = (e) => {
-        let index = 0;
-        if (e) {
-            index = e.target.dataset.index;
-        }
+    const switchContent = (e, i) => {
+        e.preventDefault();
+        e.stopPropagation();
 
-        setActiveContent(contents[index].content);
+        if (e.currentTarget === activeTabRef.current) return;
+
+        activeTabRef.current.classList.remove("active");
+
+        activeTabRef.current = e.currentTarget;
+        activeTabRef.current.classList.add("active");
+
+        setActiveContent(contents[i]);
     };
 
+    useEffect(() => {
+        if (tabListRef.current) {
+            activeTabRef.current = tabListRef.current.querySelector("li:nth-child(1)");
+            if (activeTabRef.current) {
+                activeTabRef.current.classList.add("active");
+            }
+        }
+    }, []);
+
     return (
-        <TitleTab>
+        <TabList ref={ tabListRef }>
             { 
                 contents.map((content, index) => {
-                    return <li key={ index } data-index={ index } onClick={ switchContent }><h1>{ content.title }</h1></li>
+                    return <li key={ index } onClick={ (e) => switchContent(e, index) }><h1>{ content.title }</h1></li>
                 })
             }
-        </TitleTab>
+        </TabList>
     );
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import ChatRoom from "./ChatRoom";
+import ChatRoom from "../Footer/ChatRoom";
 import { useChat } from "../../context/ChatContext";
 
 export default function ChatRoomList() {

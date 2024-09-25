@@ -25,6 +25,7 @@ const ProfileContainer = styled.div`
     position: relative;
     padding: 5px 7px;
     border-radius: 5px;
+    transition: .2s ease-in-out;
 
     &:hover {
         background-color: rgba(0, 0, 0, 0.8);
@@ -77,12 +78,22 @@ export default function Header() {
         localStorage.setItem('mode', newMode);
     };
 
+    const openMyPage = (e) => {
+        e.preventDefault();
+        toggleSidebar(<MyPage />);
+    };
+
+    const openLogin = (e) => {
+        e.preventDefault();
+        openModal(null, <Login />);
+    };
+
     return (
         <header>
-            <img id="mainLogo" src={logo} alt="Logo" width="150" height="auto" onClick={ () => { location.href = '/' } } />
+            <img id="mainLogo" src={logo} alt="Logo" width="150" height="auto" onClick={ () => { navigate('/') } } />
             {
                 user ? (
-                    <ProfileContainer onClick={ () => toggleSidebar(<MyPage />) }>
+                    <ProfileContainer onClick={ openMyPage }>
                         <img src={ user.profile } alt="Profile" width="40" height="40" />
                         <span>{ user.name }</span>
                         { 
@@ -92,15 +103,10 @@ export default function Header() {
                     </ProfileContainer>
                 ) : (
                     !location.pathname.startsWith('/auth') && 
-                        <LoginButton onClick={ () => openModal(null, <Login />) }>로그인</LoginButton>
+                        <LoginButton onClick={ openLogin }>로그인</LoginButton>
                 )
             }
 
-            {
-                user && isAdmin && (
-                    <button onClick={ () => navigate('/admin') }>관리자</button>
-                )
-            }
             {/* <button onClick={ toggleMode }>{ mode === 'light-mode' ? '다크모드' : '라이트모드' }</button> */}
         </header>
     )
