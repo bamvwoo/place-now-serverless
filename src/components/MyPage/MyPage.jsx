@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useAuth } from "../../context/AuthContext";
 import { useWindow } from "../../context/WindowContext";
+import ContentSwitcher from "./ContentSwitcher";
+import { useEffect, useState } from "react";
 
 const Wrapper = styled.div`
     display: flex;
@@ -8,11 +10,6 @@ const Wrapper = styled.div`
     justify-content: space-between;
     width: 100%;
     height: 100%;
-`;
-
-const PageTitle = styled.h1`
-    font-size: 1.5rem;
-    font-weight: 700;
 `;
 
 const LogoutButton = styled.button`
@@ -24,8 +21,15 @@ const LogoutButton = styled.button`
 
 export default function MyPage() {
 
+    const [ activeContent, setActiveContent ] = useState(null);
+
     const { logout } = useAuth();
     const { closeSidebar } = useWindow();
+
+    const contents = [
+        { title: '마이페이지', content: <div>마이페이지입니다</div> },
+        { title: '채팅', content: <div>채팅입니다</div> }
+    ]
 
     const handleLogout = (e) => {
         e.preventDefault();
@@ -36,7 +40,7 @@ export default function MyPage() {
 
     return (
         <Wrapper>
-            <PageTitle>마이페이지</PageTitle>
+            <ContentSwitcher contents={ contents } activeContent={ activeContent } setActiveContent={ setActiveContent }></ContentSwitcher>
             <LogoutButton onClick={ handleLogout }>로그아웃</LogoutButton>
         </Wrapper>
     )
