@@ -1,12 +1,39 @@
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import ModalHeader from "./ModalHeader";
-import { useEffect, useRef, useState } from "react";
+import { forwardRef } from "react";
 
-export const ModalOpenButton = styled.button`
-    background-color: transparent;
-    border: 1px solid #444;
-    padding: 7px 12px;
-    border-radius: 5px;
+const openAnimation = keyframes`
+  0% {
+    top: 150%;
+    transform: translate(-50%, -50%) scale(0.8) perspective(1000px) rotateX(-20deg);
+  }
+
+  70% {
+    top: 45%;
+    transform: translate(-50%, -50%) scaleY(1.02) perspective(1000px) rotateX(-5deg);
+  }
+
+  100% {
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1) rotateX(0deg);
+  }
+`;
+
+const closeAnimation = keyframes`
+  0% {
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1) rotateX(0deg);
+  }
+
+  30% {
+    top: 45%;
+    transform: translate(-50%, -50%) scaleY(1.02) perspective(1000px) rotateX(5deg);
+  }
+
+  100% {
+    top: 150%;
+    transform: translate(-50%, -50%) scale(0.8) perspective(1000px) rotateX(20deg);
+  }
 `;
 
 const Wrapper = styled.div`
@@ -17,13 +44,15 @@ const Wrapper = styled.div`
     max-width: 90vw;
     max-height: 90vh;
     position: absolute;
-    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
     border-radius: 5px;
     box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.01);
     padding: 10px;
     z-index: 10001;
+    animation: ${(props) =>
+    props['data-is-closing']
+      ? css`${closeAnimation} 0.7s ease-in-out forwards`
+      : css`${openAnimation} 0.7s ease-in-out forwards`};
 
     .dark-mode &, .dark-mode & > div {
         background-color: #777;
@@ -53,39 +82,20 @@ const ModalContents = styled.div`
     border-radius: 0 0 20px 20px;
 `;
 
-export default function Modal({ children, title, openText, closeText }) {
-    const [ isOpen, setIsOpen ] = useState(false);
-    const [ isClosing, setIsClosing ] = useState(false);
-    const [buttonPosition, setButtonPosition] = useState({ top: 0, left: 0 });
-    const buttonRef = useRef(null);
-
-    const handleClose = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        setIsOpen(false);
-    }
-
-    useEffect(() => {
-    }, [ isOpen ]);
-
+const Modal = forwardRef(({ isClosing, close, title, children }, ref) => {
     return (
         <>
-            <ModalOpenButton ref={buttonRef} type="button" onClick={ () => setIsOpen(true) }>
-                { openText }
-            </ModalOpenButton>
-            
-            { isOpen && (
-                <>
-                    <Wrapper>
-                        <ModalHeader title={ title } closeText={ closeText } handleClose={ handleClose } />
-                        <ModalContents>
-                            { children }
-                        </ModalContents>
-                    </Wrapper>
-                    <ModalBackGround onClick={ handleClose } />
-                </>
-            ) }
+            <Wrapper ref={ ref } data-is-closing={ isClosing }>
+                <ModalHeader title={ title } close={ close } />
+                <ModalContents>
+                    { children }
+                </ModalContents>
+            </Wrapper>
+            <ModalBackGround onClick={ close } />
         </>
-    )
-}
+    );
+});
+
+Modal.displayName = 'Modal';
+
+export default Modal;

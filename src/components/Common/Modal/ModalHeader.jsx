@@ -35,14 +35,12 @@ const Wrapper = styled.div`
     }
 `;
 
-export default function ModalHeader({ title, closeText, handleClose }) {
+export default function ModalHeader({ title, close }) {
     return (
         <Wrapper>
             <span>{ title }</span>
-            <button type="button" onClick={ handleClose }>
-                {
-                    closeText || <i className="fa-solid fa-xmark"></i>
-                }
+            <button type="button" onClick={ () => close() }>
+                <i className="fa-solid fa-xmark"></i>
             </button>
         </Wrapper>
     )

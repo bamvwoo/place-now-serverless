@@ -10,7 +10,7 @@ import Registration from "./pages/Registration";
 import Error from './pages/Error';
 import Auth from './pages/Auth';
 import styled from "styled-components";
-import { SidebarProvider } from './context/SidebarContext';
+import { WindowProvider } from './context/WindowContext';
 
 export const ContentWrapper = styled.main`
   display: flex;
@@ -47,7 +47,7 @@ export default function App() {
     <AuthProvider>
       <ChatProvider>
         <div id="wrapper">
-          <SidebarProvider>
+          <WindowProvider>
             <Header />
 
             <ContentWrapper>
@@ -61,7 +61,7 @@ export default function App() {
             </ContentWrapper>
 
             <Footer />
-          </SidebarProvider>
+          </WindowProvider>
         </div>
       </ChatProvider>
     </AuthProvider>

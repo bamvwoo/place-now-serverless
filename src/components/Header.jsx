@@ -1,13 +1,21 @@
 import logoLight from "../assets/images/logo-light.png";
 import logoDark from "../assets/images/logo-dark.png";
 import { useAuth } from "../context/AuthContext";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Modal from "./Common/Modal/Modal";
 import Login from "./Login/Login";
 import styled from "styled-components";
 import { useChat } from "../context/ChatContext";
-import { useSidebar } from "../context/SidebarContext";
+import { useWindow } from "../context/WindowContext";
+import MyPage from "./MyPage/MyPage";
+
+const LoginButton = styled.button`
+    background-color: transparent;
+    border: 1px solid #444;
+    padding: 7px 12px;
+    border-radius: 5px;
+`;
 
 const ProfileContainer = styled.div`
     display: flex;
@@ -45,34 +53,24 @@ const UnreadMark = styled.div`
 `;
 
 export default function Header() {
+    /* States */
     const [ mode, setMode ] = useState(localStorage.getItem('mode') || 'light-mode');
-    const [ isDropDownOpen, setIsDropDownOpen ] = useState(false);
-
-    const { user, logout, isAdmin } = useAuth();
-    const { unreadMessages } = useChat();
-    const { toggleSidebar } = useSidebar();
-
-    const logo = mode === 'dark-mode' ? logoLight : logoDark;
-
+    
+    /* Hooks */
     const navigate = useNavigate();
     const location = useLocation();
 
-    const dropDownRef = useRef(null);
+    /* Custom Hooks  */
+    const { user, isAdmin } = useAuth();
+    const { unreadMessages } = useChat();
+    const { toggleSidebar, openModal } = useWindow();
+
+    /* Local Variables */
+    const logo = mode === 'dark-mode' ? logoLight : logoDark;
 
     useEffect(() => {
         document.getElementById('wrapper').className = mode;
-
-        dropDownRef.current && document.addEventListener('click', (e) => {
-            if (!dropDownRef.current.contains(e.target)) {
-                setIsDropDownOpen(false);
-            }
-        });
-    }, [ mode, isDropDownOpen ]);
-
-    const handleDropDownOpen = (e) => {
-        e.stopPropagation();
-        setIsDropDownOpen(!isDropDownOpen);
-    };
+    }, [ mode ]);
 
     const toggleMode = () => {
         const newMode = mode === 'light-mode' ? 'dark-mode' : 'light-mode';
@@ -85,7 +83,7 @@ export default function Header() {
             <img id="mainLogo" src={logo} alt="Logo" width="150" height="auto" onClick={ () => { location.href = '/' } } />
             {
                 user ? (
-                    <ProfileContainer onClick={ () => { toggleSidebar() } }>
+                    <ProfileContainer onClick={ () => toggleSidebar(<MyPage />) }>
                         <img src={ user.profile } alt="Profile" width="40" height="40" />
                         <span>{ user.name }</span>
                         { 
@@ -94,10 +92,8 @@ export default function Header() {
                         }
                     </ProfileContainer>
                 ) : (
-                    !location.pathname.startsWith('/auth') &&
-                        <Modal openText="로그인">
-                            <Login />
-                        </Modal>
+                    !location.pathname.startsWith('/auth') && 
+                        <LoginButton onClick={ () => openModal(null, <Login />) }>로그인</LoginButton>
                 )
             }
 
