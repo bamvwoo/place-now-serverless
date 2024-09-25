@@ -1,5 +1,6 @@
 import { forwardRef, useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
+import SidebarHeader from "./SidebarHeader";
 
 const openAnimation = (rightPosition) => keyframes`
   0% {
@@ -40,11 +41,14 @@ const closeAnimation = (rightPosition) => keyframes`
 `;
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   position: absolute;
   bottom: 50px;
   right: -400px;
   width: 400px;
   height: 80vh;
+  padding: 15px;
   background-color: #fff;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.03);
   border-radius: 20px;
@@ -80,6 +84,7 @@ const Sidebar = forwardRef(({ isClosing, close, children }, ref) => {
 
   return (
     <Wrapper ref={ ref } data-is-closing={ isClosing } data-right-position={ rightPosition }>
+      <SidebarHeader close={ close } />
       {children}
     </Wrapper>
   );

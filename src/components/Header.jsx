@@ -3,7 +3,6 @@ import logoDark from "../assets/images/logo-dark.png";
 import { useAuth } from "../context/AuthContext";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Modal from "./Common/Modal/Modal";
 import Login from "./Login/Login";
 import styled from "styled-components";
 import { useChat } from "../context/ChatContext";
