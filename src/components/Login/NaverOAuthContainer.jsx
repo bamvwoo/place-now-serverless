@@ -1,6 +1,6 @@
 import OAuthButton from "./OAuthButton";
 
-export default function NaverOAuthContainer() {
+export default function NaverOAuthContainer({ setIsAuthenticating }) {
     const CLIENT_ID = import.meta.env.VITE_OAUTH_NAVER_CLIENT_ID;
     const REDIRECT_URI = `${import.meta.env.VITE_AUTH_REDIRECT_BASE_URI}/naver`;
     const STATE = Math.random().toString(36).substring(3, 14);

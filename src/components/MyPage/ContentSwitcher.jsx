@@ -4,11 +4,12 @@ import styled from "styled-components";
 const TabList = styled.ul`
     display: flex;
     justify-content: flex-start;
-    align-items: center;
+    align-items: end;
     padding: 0;
     margin: 0;
     gap: 10px;
     width: 100%;
+    height: 30px;
     overflow: hidden;
     white-space: nowrap;
     font-weight: 700;

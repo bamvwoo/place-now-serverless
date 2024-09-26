@@ -2,16 +2,13 @@ import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
     email: {
-        type: String,
-        unique: true
+        type: String
     },
     googleId: {
-        type: String,
-        unique: true
+        type: String
     },
     naverId: {
-        type: String,
-        unique: true
+        type: String
     },
     role: {
         type: String,
@@ -19,15 +16,13 @@ const userSchema = new mongoose.Schema({
         default: 'user'
     },
     name: {
-        type: String,
-        required: true
+        type: String
     },
     password: {
         type: String
     },
     phone: {
-        type: String,
-        unique: true
+        type: String
     },
     profile: {
         type: String

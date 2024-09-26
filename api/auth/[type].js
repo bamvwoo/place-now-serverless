@@ -18,6 +18,8 @@ export default async function handler(req, res) {
 
                 const googleUserInfo = googleUserInfoResponse.data;
 
+                console.log("googleUserInfo", googleUserInfo);
+
                 let user = await getUserByGoogleId(googleUserInfo.sub);
                 if (!user) {
                     const userData = {
@@ -57,8 +59,7 @@ export default async function handler(req, res) {
                     const userData = {
                         naverId: naverProfile.id,
                         name: naverProfile.nickname,
-                        profile: naverProfile.profile_image,
-                        phone: naverProfile.mobile
+                        profile: naverProfile.profile_image
                     };
 
                     user = await saveUser(userData);

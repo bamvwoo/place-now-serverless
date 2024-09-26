@@ -1,6 +1,7 @@
 import styled, { css, keyframes } from "styled-components";
 import ModalHeader from "./ModalHeader";
 import { forwardRef } from "react";
+import { VerticalWrapper } from "../Wrapper";
 
 const openAnimation = keyframes`
   0% {
@@ -36,11 +37,9 @@ const closeAnimation = keyframes`
   }
 `;
 
-const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+const Wrapper = styled(VerticalWrapper)`
+    width: auto;
+    height: auto;
     max-width: 90vw;
     max-height: 90vh;
     position: absolute;
@@ -50,9 +49,10 @@ const Wrapper = styled.div`
     padding: 10px;
     z-index: 10001;
     animation: ${(props) =>
-    props['data-is-closing']
-      ? css`${closeAnimation} 0.7s ease-in-out forwards`
-      : css`${openAnimation} 0.7s ease-in-out forwards`};
+      props.$isClosing
+        ? css`${closeAnimation} 0.7s ease-in-out forwards`
+        : css`${openAnimation} 0.7s ease-in-out forwards`
+    };
 
     .dark-mode &, .dark-mode & > div {
         background-color: #777;
@@ -85,7 +85,7 @@ const ModalContents = styled.div`
 const Modal = forwardRef(({ isClosing, close, title, children }, ref) => {
     return (
         <>
-            <Wrapper ref={ ref } data-is-closing={ isClosing }>
+            <Wrapper ref={ ref } $isClosing={ isClosing }>
                 <ModalHeader title={ title } close={ close } />
                 <ModalContents>
                     { children }

@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import SidebarHeader from "./SidebarHeader";
+import { VerticalWrapper } from "../Wrapper";
 
 const openAnimation = (rightPosition) => keyframes`
   0% {
@@ -40,9 +41,7 @@ const closeAnimation = (rightPosition) => keyframes`
   }
 `;
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+const Wrapper = styled(VerticalWrapper)`
   position: absolute;
   bottom: 50px;
   right: -400px;
@@ -53,9 +52,9 @@ const Wrapper = styled.div`
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.03);
   border-radius: 20px;
   animation: ${(props) =>
-    props['data-is-closing']
-      ? css`${closeAnimation(props['data-right-position'])} 0.7s ease-in-out forwards`
-      : css`${openAnimation(props['data-right-position'])} 0.7s ease-in-out forwards`};
+    props.$isClosing
+      ? css`${closeAnimation(props.$rightPosition)} 0.7s ease-in-out forwards`
+      : css`${openAnimation(props.$rightPosition)} 0.7s ease-in-out forwards`};
 `;
 
 const Sidebar = forwardRef(({ isClosing, close, children }, ref) => {
@@ -80,10 +79,10 @@ const Sidebar = forwardRef(({ isClosing, close, children }, ref) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [ isClosing ]);
+  }, []);
 
   return (
-    <Wrapper ref={ ref } data-is-closing={ isClosing } data-right-position={ rightPosition }>
+    <Wrapper ref={ ref } $isClosing={ isClosing } $rightPosition={ rightPosition }>
       <SidebarHeader close={ close } />
       {children}
     </Wrapper>

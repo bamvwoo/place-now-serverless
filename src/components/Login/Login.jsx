@@ -8,6 +8,8 @@ import FormInput from "../Common/Form/FormInput";
 import GoogleOAuthContainer from "./GoogleOAuthContainer";
 import NaverOAuthContainer from "./NaverOAuthContainer";
 import axios from "axios";
+import { VerticalWrapper } from "../Common/Wrapper";
+import ResultContent from "../Common/ResultContent";
 
 const LoginButton = styled.button`
     width: 100%;
@@ -64,11 +66,8 @@ const InvalidText = styled.p`
     margin-bottom: 5px;
 `;
 
-const AuthContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+const AuthContainer = styled(VerticalWrapper)`
+    width: 100%;
     gap: 5px;
 
     & > a {

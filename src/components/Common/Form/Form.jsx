@@ -1,23 +1,18 @@
 import { FormProvider } from "react-hook-form";
 import styled from "styled-components";
+import { VerticalWrapper } from "../Wrapper";
 
 export default function Form({ children, methods, onValid, onInvalid, wide }) {
-    const Wrapper = styled.div`
-        form {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            width: ${ wide ? "500px" : "300px"};
-            height: auto;
-            max-height: 60vh;
-            margin: auto;
-            overflow: hidden;
-        }
-
-        form > div {
-            width: 100%;
-        }
+    const Form = styled.form`
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        width: ${ wide ? "500px" : "300px"};
+        height: auto;
+        max-height: 60vh;
+        margin: auto;
+        overflow: hidden;
     `;
 
     const { handleSubmit } = methods;
@@ -32,11 +27,11 @@ export default function Form({ children, methods, onValid, onInvalid, wide }) {
 
     return (
         <FormProvider {...methods}>
-            <Wrapper>
-                <form onSubmit={ handleSubmit(handleOnValid, handleOnInvalid) }>
+            <Form onSubmit={ handleSubmit(handleOnValid, handleOnInvalid) }>
+                <VerticalWrapper>
                     { children }
-                </form>
-            </Wrapper>
+                </VerticalWrapper>
+            </Form>
         </FormProvider>
     );
 }

@@ -2,18 +2,16 @@ import styled from "styled-components";
 import { useAuth } from "../../context/AuthContext";
 import { useWindow } from "../../context/WindowContext";
 import ContentSwitcher from "./ContentSwitcher";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ChatRoomList from "./ChatRoomList";
+import { VerticalWrapper } from "../Common/Wrapper";
 
-const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
+const Wrapper = styled(VerticalWrapper)`
     justify-content: space-between;
-    width: 100%;
-    height: 100%;
 `;
 
 const LogoutButton = styled.button`
+    width: 100%;
     background-color: transparent;
     border: 1px solid #444;
     padding: 7px 12px;
@@ -24,6 +22,11 @@ const LogoutButton = styled.button`
         background-color: #444;
         color: #fff;
     }
+`;
+
+const ContentWrapper = styled.div`
+    width: 100%;
+    height: calc(100% - 30px);    
 `;
 
 export default function MyPage() {
@@ -46,13 +49,12 @@ export default function MyPage() {
         closeSidebar();
     };
 
-    useEffect(() => {
-    }, [ activeContent ]);
-
     return (
         <Wrapper>
             <ContentSwitcher contents={ contents } activeContent={ activeContent } setActiveContent={ setActiveContent } />
-            { activeContent.content }
+            <ContentWrapper>
+                { activeContent.content }
+            </ContentWrapper>
             <LogoutButton onClick={ handleLogout }>로그아웃</LogoutButton>
         </Wrapper>
     )

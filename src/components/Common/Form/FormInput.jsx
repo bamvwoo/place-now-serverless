@@ -1,10 +1,10 @@
 import { useFormContext } from "react-hook-form";
 import styled from "styled-components";
+import { VerticalWrapper } from "../Wrapper";
 
-const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+const Wrapper = styled(VerticalWrapper)`
+    align-items: flex-start;
+    height: auto;
     gap: 5px;
 `;
 
@@ -65,7 +65,7 @@ export default function FormInput({ type, name, required, placeholder, validate,
 
             { 
                 required && typeof required === 'string' && errors[name] && 
-                <InvalidText>{ errors[name].message }</InvalidText> 
+                <InvalidText><i className="fa-solid fa-triangle-exclamation"></i> { errors[name].message }</InvalidText> 
             }
         </Wrapper>
     )
