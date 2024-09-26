@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
 import { useFormContext } from "react-hook-form";
 import styled from "styled-components";
