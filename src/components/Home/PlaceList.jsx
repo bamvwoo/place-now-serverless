@@ -1,5 +1,18 @@
 import { useState, useEffect } from "react";
 import { axiosInstance } from "../../context/AuthContext";
+import { VerticalWrapper } from "../Common/Wrapper";
+import styled from "styled-components";
+
+const Wrapper = styled(VerticalWrapper)`
+    width: 100%;
+    height: 100%;
+
+    & > ul {
+        display: flex;
+        width: 100%;
+        height: 100%;
+    }
+`;
 
 export default function PlaceList({ setSelectedPlace, setChatRooms }) {
 
@@ -20,7 +33,7 @@ export default function PlaceList({ setSelectedPlace, setChatRooms }) {
     }
 
     return (
-        <section>
+        <Wrapper>
             <ul>
                 {
                     places.length > 0 ? (
@@ -34,6 +47,6 @@ export default function PlaceList({ setSelectedPlace, setChatRooms }) {
                     )
                 }
             </ul>
-        </section>
+        </Wrapper>
     )
 }

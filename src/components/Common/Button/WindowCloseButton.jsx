@@ -1,6 +1,6 @@
 import styled, { keyframes } from "styled-components";
 
-const rotate = keyframes`
+const rotateAnimation = keyframes`
     from {
         transform: rotate(0deg);
     }
@@ -15,7 +15,7 @@ const CloseButton = styled.button`
 
     &:hover {
         & > i {
-            animation: ${rotate} 1s ease-in-out 1;
+            animation: ${rotateAnimation} 1s ease-in-out 1;
         }
     }
 `;

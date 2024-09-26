@@ -50,7 +50,7 @@ export default function Registration() {
     };
 
     return (
-        <Form methods={ methods } onValid={ onValid } onInvalid={ onInvalid } wide={ true }>
+        <Form methods={ methods } onValid={ onValid } onInvalid={ onInvalid }>
             {
                 step === 0 && (
                     <>

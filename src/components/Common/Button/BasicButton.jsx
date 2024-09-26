@@ -1,19 +1,17 @@
 import styled from "styled-components";
 
 const BasicButtonBase = styled.button`
-    border: 1px solid #444;
+    border-width: 1px;
+    border-style: solid;
     border-radius: 5px;
     transition: .2s ease-in-out;
-    color: #444;
-
-    &:hover {
-        background-color: #444;
-        color: white;
-    }
 `;
 
 export const BasicButton = styled(BasicButtonBase)`
-    font-size: ${props =>
+    --main-color: ${props => props.$solid ? "#fff" : "#333"};
+    --reverse-color: ${props => props.$solid ? "#333" : "#fff"};
+
+    --font-size: ${props =>
         props.$size && props.$size === "s" ?
             "0.8rem" :
         props.$size && props.$size === "m" ?
@@ -22,18 +20,39 @@ export const BasicButton = styled(BasicButtonBase)`
             "1.2rem" :
             "1rem"
     };
-
-    padding: ${props =>
-        props.$size && props.$size === "s" ?
-            "3px 6px" :
-        props.$size && props.$size === "m" ?
-            "5px 10px" :
-            props.$size && props.$size === "l" ?
-            "7px 12px" :
-            "5px 10px"
-    };
-
-    font-weight: ${props =>
+    --font-weight: ${props =>
         props.$bold ? "bold" : "normal"
     };
+
+    --padding: ${props =>
+        props.$size && props.$size === "s" ?
+            "7px" :
+        props.$size && props.$size === "m" ?
+            "9px" :
+        props.$size && props.$size === "l" ?
+            "12px" :
+            "9px"
+    };
+
+    padding: var(--padding);
+
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);
+
+    border-color: var(--main-color);
+    background-color: var(--reverse-color);
+    color: var(--main-color);
+
+    &:hover {
+        ${props => props.$solid ?
+            `
+                background-color: rgba(0, 0, 0, 0.7);
+            ` : 
+            `
+                background-color: var(--main-color);
+                color: var(--reverse-color);
+            `
+        };
+        
+    }
 `;

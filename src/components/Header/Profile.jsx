@@ -60,9 +60,9 @@ const DefaultProfileImage = styled.div`
     height: 40px;
     border-radius: 50%;
     background-color: ${props => props.$backgroundColor};
-    font-weight: 600;
-
+    
     & > span {
+        font-size: 1.2rem;
         color: ${props => getTextColor(props.$backgroundColor)};
     }
 `;

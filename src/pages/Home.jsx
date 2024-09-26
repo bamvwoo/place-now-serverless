@@ -6,6 +6,8 @@ import { VerticalWrapper } from "../components/Common/Wrapper";
 const Wrapper = styled(VerticalWrapper)`
     width: 100%;
     height: 100%;
+    padding: 20px;
+    gap: 20px;
 `;
 
 export default function Home() {

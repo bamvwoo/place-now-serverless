@@ -43,7 +43,7 @@ const Input = styled.input`
     }
 `;
 
-export default function FormInput({ type, name, required, placeholder, validate, minLength, maxLength, pattern }) {
+export default function FormInput({ type, name, required, placeholder, validate, minLength, maxLength, pattern, onClick, readOnly }) {
     const { register, formState: { errors } } = useFormContext();
 
     return (
@@ -61,7 +61,9 @@ export default function FormInput({ type, name, required, placeholder, validate,
                     }) 
                 }
                 className={ errors[name] ? "form-is-invalid" : "" }
-                />
+                onClick={ onClick }
+                readOnly={ readOnly }
+            />
 
             { 
                 required && typeof required === 'string' && errors[name] && 

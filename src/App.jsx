@@ -55,7 +55,7 @@ export default function App() {
                 <Route path="/" element={ <Home /> } />
                 <Route path="/auth/:type?" element={ <Auth /> } />
                 <Route path="/signup" element={ <Signup /> } />
-                <Route path="/registration/:placeId?" element={ <Registration /> } />
+                <Route path="/registration" element={ <Registration /> } />
                 <Route path="/error/:status?" element={ <Error /> } />
               </Routes>
             </ContentWrapper>
