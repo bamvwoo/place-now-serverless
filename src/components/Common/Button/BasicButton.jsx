@@ -1,8 +1,5 @@
 import styled from "styled-components";
 
-let color = "#444";
-let backgroundColor = "#fff";
-
 const BasicButtonBase = styled.button`
     border: 1px solid #444;
     border-radius: 5px;
