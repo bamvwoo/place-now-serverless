@@ -38,8 +38,6 @@ const closeAnimation = keyframes`
 `;
 
 const Wrapper = styled(VerticalWrapper)`
-    width: auto;
-    height: auto;
     max-width: 90vw;
     max-height: 90vh;
     position: absolute;

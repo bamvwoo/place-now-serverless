@@ -1,19 +1,20 @@
-import { useState } from "react";
 import PlaceListHeader from "../components/Home/PlaceListHeader";
-import PlaceListDetail from "../components/Home/PlaceDetail";
 import PlaceList from "../components/Home/PlaceList";
+import styled from "styled-components";
+import { VerticalWrapper } from "../components/Common/Wrapper";
 
-export default function Home({ setChatRooms }) {
+const Wrapper = styled(VerticalWrapper)`
+    width: 100%;
+    height: 100%;
+`;
 
-    const [ selectedPlace, setSelectedPlace ] = useState(null);
-
+export default function Home() {
     return (
         <>
-            <div>
+            <Wrapper>
                 <PlaceListHeader />
-                <PlaceList setSelectedPlace={ setSelectedPlace } setChatRooms={ setChatRooms } />
-            </div>
-            <PlaceListDetail selectedPlace={ selectedPlace } setChatRooms={ setChatRooms } />
+                <PlaceList />
+            </Wrapper>
         </>
     )
 }

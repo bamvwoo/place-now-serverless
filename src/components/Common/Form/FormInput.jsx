@@ -4,7 +4,7 @@ import { VerticalWrapper } from "../Wrapper";
 
 const Wrapper = styled(VerticalWrapper)`
     align-items: flex-start;
-    height: auto;
+    width: 100%;
     gap: 5px;
 `;
 

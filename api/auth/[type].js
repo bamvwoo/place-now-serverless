@@ -2,6 +2,11 @@ import axios from "axios";
 import { getUserByGoogleId, getUserByNaverId, saveUser } from "../../lib/userUtil.js";
 import { generateToken } from "../../lib/authUtil.js";
 
+const getRandomName = async () => {
+    const randomNameResponse = await axios.get(`${process.env.VITE_API_BASE_URL}/user/random`);
+    return randomNameResponse.data;
+};
+
 export default async function handler(req, res) {
     try {
         if (req.method === 'GET') {
@@ -18,13 +23,16 @@ export default async function handler(req, res) {
 
                 const googleUserInfo = googleUserInfoResponse.data;
 
-                console.log("googleUserInfo", googleUserInfo);
+                let name = googleUserInfo.name;
+                if (!name) {
+                    name = await getRandomName();
+                }
 
                 let user = await getUserByGoogleId(googleUserInfo.sub);
                 if (!user) {
                     const userData = {
                         googleId: googleUserInfo.sub,
-                        name: googleUserInfo.name,
+                        name,
                         profile: googleUserInfo.picture
                     };
 
@@ -54,11 +62,16 @@ export default async function handler(req, res) {
 
                 const naverProfile = profileResponse.data.response;
 
+                let name = naverProfile.nickname;
+                if (!name) {
+                    name = await getRandomName();
+                }
+
                 let user = await getUserByNaverId(naverProfile.id);
                 if (!user) {
                     const userData = {
                         naverId: naverProfile.id,
-                        name: naverProfile.nickname,
+                        name,
                         profile: naverProfile.profile_image
                     };
 

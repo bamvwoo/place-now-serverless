@@ -2,6 +2,10 @@ import { FormProvider } from "react-hook-form";
 import styled from "styled-components";
 import { VerticalWrapper } from "../Wrapper";
 
+const Wrapper = styled(VerticalWrapper)`
+    width: 100%;
+`;
+
 export default function Form({ children, methods, onValid, onInvalid, wide }) {
     const Form = styled.form`
         display: flex;
@@ -28,9 +32,9 @@ export default function Form({ children, methods, onValid, onInvalid, wide }) {
     return (
         <FormProvider {...methods}>
             <Form onSubmit={ handleSubmit(handleOnValid, handleOnInvalid) }>
-                <VerticalWrapper>
+                <Wrapper>
                     { children }
-                </VerticalWrapper>
+                </Wrapper>
             </Form>
         </FormProvider>
     );

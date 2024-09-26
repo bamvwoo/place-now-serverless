@@ -4,6 +4,7 @@ import { HorizontalWrapper } from "../Wrapper";
 
 const Wrapper = styled(HorizontalWrapper)`
     justify-content: space-between;
+    width: 100%;
     height: 25px;
     border: none;
     margin-bottom: 10px;

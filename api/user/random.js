@@ -16,7 +16,7 @@ export default async function handler(req, res) {
             // 랜덤한 adjective와 noun을 조합하여 문자열 생성
             const name = `${randomAdjective[0].value} ${randomNoun[0].value}`;
 
-            return res.status(200).json({ name });
+            return res.status(200).json(name);
         } else {
             return res.status(405).json({ error: 'Method not allowed' });
         }
