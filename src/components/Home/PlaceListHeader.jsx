@@ -25,6 +25,10 @@ const Wrapper = styled(HorizontalWrapper)`
     border-bottom: 1px solid #f2f2f2;
     padding: 10px 0;
 
+    & > button {
+        gap: 5px;
+    }
+
     & > button:hover {
         & > i {
             animation: ${rotateAnimation} .5s ease-in-out 1;

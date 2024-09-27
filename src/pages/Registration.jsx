@@ -13,6 +13,7 @@ export default function Registration() {
     const navigate = useNavigate();
 
     const [ step, setStep ] = useState(1);
+    const [ animationDelay, setAnimationDelay ] = useState(0);
     const [ isLoading, setIsLoading ] = useState(false);
 
     const onValid = (data) => {
@@ -38,6 +39,7 @@ export default function Registration() {
         } else if (step === 4) {
             navigate('/');
         } else {
+            setAnimationDelay(0);
             setStep(step + 1);
         }
     };

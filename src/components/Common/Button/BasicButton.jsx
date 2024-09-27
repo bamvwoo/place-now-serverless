@@ -1,6 +1,9 @@
 import styled from "styled-components";
 
 const BasicButtonBase = styled.button`
+    display: flex-inline;
+    justify-content: center;
+    align-items: center;
     border-width: 1px;
     border-style: solid;
     border-radius: 5px;
