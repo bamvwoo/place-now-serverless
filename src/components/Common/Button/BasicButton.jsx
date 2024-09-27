@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const BasicButtonBase = styled.button`
-    display: flex-inline;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
     border-width: 1px;

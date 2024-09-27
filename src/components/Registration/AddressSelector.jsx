@@ -3,10 +3,13 @@ import { useFormContext } from "react-hook-form";
 import styled from "styled-components";
 import FormInput from '../Common/Form/FormInput';
 import { useWindow } from '../../context/WindowContext';
+import { VerticalWrapper } from '../Common/Wrapper';
 
-const RootContainer = styled.div`
+const Wrapper = styled(VerticalWrapper)`
     display: flex;
     flex-direction: column;
+    width: 100%;
+    gap: 15px;
 `;
 
 const DaumPostCodeWrapper = styled.div`
@@ -33,34 +36,30 @@ export default function AddressSelector() {
     };
 
     return (
-        <RootContainer>
-            <FormInput type="text" name="postCode"
+        <Wrapper>
+            <FormInput
+                type="text" name="postCode"
                 placeholder="우편번호"
                 required="우편번호를 입력해주세요"
                 onClick={ openDaumPostCodeModal }
                 readOnly={ true }
+                size="l"
             />
-            { errors.postCode ? <p>{ errors.postCode.message }</p> : null }
 
-            <input type="text"
+            <FormInput
+                type="text" name="address"
                 placeholder="주소"
-                { 
-                    ...register("address", {
-                        required: '주소를 입력해주세요',
-                        readOnly: true
-                    })
-                }
+                required="주소를 입력해주세요"
                 onClick={ openDaumPostCodeModal }
-                readOnly
+                readOnly={ true }
+                size="l"
             />
-            { errors.address ? <p>{ errors.address.message }</p> : null }
 
-            <input type="text"
+            <FormInput 
+                type="text" name="detailedAddress"
                 placeholder="상세주소"
-                { 
-                    ...register("detailedAddress")
-                }
+                size="l"
             />
-        </RootContainer>
+        </Wrapper>
     )
 }

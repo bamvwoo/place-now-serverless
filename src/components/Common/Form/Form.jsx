@@ -4,16 +4,17 @@ import { VerticalWrapper } from "../Wrapper";
 
 const Wrapper = styled(VerticalWrapper)`
     width: 100%;
+    height: 100%;
 `;
 
-export default function Form({ children, methods, onValid, onInvalid, wide }) {
+export default function Form({ children, methods, onValid, onInvalid, width, height }) {
     const Form = styled.form`
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
-        width: ${ wide ? "500px" : "300px"};
-        height: auto;
+        width: ${props => props.$width ? props.$width : 'auto'};
+        height: ${props => props.$height ? props.$height : 'auto'};
         max-height: 60vh;
         margin: auto;
         overflow: hidden;
@@ -31,7 +32,7 @@ export default function Form({ children, methods, onValid, onInvalid, wide }) {
 
     return (
         <FormProvider {...methods}>
-            <Form onSubmit={ handleSubmit(handleOnValid, handleOnInvalid) }>
+            <Form $width={ width } $height={ height } onSubmit={ handleSubmit(handleOnValid, handleOnInvalid) }>
                 <Wrapper>
                     { children }
                 </Wrapper>

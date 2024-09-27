@@ -106,7 +106,7 @@ export default function Login() {
     };
 
     return (
-        <Form methods={ methods } onValid={ onValid } onInvalid={ onInvalid }>
+        <Form methods={ methods } onValid={ onValid } onInvalid={ onInvalid } width="300px">
             <AuthContainer>
                 <GoogleOAuthContainer />
                 <NaverOAuthContainer />
