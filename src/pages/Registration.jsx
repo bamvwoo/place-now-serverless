@@ -10,6 +10,7 @@ import styled from "styled-components";
 import { HorizontalWrapper, VerticalWrapper } from "../components/Common/Wrapper";
 import FormInput from "../components/Common/Form/FormInput";
 import FormButton from "../components/Common/Button/FormButton";
+import Tooltip from "../components/Common/Tooltip";
 
 const Wrapper = styled(VerticalWrapper)`
     width: 100%;
@@ -19,13 +20,14 @@ const Wrapper = styled(VerticalWrapper)`
 
 const StepWrapper = styled(VerticalWrapper)`
     width: 100%;
+    gap: 15px;
 `;
 
 const StepTitle = styled.h2`
     font-size: 1.8rem;
     font-weight: 700;
     align-self: flex-start;
-    margin-bottom: 50px;
+    margin-bottom: 35px;
 `;
 
 const ButtonWrapper = styled(HorizontalWrapper)`
@@ -134,9 +136,10 @@ export default function Registration() {
 
                         <FormInput 
                             type="checkbox" name="isAdmin" 
-                            label={ <>이 장소의 관리자예요 <i className="fa-solid fa-circle-question"></i></> }
+                            label="이 장소의 관리자예요"
                             size="l"
                         />
+                        <Tooltip content="이 장소의 관리자는 할 수 있어요." />
                     </StepWrapper>
                 )
             }

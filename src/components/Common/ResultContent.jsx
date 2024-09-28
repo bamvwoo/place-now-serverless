@@ -4,12 +4,9 @@ import SuccessAnimation from "../../assets/lottie/animation-completed.json";
 import LoadingAnimation from "../../assets/lottie/animation-loading.json";
 import FailAnimation from "../../assets/lottie/animation-error.json";
 import { useEffect, useState } from "react";
+import { VerticalWrapper } from "./Wrapper";
 
-const RootContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+const RootContainer = styled(VerticalWrapper)`
     margin: auto;
 
     h4 {

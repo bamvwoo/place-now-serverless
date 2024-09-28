@@ -1,7 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import { BasicButton } from "./BasicButton";
 
-const nextAnimation = keyframes`
+const arrowAnimation = keyframes`
     30% {
         transform: scale(0.8)
     }
@@ -22,9 +22,21 @@ const nextAnimation = keyframes`
 const Button = styled(BasicButton)`
     gap: 10px;
 
+    & > i {
+        font-size: ${props =>
+            props.$size && props.$size === "s" ?
+                "0.6rem" :
+            props.$size && props.$size === "m" ?
+                "0.8rem" :
+            props.$size && props.$size === "l" ?
+                "1rem" :
+                "0.8rem"
+        };
+    }
+
     &:hover {
         & > i {
-            animation: ${nextAnimation} 0.8s ease-out;
+            animation: ${arrowAnimation} 0.8s ease-out;
         }
     }
 `;
@@ -35,6 +47,9 @@ export default function FormButton({ type, text, complete, onClick }) {
 
     return (
         <Button type={ type } $size="l" $solid={ type === "submit" } onClick={ onClick }>
+            {
+                type === "button" && <i className="fa-solid fa-chevron-left"></i>
+            }
             { text }
             { 
                 type === "submit" && !complete && <i className="fa-solid fa-chevron-right"></i>
