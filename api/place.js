@@ -27,7 +27,12 @@ export default async function handler(req, res) {
 
             return res.status(200).json(result);
         } else if (req.method === 'POST') {
-            let user = verifyToken(req);
+            let user;
+            try {
+                user = verifyToken(req);
+            } catch (error) {
+                return res.status(401).json({ error: 'Unauthorized' });
+            }
             
             const form = new Formidable();
             form.parse(req, async (err, fields, files) => {
@@ -54,8 +59,6 @@ export default async function handler(req, res) {
                     admin: (isPlaceAdmin ? user._id : null),
                     creator: user._id
                 };
-
-                console.log(placeData);
 
                 // Place 인스턴스 생성 및 저장
                 // const place = new Place(placeData);
