@@ -1,21 +1,26 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 
-const RootContainer = styled.div`
+const Wrapper = styled.ul`
+    display: flex;
     width: 100%;
     height: 100%;
     overflow: hidden;
-
-    ul {
-        display: flex;
-    }
+    padding: 5px;
+    gap: 10px;
 `;
 
-const Img = styled.img`
-    border: 1px solid black;
+const ImageCard = styled.li`
+    width: ${props => props.$hasSiblings ? '95%' : '100%'};
+    height: 100%;
+    flex-shrink: 0;
+    background: url(${props => props.$src}) no-repeat center;
+    background-size: contain;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 
     &.selected {
-        border: 3px solid blue;
+        box-shadow: 0 0 5px rgba(0, 86, 179, 0.5);
     }
 `;
 
@@ -23,7 +28,7 @@ export default function Carousel({ sources, onSelect }) {
 
     const handleOnClick = (event, index) => {
         const target = event.target;
-        if (target.tagName === 'IMG') {
+        if (target.tagName === 'LI') {
             const selected = document.querySelector('.selected');
             if (selected) {
                 selected.classList.remove('selected');
@@ -34,22 +39,18 @@ export default function Carousel({ sources, onSelect }) {
     }
 
     useEffect(() => {
-
+        
     }, [ sources ]);
 
     return (
-        <RootContainer>
-            <ul>
-                {
-                    sources.map((source, index) => {
-                        return (
-                            <li key={ index }>
-                                <Img src={ source } alt={ `Preview Image ${index}` } onClick={ (event) => handleOnClick(event, index) } />
-                            </li>
-                        )
-                    })
-                }
-            </ul>
-        </RootContainer>
+        <Wrapper>
+            {
+                sources.map((source, index) => {
+                    return (
+                        <ImageCard key={ index } onClick={ (e) => handleOnClick(e, index) } $src={ source } $hasSiblings={ sources.length > 1 } />
+                    )
+                })
+            }
+        </Wrapper>
     )
 }

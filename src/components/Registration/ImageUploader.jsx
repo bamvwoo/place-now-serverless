@@ -2,12 +2,12 @@ import { useFormContext  } from "react-hook-form";
 import Carousel from "../Carousel";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import FormInput from "../Common/Form/FormInput";
+import { VerticalWrapper } from "../Common/Wrapper";
 
-const RootContainer = styled.div`
+const Wrapper = styled(VerticalWrapper)`
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
 `;
 
 export default function ImageUploader ({ name, required, thumbnailEnabled }) {
@@ -16,14 +16,18 @@ export default function ImageUploader ({ name, required, thumbnailEnabled }) {
     required = required || false;
     thumbnailEnabled = thumbnailEnabled || false;
 
-    const { register, formState: { errors }, setValue } = useFormContext();
+    const { setValue } = useFormContext();
 
     const [ previews, setPreviews ] = useState([]);
 
     const handleImagesChange = (event) => {
-        const newPreviews = [];
-
         const files = event.target.files;
+        
+        if (files.length === 0) {
+            return;
+        }
+
+        const newPreviews = [];
         for (const index in files) {
             const file = files[index];
             if (typeof file === 'object') {
@@ -45,34 +49,25 @@ export default function ImageUploader ({ name, required, thumbnailEnabled }) {
         return () => {
             previews.forEach(preview => URL.revokeObjectURL(preview));
         };
-    });
+    }, [ previews ]);
 
     return (
-        <RootContainer>
-            <input type="file"
-                {
-                    ...register(name, {
-                        required: (required ? required : false)
-                    })
-                }
+        <Wrapper>
+            <FormInput 
+                type="file" name={ name }
                 accept="image/*"
                 onChange={ handleImagesChange }
-                multiple
+                multiple={ true }
             />
-            { errors[name] ? <p>{ errors[name].message }</p> : null }
+            {
+                thumbnailEnabled &&
+                    <FormInput 
+                        type="hidden" name="thumbnail"
+                        required="썸네일로 지정할 이미지를 선택해주세요"
+                    />
+            }
             
             <Carousel sources={ previews } onSelect={ handleThumbnailChange } />
-            {
-                thumbnailEnabled ?
-                <input type="hidden"
-                    {
-                        ...register("thumbnail", {
-                            required: '썸네일로 지정할 이미지를 선택해주세요'
-                        })
-                    }
-                /> : null
-            }
-            { errors.thumbnail ? <p>{ errors.thumbnail.message }</p> : null }
-        </RootContainer>
+        </Wrapper>
     )
 }

@@ -20,6 +20,8 @@ const Wrapper = styled(VerticalWrapper)`
 
 const StepWrapper = styled(VerticalWrapper)`
     width: 100%;
+    flex: 1;
+    justify-content: flex-start;
     gap: 15px;
 `;
 
@@ -27,7 +29,8 @@ const StepTitle = styled.h2`
     font-size: 1.8rem;
     font-weight: 700;
     align-self: flex-start;
-    margin-bottom: 35px;
+    margin-bottom: 20px;
+    line-height: 1.5;
 `;
 
 const ButtonWrapper = styled(HorizontalWrapper)`
@@ -55,6 +58,8 @@ export default function Registration() {
     const wrapperRef = useRef(null);
 
     const onValid = (data) => {
+        console.log(data);
+
         if (step === 3) {
             setIsLoading(true);
 
@@ -83,7 +88,6 @@ export default function Registration() {
     };
 
     const onInvalid = (errors) => {
-        console.log(errors);
         for (const key in errors) {
             // errors[key].ref
         }
@@ -136,10 +140,9 @@ export default function Registration() {
 
                         <FormInput 
                             type="checkbox" name="isAdmin" 
-                            label="이 장소의 관리자예요"
+                            label={ <Tooltip title="이 장소의 관리자예요" text="이 장소의 관리자는 할 수 있어요." /> }
                             size="l"
                         />
-                        <Tooltip content="이 장소의 관리자는 할 수 있어요." />
                     </StepWrapper>
                 )
             }
@@ -147,7 +150,7 @@ export default function Registration() {
             {
                 step === 3 && !isLoading && (
                     <StepWrapper>
-                        <StepTitle>장소 이미지를 첨부해주세요</StepTitle>
+                        <StepTitle>장소의 이미지를 첨부하고<br />썸네일을 선택해주세요</StepTitle>
                         <ImageUploader required="장소 이미지를 첨부해주세요" thumbnailEnabled={ true } />
                     </StepWrapper>
                 )
@@ -175,18 +178,28 @@ export default function Registration() {
                 !isLoading && (
                     <ButtonWrapper>
                         {
-                            step > 1 && step < 4 && 
-                                <FormButton type="button" $size="l" onClick={ () => { setStep(step - 1) } } />
-                            
+                            <FormButton type="button" $size="l" 
+                                text={ 
+                                    step === 1 ? 
+                                        "취소" :
+                                    step === 4 ?
+                                        "완료" :
+                                        null
+                                    }
+                                icon={
+                                    step !== 1 && step !== 4 
+                                }
+                                onClick={ () => { 
+                                    step === 1 || step === 4 ? 
+                                        navigate('/') : 
+                                        setStep(step - 1)
+                                } 
+                            } />
                         }
 
                         {
                             step < 4 && 
                                 <FormButton type="submit" $size="l" complete={ step === 3 } />
-                        }
-                        {
-                            step === 4 && 
-                                <FormButton type="button" $size="l" text="완료" />
                         }
                     </ButtonWrapper>
                 )

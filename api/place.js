@@ -40,7 +40,7 @@ export default async function handler(req, res) {
                 const images = await upload(files["images"]);
                 images[thumbnailIndex].thumbnail = true;
 
-                const isPlaceAdmin = fields.admin[0] === 'true';
+                const isPlaceAdmin = fields.isAdmin[0] === 'true';
 
                 const placeData = {
                     name: fields.name[0],
