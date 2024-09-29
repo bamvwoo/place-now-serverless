@@ -16,7 +16,6 @@ export function AuthProvider({ children }) {
     // 요청 인터셉터 설정
     axiosInstance.interceptors.request.use(
       config => {
-        console.log(token);
         config.headers.Authorization = `Bearer ${token}`;
         return config;
       },

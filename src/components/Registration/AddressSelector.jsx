@@ -24,8 +24,6 @@ export default function AddressSelector() {
     const { openModal, closeModal } = useWindow();
 
     const applyAddress = (data) => {
-        console.log(data);
-
         setValue("address", data.address);
         setValue("postCode", data.zonecode);
         setValue("detailedAddress", `${data.buildingName}`);

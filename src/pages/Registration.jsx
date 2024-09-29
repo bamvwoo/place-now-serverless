@@ -58,8 +58,6 @@ export default function Registration() {
     const wrapperRef = useRef(null);
 
     const onValid = (data) => {
-        console.log(data);
-
         if (step === 3) {
             setIsLoading(true);
 
