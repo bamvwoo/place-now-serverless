@@ -1,5 +1,5 @@
 import ResultContent from "../components/Common/ResultContent";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
@@ -7,7 +7,6 @@ import { useAuth } from "../context/AuthContext";
 export default function Auth() {
 
     const { type } = useParams();
-    const navigate = useNavigate();
     const { login } = useAuth();
 
     useEffect(() => {
@@ -17,7 +16,7 @@ export default function Auth() {
             .then((response) => {
                 const token = response.data;
                 login(token);
-                navigate('/');
+                window.location.href = '/';
             })
             .catch((error) => {
                 console.error(error);
