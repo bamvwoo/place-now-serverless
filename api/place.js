@@ -4,6 +4,8 @@ import mongoose from 'mongoose';
 import { Formidable } from 'formidable';
 import { upload } from "../lib/uploadUtil.js";
 import Place from "../models/Place.js";
+import User from "../models/User.js";
+import { getUserById } from "../lib/userUtil.js";
 
 export const config = {
     api: {
@@ -28,8 +30,10 @@ export default async function handler(req, res) {
             return res.status(200).json(result);
         } else if (req.method === 'POST') {
             let user;
+            let isAdmin = false;
             try {
-                user = verifyToken(req);
+                user = verifyToken(req).decoded;
+                isAdmin = user.role === 'administrator';
             } catch (error) {
                 return res.status(401).json({ error: 'Unauthorized' });
             }
@@ -47,22 +51,24 @@ export default async function handler(req, res) {
 
                 const isPlaceAdmin = fields.isAdmin[0] === 'true';
 
+                const creator = await getUserById(user._id);
                 const placeData = {
                     name: fields.name[0],
                     address: {
                         postCode: fields.postCode[0],
                         address: fields.address[0],
-                        detailedAddress: fields.detailedAddress[0]
+                        detailedAddress: fields.detailedAddress[0],
                     },
-                    region: 'GG',
+                    region: fields.region[0],
                     images: images,
-                    admin: (isPlaceAdmin ? user._id : null),
-                    creator: user._id
+                    approved: isAdmin,
+                    admin: (isPlaceAdmin ? creator : null),
+                    creator: creator
                 };
 
                 // Place 인스턴스 생성 및 저장
-                // const place = new Place(placeData);
-                // await place.save();
+                const place = new Place(placeData);
+                await place.save();
 
                 return res.status(201).json(placeData);
             });

@@ -10,17 +10,18 @@ export default function Auth() {
     const { login } = useAuth();
 
     useEffect(() => {
-        const params = Object.fromEntries(new URLSearchParams(window.location.search));
+        const getTokenAndLogin = async () => {
+            const params = Object.fromEntries(new URLSearchParams(window.location.search));
 
-        axios.get(`/api/auth/${type}`, { params })
-            .then((response) => {
-                const token = response.data;
-                login(token);
-                window.location.href = '/';
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+            const response = await axios.get(`/api/auth/${type}`, { params });
+            const token = response.data;
+
+            await login(token);
+
+            window.location.href = '/';
+        };
+
+        getTokenAndLogin();
     }, [ type ]);
 
     return (

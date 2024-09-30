@@ -42,20 +42,21 @@ export function AuthProvider({ children }) {
     }
   }, [ token ]);
 
-  const login = (token) => {
-    axios.post("/api/login", { token })
-      .then((response) => {
-        const user = response.data;
+  const login = async (token) => {
+    try {
+      const response = await axios.post('/api/login', { token });
+      const user = response.data;
 
-        setToken(token);
-        setIsAdmin(user.role === 'administrator');
-        setUser(user);
-        localStorage.setItem('token', token);
-      })
-      .catch((error) => {
-        console.error(error);
-        logout();
-      });
+      setToken(token);
+      setUser(user);
+      setIsAdmin(user.role === 'administrator');
+      localStorage.setItem('token', token);
+    } catch(error) {
+      console.error(error);
+      logout();
+
+      throw error;
+    }
   };
 
   const logout = () => {

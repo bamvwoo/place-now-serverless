@@ -91,15 +91,16 @@ export default function Login() {
 
         setIsSuccess(null);
 
-        axios.post("/api/auth", { email, password })
-            .then((response) => {
-                const token = response.data;
-                login(token);
-                navigate('/');
-            })
-            .catch((error) => {
-                setIsSuccess(false);
-            });
+        try {
+            const response = await axios.post("/api/auth", { email, password });
+            const token = response.data;
+
+            await login(token);
+
+            window.location.href = "/";
+        } catch (error) {
+            setIsSuccess(false);
+        }
     };
 
     const onInvalid = (errors) => {
