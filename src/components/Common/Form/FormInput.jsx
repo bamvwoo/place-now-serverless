@@ -1,4 +1,4 @@
-import { useFormContext } from "react-hook-form";
+import { useController, useFormContext } from "react-hook-form";
 import styled from "styled-components";
 import { HorizontalWrapper, VerticalWrapper } from "../Wrapper";
 import { useEffect, useRef, useState } from "react";
@@ -142,39 +142,41 @@ const Input = styled.input`
     }
 `;
 
-export default function FormInput(props) {
-    const { register, formState: { errors }, setValue } = useFormContext();
+export default function FormInput({ field: fieldData, type, ...props }) {
+    const { control } = useFormContext();
 
-    const [ files, setFiles ] = useState(null);
-    const inputRef = useRef(null);
+    const {
+        field,
+        fieldState: { invalid, error }
+    } = useController({
+        name: fieldData.name,
+        control,
+        rules: fieldData.rules
+    });
+    
+    const handleOnChange = (e) => {
+        if (props.onChange) {
+            props.onChange(e);
+        }
+
+        field.onChange(e);
+    };
 
     useEffect(() => {
-        
     }, []);
 
     return (
         <Wrapper>
             <InputContainer>
-                <Input ref={ inputRef }
-                    id={ props.name }
-                    type={ props.type }
+                <Input
+                    type={ type }
+                    value={ field.value }
                     placeholder={ props.placeholder }
-                    { 
-                        ...register(props.name, { 
-                            required: props.required,
-                            minLength: props.minLength,
-                            maxLength: props.maxLength,
-                            validate: props.validate,
-                            pattern: props.pattern,
-                            readOnly: props.readOnly
-                        }) 
-                    }
-
-                    defaultValue={ props.defaultValue }
-                    className={ errors[props.name] ? "form-is-invalid" : "" }
+                    
+                    className={ invalid ? "form-is-invalid" : "" }
 
                     onClick={ props.onClick }
-                    onChange={ props.onChange }
+                    onChange={ handleOnChange }
 
                     readOnly={ props.readOnly }
                     accept={ props.accept }
@@ -189,9 +191,9 @@ export default function FormInput(props) {
                 }
             </InputContainer>
 
-            { 
-                props.required && typeof props.required === 'string' && errors[props.name] &&
-                    <InvalidText $size={ props.size }><i className="fa-solid fa-triangle-exclamation"></i> { errors[props.name].message }</InvalidText> 
+            {
+                invalid &&
+                    <InvalidText $size={ props.size }><i className="fa-solid fa-triangle-exclamation"></i> { error?.message }</InvalidText> 
             }
         </Wrapper>
     )

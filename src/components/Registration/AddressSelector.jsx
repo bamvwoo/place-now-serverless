@@ -4,6 +4,7 @@ import styled from "styled-components";
 import FormInput from '../Common/Form/FormInput';
 import { useWindow } from '../../context/WindowContext';
 import { VerticalWrapper } from '../Common/Wrapper';
+import useGetRegistrationForm from '../../hooks/useGetRegistrationForm';
 
 const Wrapper = styled(VerticalWrapper)`
     display: flex;
@@ -19,7 +20,8 @@ const DaumPostCodeWrapper = styled.div`
 
 export default function AddressSelector() {
 
-    const { register, formState: { errors }, setValue } = useFormContext();
+    const { setValue, control } = useFormContext();
+    const { postCode, address, detailedAddress } = useGetRegistrationForm({ control });
 
     const { openModal, closeModal } = useWindow();
 
@@ -40,6 +42,7 @@ export default function AddressSelector() {
         <Wrapper>
             <FormInput
                 type="text" name="postCode"
+                field={ postCode }
                 placeholder="우편번호"
                 required="우편번호를 입력해주세요"
                 onClick={ openDaumPostCodeModal }
@@ -49,6 +52,7 @@ export default function AddressSelector() {
 
             <FormInput
                 type="text" name="address"
+                field={ address }
                 placeholder="주소"
                 required="주소를 입력해주세요"
                 onClick={ openDaumPostCodeModal }
@@ -58,6 +62,7 @@ export default function AddressSelector() {
 
             <FormInput 
                 type="text" name="detailedAddress"
+                field={ detailedAddress }
                 placeholder="상세주소"
                 size="l"
             />

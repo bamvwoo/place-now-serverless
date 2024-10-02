@@ -15,7 +15,7 @@ export default function Form({ children, methods, onValid, onInvalid, width, hei
         align-items: center;
         width: ${props => props.$width ? props.$width : 'auto'};
         height: ${props => props.$height ? props.$height : 'auto'};
-        max-height: 60vh;
+        max-height: 70vh;
         margin: auto;
         overflow: hidden;
     `;

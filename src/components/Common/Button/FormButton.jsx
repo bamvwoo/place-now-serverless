@@ -41,22 +41,23 @@ const Button = styled(BasicButton)`
     }
 `;
 
-export default function FormButton({ type, text, icon, complete, onClick }) {
+export default function FormButton({ type, direction, text, icon, onClick }) {
     type = type || "button";
-    text = text || (type === "submit" ? complete ? "제출" : "다음" : "이전");
+    direction = direction || "next";
+    text = text || (direction === "next" ? "다음" : "이전");
     icon = icon !== undefined ? icon : true;
 
     return (
-        <Button type={ type } $size="l" $solid={ type === "submit" } onClick={ onClick }>
+        <Button type={ type } $size="l" $solid={ direction === "next" } onClick={ onClick }>
             {
-                (icon && type === "button") && 
+                (icon && direction === "prev") && 
                     <i className="fa-solid fa-chevron-left"></i>
             }
             
             { text }
 
             { 
-                (icon && !complete && type === "submit") && 
+                (icon && direction === "next") && 
                     <i className="fa-solid fa-chevron-right"></i>
             }
         </Button>
