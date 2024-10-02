@@ -20,7 +20,6 @@ export default function Header() {
     const [ mode, setMode ] = useState(localStorage.getItem('mode') || 'light-mode');
     
     /* Hooks */
-    const navigate = useNavigate();
     const location = useLocation();
 
     /* Custom Hooks  */
@@ -41,7 +40,7 @@ export default function Header() {
 
     return (
         <header>
-            <img id="mainLogo" src={logo} alt="Logo" width="150" height="auto" onClick={ () => { navigate('/') } } />
+            <img id="mainLogo" src={logo} alt="Logo" width="150" height="auto" onClick={ () => { window.location.href = '/' } } />
             {
                 user ? (
                     <Profile />

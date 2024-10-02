@@ -4,11 +4,12 @@ import { StepButtonWrapper, StepTitle } from "../WizardForm"
 import FormInput from "../../Common/Form/FormInput";
 import FormButton from '../../Common/Button/FormButton';
 import Tooltip from "../../Common/Tooltip";
+import { useEffect } from "react";
 
-export default function WizardStepOne({ setStep }) {
+export default function WizardStepTwo({ setStep }) {
 
-    const { control, trigger } = useFormContext();
-    const { name, isAdmin } = useGetRegistrationForm({ control });
+    const { trigger, setValue, getValues } = useFormContext();
+    const { name, isAdmin } = useGetRegistrationForm();
 
     const handleOnNextButtonClick = async (e) => {
         e.preventDefault();
@@ -19,9 +20,13 @@ export default function WizardStepOne({ setStep }) {
         }
     }
 
+    useEffect(() => {
+        setValue("name", getValues("detailedAddress") || "");
+    }, []);
+
     return (
         <>
-            <StepTitle>이 장소가 어디에 있나요?</StepTitle>
+            <StepTitle>장소의 이름을 입력해주세요</StepTitle>
 
             <FormInput type="text" size="l" field={ name } 
                 placeholder="장소명"
@@ -33,7 +38,7 @@ export default function WizardStepOne({ setStep }) {
             />
 
             <StepButtonWrapper>
-                <FormButton direction="prev" $size="l" text="취소" icon={ false } onClick={ () => setStep(1) } />
+                <FormButton direction="prev" $size="l" onClick={ () => setStep(1) } />
                 <FormButton direction="next" $size="l" onClick={ handleOnNextButtonClick } />
             </StepButtonWrapper>
         </>

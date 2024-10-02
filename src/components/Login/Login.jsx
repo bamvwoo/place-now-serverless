@@ -9,6 +9,7 @@ import GoogleOAuthContainer from "./GoogleOAuthContainer";
 import NaverOAuthContainer from "./NaverOAuthContainer";
 import axios from "axios";
 import { VerticalWrapper } from "../Common/Wrapper";
+import useGetLoginForm from "../../hooks/useGetLoginForm";
 
 const LoginButton = styled.button`
     width: 100%;
@@ -84,6 +85,8 @@ export default function Login() {
     const navigate = useNavigate();
     const { login } = useAuth();
 
+    const { email, password } = useGetLoginForm();
+
     const [ isSuccess, setIsSuccess ] = useState(null);
 
     const onValid = async (data) => {
@@ -119,18 +122,8 @@ export default function Login() {
                 isSuccess !== null && !isSuccess && <InvalidText>로그인 정보를 확인해주세요</InvalidText>
             }
             <AuthContainer>
-                <FormInput 
-                    type="text" name="email" 
-                    placeholder="이메일" 
-                    required="이메일을 입력해주세요" 
-                    pattern={{
-                        value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                        message: '이메일 형식에 맞게 입력해주세요'
-                    }} />
-                <FormInput 
-                    type="password" name="password" 
-                    required="비밀번호를 입력해주세요" 
-                    placeholder="비밀번호" />
+                <FormInput type="text" field={ email } placeholder="이메일" />
+                <FormInput type="password" field={ password } placeholder="비밀번호" />
 
                 <LoginButton type="submit">로그인</LoginButton>
 
