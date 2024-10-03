@@ -8,19 +8,19 @@ import Carousel from "../../Carousel";
 
 export default function WizardStepThree({ setStep }) {
 
-    const { setValue } = useFormContext();
+    const { setValue, getValues } = useFormContext();
     const { images, thumbnail } = useGetRegistrationForm();
 
     const [ imagePreviews, setImagePreviews ] = useState([]);
 
-    const handleImagesChange = (event) => {
-        const files = event.target.files;
-        
+    const handleSetImagePreviews = (images) => {
+        if (!images) return;
+
         const newPreviews = [];
-        for (const index in files) {
-            const file = files[index];
+        for (const index in images) {
+            const file = images[index];
             if (typeof file === 'object') {
-                const imageSrc = URL.createObjectURL(files[index]);
+                const imageSrc = URL.createObjectURL(images[index]);
                 newPreviews.push(imageSrc);
             }
         }
@@ -28,15 +28,34 @@ export default function WizardStepThree({ setStep }) {
         setImagePreviews(newPreviews);
     };
 
+    const handleImagesChange = (event) => {
+        const images = event.target.files;
+        handleSetImagePreviews(images);
+    };
+
     const handleOnImagePreviewSelect = (image, index) => {
         setValue("thumbnail", index);
     };
 
+    const handleOnAttachmentRemove = (e, index) => {
+        const newImagePreviews = imagePreviews.filter((preview, i) => i !== index);
+        setImagePreviews(newImagePreviews);
+        
+        if (index === getValues("thumbnail")) {
+            setValue("thumbnail", '');
+        } else if (index < getValues("thumbnail")) {
+            setValue("thumbnail", getValues("thumbnail") - 1);
+        }
+    };
+
     useEffect(() => {
+        const images = getValues("images");
+        handleSetImagePreviews(images);
+
         return () => {
             imagePreviews.forEach(preview => URL.revokeObjectURL(preview));
         };
-    }, [ imagePreviews ]);
+    }, []);
 
     return (
         <>
@@ -47,15 +66,16 @@ export default function WizardStepThree({ setStep }) {
                 accept="image/*"
                 onChange={ handleImagesChange }
                 multiple={ true }
+                onAttachmentRemove={ handleOnAttachmentRemove }
             />
+            
+            <Carousel sources={ imagePreviews } onSelect={ handleOnImagePreviewSelect } selectedIndex={ getValues("thumbnail") } />
 
             {
                 imagePreviews?.length > 0 && (
-                    <FormInput type="hidden" field={ thumbnail } />
+                    <FormInput type="hidden" size="l" field={ thumbnail } />
                 )
             }
-
-            <Carousel sources={ imagePreviews } onSelect={ handleOnImagePreviewSelect } />
 
             <StepButtonWrapper>
                 <FormButton direction="prev" $size="l" onClick={ () => setStep(2) } />

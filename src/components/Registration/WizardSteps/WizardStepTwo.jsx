@@ -34,7 +34,19 @@ export default function WizardStepTwo({ setStep }) {
 
             <FormInput
                 type="checkbox" size="l" field={ isAdmin }
-                label={ <Tooltip title="이 장소의 관리자예요" text="이 장소의 관리자는 할 수 있어요." /> }
+                label={ 
+                    <>  
+                        이 장소의 관리자예요
+                        <Tooltip 
+                            text={ 
+                                <>
+                                    관리자로 승인되면 채팅방에서 특별한 배지 <i className='fa-solid fa-certificate'></i> 가 부여되고 <br/>
+                                    예약을 받거나 장소 정보를 직접 수정할 수 있어요
+                                </> 
+                            }
+                        /> 
+                    </>
+                }
             />
 
             <StepButtonWrapper>

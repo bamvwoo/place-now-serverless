@@ -5,6 +5,10 @@ import { HorizontalWrapper } from "./Wrapper";
 
 const Wrapper = styled(HorizontalWrapper)`
     gap: 5px;
+
+    & > i {
+        cursor: help;
+    }
 `;
 
 const TextWrapper = styled.div`
@@ -13,9 +17,18 @@ const TextWrapper = styled.div`
     top: 0;
     left: 0;
     animation: fadeIn 0.3s ease-in-out;
-    background-color: #f2f2f2;
+    background-color: #fff;
     padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
+
+    & > span {
+        line-height: 1.5;
+
+        & > i {
+            color: #007BFF;
+        }
+    }
 `;
 
 export default function Tooltip({ title, text }) {

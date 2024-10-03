@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.ul`
@@ -6,7 +6,6 @@ const Wrapper = styled.ul`
     width: 100%;
     flex: 1;
     overflow: hidden;
-    padding: 5px;
     gap: 10px;
 `;
 
@@ -42,29 +41,55 @@ const ImageCard = styled.li`
     }
 `;
 
-export default function Carousel({ sources, onSelect }) {
+const CountingText = styled.span`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #333;
+`;
 
-    const handleOnClick = (event, index) => {
-        const target = event.target;
-        if (target.tagName === 'LI') {
-            const selected = document.querySelector('.selected');
+export default function Carousel({ sources, onSelect, selectedIndex }) {
+
+    const [ currentIndex, setCurrentIndex ] = useState(0);
+
+    const wrapperRef = useRef(null);
+
+    const selectImage = (index) => {
+        const elem = wrapperRef.current.children[index];
+        if (elem && elem.tagName === 'LI') {
+            const selected = wrapperRef.current.querySelector('.selected');
             if (selected) {
                 selected.classList.remove('selected');
             }
-            target.classList.add('selected');
+            elem.classList.add('selected');
+        }
+    }
 
-            if (onSelect) {
-                onSelect(target, index);
-            }
+    const handleOnClick = (event, index) => {
+        const elem = event.target;
+        selectImage(index);
+
+        if (onSelect) {
+            onSelect(elem, index);
         }
     }
 
     useEffect(() => {
-        
+        if (selectedIndex !== undefined) {
+            selectImage(selectedIndex);
+        }
     }, [ sources ]);
 
     return (
-        <Wrapper>
+        <Wrapper ref={ wrapperRef }>
             {
                 sources?.map((source, index) => {
                     return (
@@ -73,6 +98,11 @@ export default function Carousel({ sources, onSelect }) {
                         </ImageCard>
                     )
                 })
+            }
+
+            {
+                sources && sources.length > 0 &&
+                <CountingText>{ currentIndex + 1 } / { sources.length }</CountingText>
             }
         </Wrapper>
     )

@@ -8,6 +8,7 @@ import styled from "styled-components";
 const LabelInputWrapper = styled(HorizontalWrapper)`
     width: 100%;
     justify-content: flex-start;
+    align-items: center;
     gap: 5px;
 `;
 

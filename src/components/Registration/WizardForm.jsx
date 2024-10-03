@@ -42,7 +42,6 @@ export default function WizardForm() {
     const methods = useForm({ reValidateMode: "onBlur" });
 
     const [ step, setStep ] = useState(1);
-    const [ animationDelay, setAnimationDelay ] = useState(0);
     const [ isLoading, setIsLoading ] = useState(false);
 
     const wrapperRef = useRef(null);
@@ -76,11 +75,11 @@ export default function WizardForm() {
             if (wrapperRef.current) {
                 wrapperRef.current.querySelectorAll("& > *").forEach((element, index) => {
                     element.style.opacity = 0;
-                    element.style.animation = `fadeIn .5s ease-in-out ${animationDelay + index * 0.1}s forwards`;
+                    element.style.animation = `fadeIn .5s ease-in-out ${index * 0.1}s forwards`;
 
                     setTimeout(() => {
                         element.style.opacity = 1;
-                    }, 1000 + animationDelay + index * 0.2);
+                    }, 1000 + index * 0.2);
                 });
             }
         }, 0); // 0ms의 딜레이를 주어 상태 업데이트와 DOM 업데이트가 완료된 후 실행
@@ -89,7 +88,7 @@ export default function WizardForm() {
     }, [ step ]);
 
     return (
-        <Form methods={ methods } onValid={ onValid } onInvalid={ onInvalid } width="400px" height="100%">
+        <Form methods={ methods } onValid={ onValid } onInvalid={ onInvalid } width="500px" height="100%">
             <StepWrapper ref={ wrapperRef }>
                 { step === 1 &&  <WizardStepOne setStep={ setStep } /> }
                 { step === 2 &&  <WizardStepTwo setStep={ setStep } /> }
