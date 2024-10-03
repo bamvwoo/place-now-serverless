@@ -1,5 +1,20 @@
 import mongoose from 'mongoose';
 
+const agreementSchema = new mongoose.Schema({
+    marketingUsage: {
+        type: Boolean,
+        required: true
+    },
+    emailNotification: {
+        type: Boolean,
+        required: true
+    },
+    phoneNotification: {
+        type: Boolean,
+        required: true
+    }
+});
+
 const userSchema = new mongoose.Schema({
     email: {
         type: String
@@ -26,6 +41,10 @@ const userSchema = new mongoose.Schema({
     },
     profile: {
         type: String
+    },
+    agreement: {
+        type: agreementSchema,
+        required: true
     }
 }, {
     timestamps: true
