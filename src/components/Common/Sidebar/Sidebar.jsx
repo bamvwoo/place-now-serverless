@@ -60,11 +60,7 @@ const Wrapper = styled(VerticalWrapper)`
 const Sidebar = forwardRef(({ isClosing, close, children }, ref) => {
   const [ rightPosition, setRightPosition ] = useState(0);
 
-  const handleClickOutside = (event) => {
-    if (ref.current && !ref.current.contains(event.target)) {
-      close();
-    }
-  };
+  
 
   useEffect(() => {
     const wrapper = document.getElementById('wrapper');
@@ -74,10 +70,24 @@ const Sidebar = forwardRef(({ isClosing, close, children }, ref) => {
 
     setRightPosition(marginRightValue);
 
+    const handleClickOutside = (event) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        close();
+      }
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Escape') {
+            close();
+        }
+    };
+
     document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('keydown', handleKeyDown);
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
 

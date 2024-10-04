@@ -2,6 +2,7 @@ import styled, { keyframes } from "styled-components";
 import { BasicButton } from "../Common/Button/BasicButton";
 import { HorizontalWrapper } from "../Common/Wrapper";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const rotateAnimation = keyframes`
     30% {
@@ -40,10 +41,15 @@ const Wrapper = styled(HorizontalWrapper)`
 export default function PlaceListHeader() {
 
     const navigate = useNavigate();
+    const { user } = useAuth();
 
     return (
         <Wrapper>
-            <BasicButton $solid={ true } onClick={ () => navigate('/registration') }><i className="fa-solid fa-location-dot"></i> 장소 추가</BasicButton>
+            {
+                user && (
+                    <BasicButton $solid={ true } onClick={ () => navigate('/registration') }><i className="fa-solid fa-location-dot"></i> 장소 추가</BasicButton>
+                )
+            }
         </Wrapper>
     )
 }
