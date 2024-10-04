@@ -1,7 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { VerticalWrapper } from "./Common/Wrapper";
 
-const Wrapper = styled.ul`
+const Wrapper = styled(VerticalWrapper)`
+    width: 100%;
+    flex: 1;
+    position: relative;
+`;
+
+const ImageCardList = styled.ul`
     display: flex;
     width: 100%;
     flex: 1;
@@ -17,8 +24,8 @@ const ImageCard = styled.li`
     background-size: cover;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     border-radius: 20px;
-    position: relative;
     cursor: pointer;
+    position: relative;
     
     & > i {
         display: none;
@@ -45,7 +52,7 @@ const CountingText = styled.span`
     display: flex;
     justify-content: center;
     align-items: center;
-    position: fixed;
+    position: absolute;
     top: 20px;
     left: 20px;
     background-color: rgba(255, 255, 255, 0.2);
@@ -56,16 +63,40 @@ const CountingText = styled.span`
     color: #333;
 `;
 
+const ImageButton = styled.button`
+    position: absolute;
+    top: calc(50% - 20px);
+    z-index: 2;
+    padding: 10px;
+    opacity: 0.3;
+    transition: .2s ease-in-out;
+    font-size: 1.5rem;
+
+    &:hover {
+        opacity: 1;
+    }
+`;
+
+const PrevImageButton = styled(ImageButton)`
+    left: 0px;
+`;
+
+const NextImageButton = styled(ImageButton)`
+    right: 0px;
+`;
+
 export default function Carousel({ sources, onSelect, selectedIndex }) {
 
-    const [ currentIndex, setCurrentIndex ] = useState(0);
+    const [ currentImageIndex, setCurrentImageIndex ] = useState(0);
+    const [ isLeftOverflow, setIsLeftOverflow ] = useState(false);
+    const [ isRightOverflow, setIsRightOverflow ] = useState(false);
 
-    const wrapperRef = useRef(null);
+    const imageCardListRef = useRef(null);
 
     const selectImage = (index) => {
-        const elem = wrapperRef.current.children[index];
+        const elem = imageCardListRef.current.children[index];
         if (elem && elem.tagName === 'LI') {
-            const selected = wrapperRef.current.querySelector('.selected');
+            const selected = imageCardListRef.current.querySelector('.selected');
             if (selected) {
                 selected.classList.remove('selected');
             }
@@ -80,16 +111,75 @@ export default function Carousel({ sources, onSelect, selectedIndex }) {
         if (onSelect) {
             onSelect(elem, index);
         }
-    }
+    };
+
+    const handleOnPrevButtonClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (currentImageIndex > 0) {
+            setCurrentImageIndex((prevIndex) => prevIndex - 1);
+        }
+    };
+
+    const handleOnNextButtonClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (currentImageIndex < sources.length - 1) {
+            setCurrentImageIndex((prevIndex) => prevIndex + 1);
+        }
+    };
 
     useEffect(() => {
         if (selectedIndex !== undefined) {
             selectImage(selectedIndex);
         }
-    }, [ sources ]);
+
+        const handleScroll = () => {
+            const list = imageCardListRef.current;
+
+            const firstChild = list.firstElementChild;
+            const lastChild = list.lastElementChild;
+
+            if (firstChild) {
+                setIsLeftOverflow(firstChild.getBoundingClientRect().left < list.getBoundingClientRect().left);
+            }
+
+            if (lastChild) {
+                setIsRightOverflow(lastChild.getBoundingClientRect().right > list.getBoundingClientRect().right);
+            }
+        };
+
+        if (imageCardListRef.current) {
+            handleScroll();
+
+            imageCardListRef.current.addEventListener("scroll", handleScroll);
+
+            const currentImage = imageCardListRef.current.children[currentImageIndex];
+            if (currentImage) {
+                imageCardListRef.current.scrollTo({
+                    left: currentImage.offsetLeft,
+                    behavior: "smooth"
+                });
+            }
+        }
+
+        return () => {
+            if (imageCardListRef.current) {
+                imageCardListRef.current.removeEventListener("scroll", handleScroll);
+            }
+        }
+    }, [ sources, currentImageIndex, selectedIndex ]);
 
     return (
-        <Wrapper ref={ wrapperRef }>
+        <Wrapper>
+            {
+                isLeftOverflow &&
+                <PrevImageButton type="button" onClick={ handleOnPrevButtonClick }><i className="fa-solid fa-circle-chevron-left"></i></PrevImageButton>
+            }
+
+            <ImageCardList ref={ imageCardListRef }>
             {
                 sources?.map((source, index) => {
                     return (
@@ -99,10 +189,16 @@ export default function Carousel({ sources, onSelect, selectedIndex }) {
                     )
                 })
             }
+            </ImageCardList>
+
+            {
+                isRightOverflow &&
+                <NextImageButton type="button" onClick={ handleOnNextButtonClick }><i className="fa-solid fa-circle-chevron-right"></i></NextImageButton>
+            }
 
             {
                 sources && sources.length > 0 &&
-                <CountingText>{ currentIndex + 1 } / { sources.length }</CountingText>
+                <CountingText>{ currentImageIndex + 1 } / { sources.length }</CountingText>
             }
         </Wrapper>
     )

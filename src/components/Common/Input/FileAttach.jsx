@@ -192,7 +192,9 @@ export default function FileAttach({ fileInputRef, attachments, onAttachmentRemo
     return (
         <Wrapper>
             <AttachArea $size={ size } onClick={ handleOnClick }>
-                <p>여기를 클릭하여 사진 첨부하기</p>
+                <p>
+                    <i className="fa-solid fa-paperclip"></i> 여기를 클릭하여 사진 첨부하기 
+                </p>
             </AttachArea>
 
             {

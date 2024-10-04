@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from "styled-components";
 import ModalHeader from "./ModalHeader";
-import { forwardRef } from "react";
+import { forwardRef, useEffect } from "react";
 import { VerticalWrapper } from "../Wrapper";
 
 const openAnimation = keyframes`
@@ -81,6 +81,21 @@ const ModalContents = styled.div`
 `;
 
 const Modal = forwardRef(({ isClosing, close, title, children }, ref) => {
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                close();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
+
     return (
         <>
             <Wrapper ref={ ref } $isClosing={ isClosing }>
