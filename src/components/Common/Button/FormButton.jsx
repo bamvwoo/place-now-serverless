@@ -35,30 +35,43 @@ const Button = styled(BasicButton)`
     }
 
     &:hover {
-        & > i {
+        & > i.fa-chevron-left,
+        & > i.fa-chevron-right {
             animation: ${arrowAnimation} 0.8s ease-out;
         }
     }
 `;
 
-export default function FormButton({ type, direction, text, icon, onClick }) {
+export default function FormButton({ type, direction, text, icon, onClick, children }) {
     type = type || "button";
     direction = direction || "next";
     text = text || (direction === "next" ? "다음" : "이전");
     icon = icon !== undefined ? icon : true;
 
-    return (
-        <Button type={ type } $size="l" $solid={ direction === "next" } onClick={ onClick }>
+    const getDefaultTemplate = () => {
+        return (
+            <>
             {
                 (icon && direction === "prev") && 
-                    <i className="fa-solid fa-chevron-left"></i>
+                <i className="fa-solid fa-chevron-left"></i>
             }
             
             { text }
 
             { 
                 (icon && direction === "next") && 
-                    <i className="fa-solid fa-chevron-right"></i>
+                <i className="fa-solid fa-chevron-right"></i>
+            }
+            </>
+        )
+    };
+
+    return (
+        <Button type={ type } $size="l" $solid={ direction === "next" } onClick={ onClick }>
+            {
+                children ? 
+                children : 
+                getDefaultTemplate()
             }
         </Button>
     )

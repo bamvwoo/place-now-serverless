@@ -28,10 +28,7 @@ export function AuthProvider({ children }) {
     axiosInstance.interceptors.response.use(
       response => response,
       error => {
-        if (error.response && error.response.status) {
-          const status = error.response.status;
-          navigate(`/error/${status}`);
-        }
+        sendError(error);
         return Promise.reject(error);
       }
     );
@@ -66,8 +63,21 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('token');
   };
 
+  const sendError = (error) => {
+    if (error.response && error.response.status) {
+      const status = error.response.status;
+      const message = error.response.data.error;
+
+      if (status === 401) {
+        alert("로그인이 필요해요");
+        logout();
+      }
+      navigate("/error", { state: { status, message } });
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, isAdmin }}>
+    <AuthContext.Provider value={{ user, token, login, logout, isAdmin, sendError }}>
       {children}
     </AuthContext.Provider>
   );

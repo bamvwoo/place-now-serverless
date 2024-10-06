@@ -29,6 +29,10 @@ const InputBase = styled.input`
             "1rem"
     };
 
+    ${props => props.readOnly && `
+        color: #a2a2a2;
+    `}
+
     &[type=checkbox] {
         width: ${props =>
             props.$size && props.$size === "s" ?

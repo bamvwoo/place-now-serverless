@@ -3,15 +3,15 @@ import mongoose from 'mongoose';
 const agreementSchema = new mongoose.Schema({
     marketingUsage: {
         type: Boolean,
-        required: true
+        default: false
     },
     emailNotification: {
         type: Boolean,
-        required: true
+        default: false
     },
     phoneNotification: {
         type: Boolean,
-        required: true
+        default: false
     }
 });
 
@@ -44,7 +44,11 @@ const userSchema = new mongoose.Schema({
     },
     agreement: {
         type: agreementSchema,
-        required: true
+        default: {
+            marketingUsage: false,
+            emailNotification: false,
+            phoneNotification: false
+        }
     }
 }, {
     timestamps: true

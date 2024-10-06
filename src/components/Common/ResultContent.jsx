@@ -41,9 +41,9 @@ export default function ResultContent({ success, loading, fail, loop }) {
             <LottieContainer>
                 <Lottie 
                     animationData={
-                        success ? SuccessAnimation : 
-                        loading ? LoadingAnimation : 
-                        fail ? FailAnimation : null
+                        success ? JSON.parse(JSON.stringify(SuccessAnimation)) : 
+                        loading ? JSON.parse(JSON.stringify(LoadingAnimation)) : 
+                        fail ? JSON.parse(JSON.stringify(FailAnimation)) : null
                     } loop={ loop } />
             </LottieContainer>
 

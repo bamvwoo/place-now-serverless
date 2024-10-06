@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 import ResultContent from "../components/Common/ResultContent";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const ButtonContainer = styled.div`
     display: flex;
@@ -11,22 +10,8 @@ const ButtonContainer = styled.div`
 
 export default function Error() {
 
-    const { status } = useParams();
-    const [ message, setMessage ] = useState(null);
-
-    useEffect(() => {
-        switch (status) {
-            case "401":
-                setMessage("로그인이 필요해요");
-                break;
-            case "404":
-                setMessage("페이지를 찾을 수 없어요");
-                break;
-            default:
-                setMessage("알 수 없는 문제가 발생했어요");
-                break;
-        }
-    }, [status]);
+    const location = useLocation();
+    const { status, message } = location.state || { status: 500, message: '알 수 없는 문제가 발생했어요' };
 
     return (
         <>
