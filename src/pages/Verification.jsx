@@ -3,11 +3,10 @@ import { axiosInstance, useAuth } from "../context/AuthContext";
 import Form from "../components/Common/Form/Form";
 import { useForm } from "react-hook-form";
 import FormInput from "../components/Common/Form/FormInput";
-import useGetIdentificationForm from "../hooks/useGetIdentificationForm";
+import useGetIdentificationForm from "../hooks/useGetVerificationForm";
 import { VerticalWrapper } from "../components/Common/Wrapper";
 import styled from "styled-components";
 import FormButton from "../components/Common/Button/FormButton";
-import { set } from "mongoose";
 import ResultContent from "../components/Common/ResultContent";
 
 const Wrapper = styled(VerticalWrapper)`
@@ -31,17 +30,19 @@ const RemainingTimeText = styled.span`
     padding: 0;
 `;
 
-export default function Identification() {
+export default function Verification() {
 
     const methods = useForm({ reValidateMode: "onBlur" });
     const { trigger, getValues, setValue } = methods;
 
+    const { email, isEmailDuplicated, verificationCode, isVerified } = useGetIdentificationForm();
+
     const [ expirationTime, setExpirationTime ] = useState(0);
+
     const [ isSent, setIsSent ] = useState(false);
     const [ isProcessing, setIsProcessing ] = useState(false);
-    const [ isVerified, setIsVerified ] = useState(false);
 
-    const { email, verificationCode, isIdentified } = useGetIdentificationForm();
+    const { refreshToken } = useAuth();
 
     const timerRef = useRef(null);
 
@@ -57,15 +58,24 @@ export default function Identification() {
         setIsProcessing(true);
         const receiver = getValues('email');
 
-        axiosInstance.get('/api/identification', {
-            params: {
-                receiver
-            }
-        }).then(response => {
-            setIsProcessing(false);
+        try {
+            const response = await axiosInstance.get('/api/identification', {
+                params: {
+                    receiver
+                }
+            });
+            
             setIsSent(true);
             setExpirationTime(new Date(response.data.expirationDate).getTime());
-        });
+
+            setValue("isEmailDuplicated", false);
+        } catch (error) {
+            setValue("isEmailDuplicated", true);
+        }
+
+        setIsProcessing(false);
+    
+        await trigger('isEmailDuplicated');
     };
 
     const verifyCode = async (e) => {
@@ -82,23 +92,20 @@ export default function Identification() {
         try {
             const response = await axiosInstance.post('/api/identification', { email, verificationCodeValue });
 
-            if (response.status === 200) {
-                setIsProcessing(false);
-
-                const result = response.data.result;
-                if (result) {
-                    setValue('isIdentified', 'true');
-                    setIsVerified(true);
-                } else {
-                    setValue('isIdentified', 'false');
-                    setIsVerified(false);
-                }
-
-                await trigger('isIdentified');
+            const result = response.data.result;
+            if (result) {
+                setValue('isVerified', true);
+                refreshToken();
+            } else {
+                setValue('isVerified', false);
             }
+
+            await trigger('isVerified');
         } catch (error) {
             console.error('Failed to send code', error);
         }
+
+        setIsProcessing(false);
     };
 
     const onValid = async (data) => {
@@ -142,7 +149,7 @@ export default function Identification() {
         <Form methods={ methods } onValid={ onValid } onInvalid={ onInvalid } width="350px" height="100%">
             <Wrapper>
                 {
-                    isVerified ? (
+                    getValues("isVerified") ? (
                         <>
                             <ResultContent success={{ title: "이메일 인증이 완료되었어요", subTitle: "이제 장소를 등록하거나 채팅방에 참여할 수 있어요" }} loop="false" />
                         </>
@@ -163,17 +170,17 @@ export default function Identification() {
                                 readOnly={ isProcessing } 
                             />
 
-                            {
-                                <FormButton type="button" direction={ isSent ? "prev" : null } onClick={ sendCode } disabled={ isProcessing }>
-                                    {
-                                        isSent ?
-                                            "재전송" :
-                                        isProcessing ?
-                                            <i className="fa-solid fa-spinner fa-spin-pulse"></i> :
-                                            "인증코드 전송"
-                                    }
-                                </FormButton>
-                            }
+                            <FormInput type="hidden" size="l" field={ isEmailDuplicated } />
+
+                            <FormButton type="button" direction={ isSent ? "prev" : null } onClick={ sendCode } disabled={ isProcessing }>
+                                {
+                                    isSent ?
+                                        "재전송" :
+                                    isProcessing ?
+                                        <i className="fa-solid fa-spinner fa-spin-pulse"></i> :
+                                        "인증코드 전송"
+                                }
+                            </FormButton>
 
                             {
                                 isSent &&
@@ -184,7 +191,7 @@ export default function Identification() {
                                     />
                             }
 
-                            <FormInput type="hidden" size="l" field={ isIdentified } />
+                            <FormInput type="hidden" size="l" field={ isVerified } />
 
                             {
                                 isSent &&

@@ -28,7 +28,14 @@ export function AuthProvider({ children }) {
     axiosInstance.interceptors.response.use(
       response => response,
       error => {
-        sendError(error);
+        /*
+        if (error.response.data.forward) {
+          sendError(error);
+        } else {
+          alert(error.response.data.error);
+        }
+        */
+
         return Promise.reject(error);
       }
     );
@@ -76,8 +83,18 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const refreshToken = () => {
+    axiosInstance.get('/api/auth')
+      .then(response => {
+        login(response.data.token);
+      })
+      .catch(error => {
+        sendError(error);
+      });
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, isAdmin, sendError }}>
+    <AuthContext.Provider value={{ user, token, login, logout, isAdmin, sendError, refreshToken }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,6 +1,6 @@
 import WizardForm from "../components/Registration/WizardForm";
 import { useAuth } from "../context/AuthContext";
-import IdentificationGuide from "../components/Registration/IdentificationGuide";
+import VerificationGuide from "../components/Registration/VerificationGuide";
 
 export default function Registration() {
 
@@ -12,7 +12,7 @@ export default function Registration() {
                 user?.email ? (
                     <WizardForm />
                 ) : (
-                    <IdentificationGuide />
+                    <VerificationGuide />
                 )
             }
         </>

@@ -11,7 +11,7 @@ import Error from './pages/Error';
 import Auth from './pages/Auth';
 import styled from "styled-components";
 import { WindowProvider } from './context/WindowContext';
-import Identification from './pages/Identification';
+import Verification from './pages/Verification';
 
 export const ContentWrapper = styled.main`
   display: flex;
@@ -57,7 +57,7 @@ export default function App() {
                 <Route path="/auth/:type?" element={ <Auth /> } />
                 <Route path="/signup" element={ <Signup /> } />
                 <Route path="/registration" element={ <Registration /> } />
-                <Route path="/identification" element={ <Identification /> } />
+                <Route path="/verification" element={ <Verification /> } />
                 <Route path="/error/:status?" element={ <Error /> } />
               </Routes>
             </ContentWrapper>

@@ -2,9 +2,15 @@ import { verifyToken } from '../lib/authUtil.js';
 import { deleteCode, generateCode, getCode, verifyCode } from '../lib/verifyUtil.js';
 import nodemailer from 'nodemailer';
 import User from '../models/User.js';
+import { getUserByEmail } from '../lib/userUtil.js';
 
 const doGet = async (req, res) => {
     const { receiver } = req.query;
+
+    const user = await getUserByEmail(receiver);
+    if (user) {
+        return res.status(400).json({ error: '이미 사용 중인 이메일 주소에요' });
+    }
 
     const verificationCode = await generateCode(receiver);
 

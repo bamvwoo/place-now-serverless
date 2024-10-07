@@ -1,4 +1,4 @@
-export default function useGetIdentificationForm() {
+export default function useGetVerificationForm() {
 
     // 이메일
     const email = { 
@@ -7,6 +7,14 @@ export default function useGetIdentificationForm() {
             required: '이메일을 입력해주세요'
         }
     };
+
+    // 이메일 중복 여부
+    const isEmailDuplicated = {
+        name: 'isEmailDuplicated',
+        rules: {
+            validate: value => !value || '이미 사용 중인 이메일 주소에요'
+        }
+    }
 
     // 인증 코드
     const verificationCode = { 
@@ -17,8 +25,8 @@ export default function useGetIdentificationForm() {
     };
 
     // 인증 여부
-    const isIdentified = {
-        name: 'isIdentified',
+    const isVerified = {
+        name: 'isVerified',
         rules: {
             validate: value => value || '인증코드가 일치하지 않아요'
         }
@@ -26,7 +34,8 @@ export default function useGetIdentificationForm() {
 
     return {
         email,
+        isEmailDuplicated,
         verificationCode,
-        isIdentified
+        isVerified
     };
 }

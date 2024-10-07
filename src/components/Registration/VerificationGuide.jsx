@@ -25,7 +25,7 @@ const ButtonWrapper = styled(HorizontalWrapper)`
     }
 `;
 
-export default function IdentificationGuide() {
+export default function VerificationGuide() {
 
     const navigate = useNavigate();
 
@@ -38,7 +38,7 @@ export default function IdentificationGuide() {
 
             <ButtonWrapper>
                 <FormButton direction="prev" $size="l" text="다음에 하기" icon={ false } onClick={ () => navigate(-1) } />
-                <FormButton direction="next" $size="l" text="인증하기" onClick={ () => navigate('/identification') } />
+                <FormButton direction="next" $size="l" text="인증하기" onClick={ () => navigate('/verification') } />
             </ButtonWrapper>
         </Wrapper>
     )

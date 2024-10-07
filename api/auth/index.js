@@ -1,10 +1,23 @@
 import { generateToken } from "../../lib/authUtil.js";
-import { getUserByEmail } from "../../lib/userUtil.js";
+import { getUserByEmail, getUserById } from "../../lib/userUtil.js";
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 export default async function handler(req, res) {
     try {
-        if (req.method === 'POST') {
+        if (req.method === 'GET') {
+            let token = req.headers.authorization?.split(' ')[1];
+            if (!token) {
+                return res.status(401).json({ error: 'Unauthorized' });
+            }
+
+            let user = jwt.verify(token, process.env.JWT_SECRET);
+            user = await getUserById(user._id);
+
+            token = generateToken(user);
+
+            res.status(200).json({ token });
+        } else if (req.method === 'POST') {
             const { email, password } = req.body;
 
             // 사용자 유무 검증
