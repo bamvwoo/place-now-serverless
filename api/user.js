@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
-import { verifyToken } from "../../lib/authUtil.js";
-import User from "../../models/User.js";
-import { connectToDatabase } from '../../lib/mongodb.js';
+import { verifyToken } from "../lib/authUtil.js";
+import User from "../models/User.js";
+import { connectToDatabase } from '../lib/mongodb.js';
 
 export default async function handler(req, res) {
     try {

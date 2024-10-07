@@ -13,8 +13,8 @@ export default function Auth() {
         const getTokenAndLogin = async () => {
             const params = Object.fromEntries(new URLSearchParams(window.location.search));
 
-            const response = await axios.get(`/api/auth/${type}`, { params });
-            const token = response.data;
+            const response = await axios.post(`/api/auth/${type}`, { ...params });
+            const token = response.data.token;
 
             await login(token);
 

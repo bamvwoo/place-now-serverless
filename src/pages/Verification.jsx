@@ -59,7 +59,7 @@ export default function Verification() {
         const receiver = getValues('email');
 
         try {
-            const response = await axiosInstance.get('/api/identification', {
+            const response = await axiosInstance.get('/api/verification', {
                 params: {
                     receiver
                 }
@@ -90,7 +90,7 @@ export default function Verification() {
         const verificationCodeValue = getValues('verificationCode');
 
         try {
-            const response = await axiosInstance.post('/api/identification', { email, verificationCodeValue });
+            const response = await axiosInstance.post('/api/verification', { email, verificationCodeValue });
 
             const result = response.data.result;
             if (result) {

@@ -94,7 +94,7 @@ export default function Signup() {
 
         event.target.disabled = true;
 
-        axios.get("/api/user/random")
+        axios.get("/api/common/random")
         .then(response => {
             setValue("name", response.data.name);
         });
