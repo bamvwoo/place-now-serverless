@@ -1,20 +1,20 @@
 import DaumPostcode from 'react-daum-postcode';
 import { useFormContext } from "react-hook-form";
-import useGetRegistrationForm from "../../../hooks/useGetRegistrationForm";
-import { StepButtonWrapper, StepTitle } from "../WizardForm"
-import FormInput from "../../Common/Form/FormInput";
-import { useWindow } from "../../../context/WindowContext";
+import useGetRegistrationForm from "../../hooks/useGetRegistrationForm";
+import FormInput from "../Common/Form/FormInput";
+import { useWindow } from "../../context/WindowContext";
 import styled from "styled-components";
-import FormButton from '../../Common/Button/FormButton';
+import FormButton from '../Common/Button/FormButton';
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
+import { StepButtonWrapper, StepTitle } from '../Common/Form/WizardForm';
 
 const DaumPostCodeWrapper = styled.div`
     width: 30vw;
     height: 60vh;
 `;
 
-export default function WizardStepOne({ setStep }) {
+export default function RegistrationStepOne({ setStep }) {
 
     const { setValue, trigger } = useFormContext();
     const { postCode, address, detailedAddress } = useGetRegistrationForm();

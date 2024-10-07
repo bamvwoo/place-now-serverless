@@ -1,12 +1,12 @@
 import { useFormContext } from "react-hook-form";
-import useGetRegistrationForm from "../../../hooks/useGetRegistrationForm";
-import { StepButtonWrapper, StepTitle } from "../WizardForm"
-import FormInput from "../../Common/Form/FormInput";
-import FormButton from '../../Common/Button/FormButton';
+import useGetRegistrationForm from "../../hooks/useGetRegistrationForm";
+import FormInput from "../Common/Form/FormInput";
+import FormButton from '../Common/Button/FormButton';
 import { useEffect, useState } from "react";
-import Carousel from "../../Carousel";
+import Carousel from "../Carousel";
+import { StepButtonWrapper, StepTitle } from "../Common/Form/WizardForm";
 
-export default function WizardStepThree({ setStep }) {
+export default function RegistrationStepThree({ setStep }) {
 
     const { setValue, getValues } = useFormContext();
     const { images, thumbnail } = useGetRegistrationForm();

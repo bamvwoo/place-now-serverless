@@ -1,12 +1,12 @@
 import { useFormContext } from "react-hook-form";
-import useGetRegistrationForm from "../../../hooks/useGetRegistrationForm";
-import { StepButtonWrapper, StepTitle } from "../WizardForm"
-import FormInput from "../../Common/Form/FormInput";
-import FormButton from '../../Common/Button/FormButton';
-import Tooltip from "../../Common/Tooltip";
+import useGetRegistrationForm from "../../hooks/useGetRegistrationForm";
+import FormInput from "../Common/Form/FormInput";
+import FormButton from '../Common/Button/FormButton';
+import Tooltip from "../Common/Tooltip";
 import { useEffect } from "react";
+import { StepButtonWrapper, StepTitle } from "../Common/Form/WizardForm";
 
-export default function WizardStepTwo({ setStep }) {
+export default function RegistrationStepTwo({ setStep }) {
 
     const { trigger, setValue, getValues } = useFormContext();
     const { name, isAdmin } = useGetRegistrationForm();
