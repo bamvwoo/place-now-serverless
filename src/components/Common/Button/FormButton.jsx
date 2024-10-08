@@ -20,7 +20,9 @@ const arrowAnimation = keyframes`
 `;
 
 const Button = styled(BasicButton)`
+    width: ${props => props.$width ? props.$width : "auto"};
     gap: 10px;
+    ${props => props.$direction === "next" ? "margin-left: auto;" : "margin-right: auto;"}
 
     & > i {
         font-size: ${props =>
@@ -42,7 +44,7 @@ const Button = styled(BasicButton)`
     }
 `;
 
-export default function FormButton({ type, direction, text, icon, onClick, children }) {
+export default function FormButton({ type, direction, text, icon, width, onClick, children }) {
     type = type || "button";
     direction = direction || "next";
     text = text || (direction === "next" ? "다음" : "이전");
@@ -67,7 +69,7 @@ export default function FormButton({ type, direction, text, icon, onClick, child
     };
 
     return (
-        <Button type={ type } $size="l" $solid={ direction === "next" } onClick={ onClick }>
+        <Button type={ type } $size="l" $width={ width } $solid={ direction === "next" } $direction={ direction } onClick={ onClick }>
             {
                 children ? 
                 children : 

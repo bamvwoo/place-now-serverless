@@ -38,11 +38,6 @@ export const InvalidText = styled.p`
     };
 `;
 
-const InputContainer = styled(VerticalWrapper)`
-    width: 100%;
-    gap: 5px;
-`;
-
 export default function FormInput({ type, field, ...props }) {
 
     useEffect(() => {
@@ -50,23 +45,20 @@ export default function FormInput({ type, field, ...props }) {
 
     return (
         <Wrapper>
-            <InputContainer>
-                {
-                    (type === 'text' || type === 'password' || type === 'hidden') && 
-                        <TextInput type={ type } field={ field } { ...props } />
-                }
+            {
+                (type === 'text' || type === 'password' || type === 'hidden') && 
+                    <TextInput type={ type } field={ field } { ...props } />
+            }
 
-                {
-                    (type === 'file') &&
-                        <FileInput field={ field } { ...props } />
-                }
+            {
+                (type === 'file') &&
+                    <FileInput field={ field } { ...props } />
+            }
 
-                {
-                    (type === 'checkbox') &&
-                        <CheckboxInput field={ field } { ...props } />
-                }
-            </InputContainer>
-
+            {
+                (type === 'checkbox') &&
+                    <CheckboxInput field={ field } { ...props } />
+            }
         </Wrapper>
     )
 }

@@ -1,4 +1,4 @@
-export default function useGetVerificationForm() {
+export default function useGetEmailVerificationForm() {
 
     // 이메일
     const email = { 

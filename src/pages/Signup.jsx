@@ -17,7 +17,7 @@ export default function Signup() {
     };
 
     return (
-        <WizardForm methods={ methods } step={ step } setStep={ setStep } onValid={ onValid } onInvalid={ onInvalid } width="500px" height="100%">
+        <WizardForm methods={ methods } step={ step } setStep={ setStep } onValid={ onValid } onInvalid={ onInvalid } width="450px" height="100%">
             { step === 1 && <SignupStepOne /> }
         </WizardForm>
     )

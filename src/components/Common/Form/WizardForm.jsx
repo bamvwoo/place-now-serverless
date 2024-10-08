@@ -7,7 +7,14 @@ const StepWrapper = styled(VerticalWrapper)`
     width: 100%;
     flex: 1;
     justify-content: flex-start;
-    gap: 15px;
+
+    & > *:not(:has(> input[type="hidden"])):not(:last-child) {
+        margin-bottom: 15px;
+    }
+
+    & > *:has(> input[type="hidden"]):has(> p):not(:last-child) {
+        margin-bottom: 15px;
+    }
 `;
 
 export const StepTitle = styled.h2`
@@ -62,7 +69,7 @@ export default function WizardForm({ children, methods, onValid, onInvalid, widt
     });
 
     return (
-        <Form methods={ methods } onValid={ onValid } onInvalid={ onInvalid } width="500px" height="100%">
+        <Form methods={ methods } onValid={ onValid } onInvalid={ onInvalid } width={ width } height={ height }>
             <StepWrapper ref={ wrapperRef }>
                 { enhancedChildren }
             </StepWrapper>
