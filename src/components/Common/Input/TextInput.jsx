@@ -15,6 +15,19 @@ export default function TextInput({ type, field: fieldData, ...props }) {
         defaultValue: fieldData.defaultValue || ''
     });
 
+    const handleOnChange = (e) => {
+        field.onChange(e);
+        props.onChange && props.onChange(e);
+    };
+
+    const handleOnKeyUp = (e) => {
+        props.onKeyUp && props.onKeyUp(e);
+    };
+
+    const handleOnKeyDown = (e) => {
+        props.onKeyDown && props.onKeyDown(e);
+    };
+
     return (
         <>
             <InputBase type={ type }
@@ -22,10 +35,12 @@ export default function TextInput({ type, field: fieldData, ...props }) {
                 className={ invalid ? "form-is-invalid" : "" }
 
                 value={ field.value }
-                placeholder={ props.placeholder }
+                placeholder={ fieldData.placeholder }
 
                 onClick={ props.onClick }
-                onChange={ field.onChange }
+                onChange={ handleOnChange }
+                onKeyUp={ handleOnKeyUp }
+                onKeyDown={ handleOnKeyDown }
 
                 readOnly={ props.readOnly }
 

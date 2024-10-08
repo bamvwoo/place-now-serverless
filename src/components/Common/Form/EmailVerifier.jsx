@@ -8,7 +8,7 @@ import FormButton from "../Button/FormButton";
 export default function EmailVerifier({ isSent, setIsSent, onSuccess, onFail }) {
 
     const { trigger, getValues, setValue } = useFormContext();
-    const { email, isEmailDuplicated, verificationCode, isVerified } = useGetEmailVerificationForm();
+    const { email, verificationCode, isVerified } = useGetEmailVerificationForm();
 
     const [ isProcessing, setIsProcessing ] = useState(false);
     const [ expirationTime, setExpirationTime ] = useState(0);
@@ -18,70 +18,45 @@ export default function EmailVerifier({ isSent, setIsSent, onSuccess, onFail }) 
     const sendCode = async (e) => {
         setIsSent(false);
         setExpirationTime(0);
+        setIsProcessing(true);
 
         const isValid = await trigger('email');
         if (!isValid) {
+            setIsProcessing(false);
             return;
         }
         
-        setIsProcessing(true);
-        const receiver = getValues('email');
-
-        try {
-            const response = await axios.get('/api/verification', {
-                params: {
-                    receiver
-                }
-            });
-            
+        axios.get('/api/verification', {
+            params: {
+                receiver: getValues('email')
+            }
+        }).then(response => {
             setIsSent(true);
+            setIsProcessing(false);
             setExpirationTime(new Date(response.data.expirationDate).getTime());
-
-            setValue("isEmailDuplicated", false);
-        } catch (error) {
-            setValue("isEmailDuplicated", true);
-        }
-
-        setIsProcessing(false);
-    
-        await trigger('isEmailDuplicated');
+        });
     };
 
     const verifyCode = async (e) => {
-        const isValid = await trigger('verificationCode');
-        if (!isValid) {
-            return;
-        }
-
         setIsProcessing(true);
 
-        const email = getValues('email');
-        const verificationCodeValue = getValues('verificationCode');
-
-        try {
-            const response = await axios.post('/api/verification', { email, verificationCodeValue });
-
-            const result = response.data.result;
-            if (result) {
-                setValue('isVerified', true);
-
-                if (onSuccess) {
-                    onSuccess(email);
-                }
-            } else {
-                setValue('isVerified', false);
-
-                if (onFail) {
-                    onFail();
-                }
-            }
-
-            await trigger('isVerified');
-        } catch (error) {
-            console.error('Failed to send code', error);
-        }
+        const isValid = await trigger('verificationCode');
 
         setIsProcessing(false);
+
+        if (isValid) {
+            setValue('isVerified', true);
+
+            if (onSuccess) {
+                onSuccess(email);
+            }
+        } else {
+            setValue('isVerified', false);
+
+            if (onFail) {
+                onFail();
+            }
+        }
     };
 
     useEffect(() => {
@@ -116,45 +91,46 @@ export default function EmailVerifier({ isSent, setIsSent, onSuccess, onFail }) 
     return (
         <>
             <FormInput type="text" size="l"
-                placeholder="이메일 주소"
                 field={ email } 
-                readOnly={ isProcessing } 
+                readOnly={ isProcessing || getValues('isVerified') } 
             />
 
-            <FormInput type="hidden" size="l" field={ isEmailDuplicated } />
-
-            <FormButton type="button" width="100%" direction={ isSent ? "prev" : null } onClick={ sendCode } disabled={ isProcessing }>
-                {
-                    isSent ?
-                        "재전송" :
-                    isProcessing ?
-                        <i className="fa-solid fa-spinner fa-spin-pulse"></i> :
-                        "인증코드 전송"
-                }
-            </FormButton>
-
             {
-                isSent &&
-                    <FormInput type="text" size="l" 
-                        placeholder="인증코드"
-                        field={ verificationCode }
-                        readOnly={ isProcessing }
-                    />
-            }
+                !getValues('isVerified') &&
+                    <>
+                        <FormButton type="button" width="100%" direction={ isSent ? "prev" : null } onClick={ sendCode } disabled={ isProcessing }>
+                            {
+                                isSent ?
+                                    "재전송" :
+                                isProcessing ?
+                                    <i className="fa-solid fa-spinner fa-spin-pulse"></i> :
+                                    "인증코드 전송"
+                            }
+                        </FormButton>
 
-            <FormInput type="hidden" size="l" field={ isVerified } />
-
-            {
-                isSent &&
-                    <FormButton type="button" width="100%" onClick={ verifyCode } disabled={ isProcessing }>
                         {
-                            isProcessing ?
-                                <i className="fa-solid fa-spinner fa-spin-pulse"></i> :
-                                <>
-                                    인증코드 확인<span ref={ timerRef }></span>
-                                </>
+                            isSent &&
+                                <FormInput type="text" size="l" 
+                                    field={ verificationCode }
+                                    readOnly={ isProcessing }
+                                />
                         }
-                    </FormButton>
+
+                        <FormInput type="hidden" size="l" field={ isVerified } />
+
+                        {
+                            isSent &&
+                                <FormButton type="button" width="100%" onClick={ verifyCode } disabled={ isProcessing }>
+                                    {
+                                        isProcessing ?
+                                            <i className="fa-solid fa-spinner fa-spin-pulse"></i> :
+                                            <>
+                                                인증코드 확인<span ref={ timerRef }></span>
+                                            </>
+                                    }
+                                </FormButton>
+                        }
+                    </>
             }
         </>
     )

@@ -16,6 +16,8 @@ export default function SignupStepOne({ setStep }) {
         <>
             <StepTitle>
                 {
+                    getValues("isVerified") ?
+                        <>이메일 인증이 완료되었어요<br />다음 단계를 진행해주세요</> :
                     isSent ?
                         <>이메일로 전송된<br />인증코드를 입력해주세요</> :
                         <>계정으로 사용할<br />이메일 주소를 입력해주세요</>

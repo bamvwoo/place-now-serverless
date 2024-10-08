@@ -23,7 +23,7 @@ const Wrapper = styled(VerticalWrapper)`
     }
 `;
 
-const FormStyle = styled.form`
+const CustomForm = styled.form`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -48,11 +48,13 @@ export default function Form({ children, methods, onValid, onInvalid, width, hei
 
     return (
         <FormProvider {...methods}>
-            <FormStyle $width={ width } $height={ height } onSubmit={ handleSubmit(handleOnValid, handleOnInvalid) }>
+            <CustomForm $width={ width } $height={ height } 
+                onSubmit={ handleSubmit(handleOnValid, handleOnInvalid) }
+                onKeyDown={ e => e.key === "Enter" && e.preventDefault() }>
                 <Wrapper>
                     { children }
                 </Wrapper>
-            </FormStyle>
+            </CustomForm>
         </FormProvider>
     );
 }

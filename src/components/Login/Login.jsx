@@ -95,8 +95,8 @@ export default function Login() {
         setIsSuccess(null);
 
         try {
-            const response = await axios.post("/api/auth", { email, password });
-            const token = response.data;
+            const response = await axios.post("/api/auth/basic", { email, password });
+            const token = response.data.token;
 
             await login(token);
 
@@ -122,8 +122,8 @@ export default function Login() {
                 isSuccess !== null && !isSuccess && <InvalidText>로그인 정보를 확인해주세요</InvalidText>
             }
             <AuthContainer>
-                <FormInput type="text" field={ email } placeholder="이메일" />
-                <FormInput type="password" field={ password } placeholder="비밀번호" />
+                <FormInput type="text" field={ email } />
+                <FormInput type="password" field={ password } />
 
                 <LoginButton type="submit">로그인</LoginButton>
 

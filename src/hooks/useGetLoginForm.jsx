@@ -2,7 +2,8 @@ export default function useGetLoginForm() {
 
     // 이메일
     const email = { 
-        name: 'email', 
+        name: 'email',
+        placeholder: '이메일 주소',
         rules: {
             required: '이메일을 입력해주세요',
             pattern: {
@@ -14,7 +15,8 @@ export default function useGetLoginForm() {
 
     // 비밀번호
     const password = { 
-        name: 'password', 
+        name: 'password',
+        placeholder: '비밀번호',
         rules: {
             required: '비밀번호를 입력해주세요'
         }
