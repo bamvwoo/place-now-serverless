@@ -12,7 +12,7 @@ export default function OAuthButton({ color, children, onClick }) {
         align-items: center;
         width: 100%;
         padding: 10px;
-        border-radius: 5px;
+        border-radius: 10px;
         transition: .2s ease-in-out;
         overflow: hidden;
         white-space: nowrap;

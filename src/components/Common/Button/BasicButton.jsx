@@ -6,13 +6,13 @@ const BasicButtonBase = styled.button`
     align-items: center;
     border-width: 1px;
     border-style: solid;
-    border-radius: 5px;
+    border-radius: 10px;
     transition: .2s ease-in-out;
 `;
 
 export const BasicButton = styled(BasicButtonBase)`
-    --main-color: ${props => props.$solid ? "#fff" : "#333"};
-    --reverse-color: ${props => props.$solid ? "#333" : "#fff"};
+    --main-color: ${props => props.$solid ? "#fff" : "#444"};
+    --reverse-color: ${props => props.$solid ? "#444" : "#fff"};
 
     --font-size: ${props =>
         props.$size && props.$size === "s" ?
@@ -29,12 +29,12 @@ export const BasicButton = styled(BasicButtonBase)`
 
     --padding: ${props =>
         props.$size && props.$size === "s" ?
-            "7px" :
+            "8px" :
         props.$size && props.$size === "m" ?
-            "9px" :
+            "10px" :
         props.$size && props.$size === "l" ?
             "12px" :
-            "9px"
+            "10px"
     };
 
     padding: var(--padding);
@@ -45,6 +45,13 @@ export const BasicButton = styled(BasicButtonBase)`
     border-color: var(--main-color);
     background-color: var(--reverse-color);
     color: var(--main-color);
+
+    gap: 5px;
+
+    ${props => props.$solid ? 
+        `border: none;` :
+        null
+    }
 
     &:hover {
         ${props => props.$solid ?

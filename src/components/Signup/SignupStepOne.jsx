@@ -10,13 +10,18 @@ export default function SignupStepOne({ setStep }) {
     const { getValues } = useFormContext();
     const navigate = useNavigate();
     
+    const [ isVerified, setIsVerified ] = useState(getValues("isVerified"));
     const [ isSent, setIsSent ] = useState(false);
+
+    const handleOnSuccess = (email) => {
+        setIsVerified(getValues("isVerified"));
+    };
 
     return (
         <>
             <StepTitle>
                 {
-                    getValues("isVerified") ?
+                    isVerified ?
                         <>이메일 인증이 완료되었어요<br />다음 단계를 진행해주세요</> :
                     isSent ?
                         <>이메일로 전송된<br />인증코드를 입력해주세요</> :
@@ -24,13 +29,13 @@ export default function SignupStepOne({ setStep }) {
                 }
             </StepTitle>
 
-            <EmailVerifier isSent={ isSent } setIsSent={ setIsSent } />
+            <EmailVerifier isSent={ isSent } setIsSent={ setIsSent } onSuccess={ handleOnSuccess } />
 
             <StepButtonWrapper>
-                <FormButton direction="prev" $size="l" text="취소" icon={ false } onClick={ () => navigate(-1) } />
+                <FormButton direction="prev" size="l" text="취소" icon={ false } onClick={ () => navigate(-1) } />
                 {
-                    getValues("isVerified") &&
-                        <FormButton direction="next" $size="l" onClick={ () => setStep(2) } />
+                    isVerified &&
+                        <FormButton direction="next" size="l" onClick={ () => setStep(2) } />
                 }
             </StepButtonWrapper>
         </>

@@ -4,6 +4,7 @@ import Form from "../components/Common/Form/Form";
 import { useForm } from "react-hook-form";
 import ResultContent from "../components/Common/ResultContent";
 import EmailVerifier from "../components/Common/Form/EmailVerifier";
+import { StepTitle } from "../components/Common/Form/WizardForm";
 
 export default function Verification() {
 
@@ -32,13 +33,13 @@ export default function Verification() {
                 ) : (
 
                     <>
-                        <h2>
+                        <StepTitle>
                             {
                                 isSent ?
                                     <>이메일로 전송된<br />인증코드를 입력해주세요</> :
                                     <>인증코드를 받을<br />이메일 주소를 입력해주세요</>
                             }
-                        </h2>
+                        </StepTitle>
 
                         <EmailVerifier isSent={ isSent } setIsSent={ setIsSent } onSuccess={ refreshToken } />
                     </>

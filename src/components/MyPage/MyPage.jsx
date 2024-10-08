@@ -5,6 +5,7 @@ import ContentSwitcher from "./ContentSwitcher";
 import { useState } from "react";
 import ChatRoomList from "./ChatRoomList";
 import { VerticalWrapper } from "../Common/Wrapper";
+import Settings from "./Settings";
 
 const Wrapper = styled(VerticalWrapper)`
     width: 100%;
@@ -36,7 +37,7 @@ export default function MyPage() {
     const contents = [
         { title: '채팅', content: <ChatRoomList /> },
         { title: '내 정보', content: <div>내 정보입니다</div> },
-        { title: '설정', content: <div>설정입니다</div> }
+        { title: '설정', content: <Settings /> }
     ];
 
     const [ activeContent, setActiveContent ] = useState(contents[0]);

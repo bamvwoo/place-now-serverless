@@ -49,26 +49,21 @@ export default function RegistrationStepOne({ setStep }) {
             <StepTitle>이 장소가 어디에 있나요?</StepTitle>
 
             <FormInput type="text" size="l" field={ postCode } 
-                placeholder="우편번호"
                 onClick={ openDaumPostCodeModal }
                 readOnly={ true }
             />
 
             <FormInput
                 type="text" size="l" field={ address }
-                placeholder="주소"
                 onClick={ openDaumPostCodeModal }
                 readOnly={ true }
             />
 
-            <FormInput 
-                type="text" size="l" field={ detailedAddress }
-                placeholder="상세주소"
-            />
+            <FormInput type="text" size="l" field={ detailedAddress } />
 
             <StepButtonWrapper>
-                <FormButton direction="prev" $size="l" text="취소" icon={ false } onClick={ () => navigate(-1) } />
-                <FormButton direction="next" $size="l" onClick={ handleOnNextButtonClick } />
+                <FormButton direction="prev" size="l" text="취소" icon={ false } onClick={ () => navigate(-1) } />
+                <FormButton direction="next" size="l" onClick={ handleOnNextButtonClick } />
             </StepButtonWrapper>
         </>
     )

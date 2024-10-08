@@ -27,10 +27,13 @@ const Wrapper = styled(HorizontalWrapper)`
     padding: 10px 0;
 
     & > button {
-        gap: 5px;
+        box-shadow: 3px 3px 0px #0094FF;
     }
 
     & > button:hover {
+        transform: translateX(2px) translateY(2px);
+        box-shadow: 1px 1px 0px #0094FF;
+
         & > i {
             animation: ${rotateAnimation} .5s ease-in-out 1;
             transform-origin: bottom;

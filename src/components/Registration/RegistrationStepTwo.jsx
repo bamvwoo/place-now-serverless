@@ -3,7 +3,6 @@ import useGetRegistrationForm from "../../hooks/useGetRegistrationForm";
 import FormInput from "../Common/Form/FormInput";
 import FormButton from '../Common/Button/FormButton';
 import Tooltip from "../Common/Tooltip";
-import { useEffect } from "react";
 import { StepButtonWrapper, StepTitle } from "../Common/Form/WizardForm";
 
 export default function RegistrationStepTwo({ setStep }) {
@@ -20,20 +19,13 @@ export default function RegistrationStepTwo({ setStep }) {
         }
     }
 
-    useEffect(() => {
-        setValue("name", getValues("detailedAddress") || "");
-    }, []);
-
     return (
         <>
             <StepTitle>장소의 이름을 입력해주세요</StepTitle>
 
-            <FormInput type="text" size="l" field={ name } 
-                placeholder="장소명"
-            />
+            <FormInput type="text" size="l" field={ name } />
 
-            <FormInput
-                type="checkbox" size="l" field={ isAdmin }
+            <FormInput type="checkbox" size="l" field={ isAdmin }
                 label={ 
                     <>  
                         이 장소의 관리자예요
@@ -50,8 +42,8 @@ export default function RegistrationStepTwo({ setStep }) {
             />
 
             <StepButtonWrapper>
-                <FormButton direction="prev" $size="l" onClick={ () => setStep(1) } />
-                <FormButton direction="next" $size="l" onClick={ handleOnNextButtonClick } />
+                <FormButton direction="prev" size="l" onClick={ () => setStep(1) } />
+                <FormButton direction="next" size="l" onClick={ handleOnNextButtonClick } />
             </StepButtonWrapper>
         </>
     )

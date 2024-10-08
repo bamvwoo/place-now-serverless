@@ -37,8 +37,8 @@ export default function VerificationGuide() {
             />
 
             <ButtonWrapper>
-                <FormButton direction="prev" $size="l" text="다음에 하기" icon={ false } onClick={ () => navigate(-1) } />
-                <FormButton direction="next" $size="l" text="인증하기" onClick={ () => navigate('/verification') } />
+                <FormButton direction="prev" size="l" text="다음에 하기" icon={ false } onClick={ () => navigate(-1) } />
+                <FormButton direction="next" size="l" text="인증하기" onClick={ () => navigate('/verification') } />
             </ButtonWrapper>
         </Wrapper>
     )

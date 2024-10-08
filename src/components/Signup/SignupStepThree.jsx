@@ -40,8 +40,8 @@ export default function SignupStepThree({ setStep }) {
             </FormButton>
 
             <StepButtonWrapper>
-                <FormButton direction="prev" $size="l" onClick={ () => setStep(2) } />
-                <FormButton type="submit" $size="l" icon={ false } text="제출" />
+                <FormButton direction="prev" size="l" onClick={ () => setStep(2) } />
+                <FormButton type="submit" size="l" icon={ false } text="제출" />
             </StepButtonWrapper>
         </>
     )

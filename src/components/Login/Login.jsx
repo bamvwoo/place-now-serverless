@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Form from "../Common/Form/Form";
 import { useState } from "react";
@@ -10,26 +9,10 @@ import NaverOAuthContainer from "./NaverOAuthContainer";
 import axios from "axios";
 import { VerticalWrapper } from "../Common/Wrapper";
 import useGetLoginForm from "../../hooks/useGetLoginForm";
-
-const LoginButton = styled.button`
-    width: 100%;
-    border: 1px solid #444;
-    border-radius: 5px;
-    padding: 10px 20px;
-    transition: .2s ease-in-out;
-    font-size: 1rem;
-    color: #444;
-    margin-top: 5px;
-
-    &:hover {
-        background-color: #444;
-        color: white;
-    }
-`;
+import FormButton from "../Common/Button/FormButton";
 
 const OrText = styled.p`
     text-align: center;
-    margin: 20px 0;
     font-size: 0.9rem;
     font-weight: 600;
 `;
@@ -82,7 +65,6 @@ export default function Login() {
     const methods = useForm({ reValidateMode: "onBlur" });
     const { getValues } = methods;
 
-    const navigate = useNavigate();
     const { login } = useAuth();
 
     const { email, password } = useGetLoginForm();
@@ -110,7 +92,7 @@ export default function Login() {
     };
 
     return (
-        <Form methods={ methods } onValid={ onValid } onInvalid={ onInvalid } width="300px">
+        <Form methods={ methods } onValid={ onValid } onInvalid={ onInvalid } width="350px">
             <AuthContainer>
                 <GoogleOAuthContainer />
                 <NaverOAuthContainer />
@@ -122,10 +104,10 @@ export default function Login() {
                 isSuccess !== null && !isSuccess && <InvalidText>로그인 정보를 확인해주세요</InvalidText>
             }
             <AuthContainer>
-                <FormInput type="text" field={ email } />
-                <FormInput type="password" field={ password } />
+                <FormInput type="text" size="l" field={ email } />
+                <FormInput type="password" size="l" field={ password } />
 
-                <LoginButton type="submit">로그인</LoginButton>
+                <FormButton type="submit" size="l" icon={ false } text="로그인" width="100%" />
 
                 <OptionsContainer>
                     <li>

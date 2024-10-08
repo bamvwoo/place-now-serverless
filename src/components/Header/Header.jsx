@@ -1,5 +1,5 @@
-import logoLight from "../../assets/images/logo-light.png";
-import logoDark from "../../assets/images/logo-dark.png";
+import logoLight from "../../assets/images/logo-light.svg";
+import logoDark from "../../assets/images/logo-dark.svg";
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -7,6 +7,12 @@ import Login from "../Login/Login";
 import styled from "styled-components";
 import { useWindow } from "../../context/WindowContext";
 import Profile from "./Profile";
+
+const GlobalLogo = styled.img`
+    width: 30px;
+    height: auto;
+    cursor: pointer;
+`;
 
 const LoginButton = styled.button`
     background-color: transparent;
@@ -40,7 +46,7 @@ export default function Header() {
 
     return (
         <header>
-            <img id="mainLogo" src={logo} alt="Logo" width="150" height="auto" onClick={ () => { window.location.href = '/' } } />
+            <GlobalLogo src={logo} alt="Logo" onClick={ () => { window.location.href = '/' } } />
             {
                 user ? (
                     <Profile />

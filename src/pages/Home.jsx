@@ -4,10 +4,9 @@ import styled from "styled-components";
 import { VerticalWrapper } from "../components/Common/Wrapper";
 
 const Wrapper = styled(VerticalWrapper)`
-    position: fixed;
     width: 100%;
     height: 100%;
-    padding: 20px;
+    padding: 10px 0px;
     gap: 20px;
 `;
 

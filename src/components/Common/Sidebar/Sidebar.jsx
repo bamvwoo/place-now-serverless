@@ -46,7 +46,7 @@ const Wrapper = styled(VerticalWrapper)`
   bottom: 50px;
   right: -400px;
   width: 400px;
-  height: 80vh;
+  height: calc(100vh - var(--global-header-height) - 50px);
   padding: 15px;
   background-color: #fff;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.03);

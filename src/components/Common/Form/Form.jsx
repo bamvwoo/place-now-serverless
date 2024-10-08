@@ -6,12 +6,12 @@ const Wrapper = styled(VerticalWrapper)`
     width: 100%;
     height: 100%;
 
-    & > *:not(:has(> input[type="hidden"])):not(:last-child) {
-        margin-bottom: 10px;
+    & > *:not(h2):not(:has(> input[type="hidden"])):not(:last-child) {
+        margin-bottom: 15px;
     }
 
-    & > *:has(> input[type="hidden"]):has(> p):not(:last-child) {
-        margin-bottom: 10px;
+    & > *:not(h2):has(> input[type="hidden"]):has(> p):not(:last-child) {
+        margin-bottom: 15px;
     }
 
     h2 {

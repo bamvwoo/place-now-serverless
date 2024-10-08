@@ -44,8 +44,9 @@ const Button = styled(BasicButton)`
     }
 `;
 
-export default function FormButton({ type, direction, text, icon, width, onClick, children }) {
+export default function FormButton({ type, size, direction, text, icon, width, onClick, children }) {
     type = type || "button";
+    size = size || "m";
     direction = direction || "next";
     text = text || (direction === "next" ? "다음" : "이전");
     icon = icon !== undefined ? icon : true;
@@ -69,7 +70,7 @@ export default function FormButton({ type, direction, text, icon, width, onClick
     };
 
     return (
-        <Button type={ type } $size="l" $width={ width } $solid={ direction === "next" } $direction={ direction } onClick={ onClick }>
+        <Button type={ type } $size={ size } $width={ width } $solid={ direction === "next" } $direction={ direction } onClick={ onClick }>
             {
                 children ? 
                 children : 

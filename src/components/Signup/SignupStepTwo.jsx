@@ -28,7 +28,7 @@ export default function SignupStepTwo({ setStep }) {
             <StepTitle>
                 {
                     isPasswordMatch ?
-                        <>적절한 비밀번호예요<br />다음 단계를 진행해주세요</> : 
+                        <>안전한 비밀번호예요<br />다음 단계를 진행해주세요</> : 
                         <>영문•숫자•특수문자를 포함하는<br />비밀번호를 입력해주세요</>
                 }
             </StepTitle>
@@ -37,10 +37,10 @@ export default function SignupStepTwo({ setStep }) {
             <FormInput type="password" size="l" field={ passwordConfirm } onKeyUp={ handleOnKeyUp } />
 
             <StepButtonWrapper>
-                <FormButton direction="prev" $size="l" onClick={ () => setStep(1) } />
+                <FormButton direction="prev" size="l" onClick={ () => setStep(1) } />
                 {
                     isPasswordMatch &&
-                        <FormButton direction="next" $size="l" onClick={ () => setStep(3) } />
+                        <FormButton direction="next" size="l" onClick={ () => setStep(3) } />
                 }
             </StepButtonWrapper>
         </>

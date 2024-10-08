@@ -5,7 +5,7 @@ const InputBase = styled.input`
     background-color: transparent;
     border: none;
     background-color: #f5f5f5;
-    border-radius: 5px;
+    border-radius: 10px;
     transition: .2s ease-in-out;
     position: relative;
 

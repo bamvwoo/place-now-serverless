@@ -8,11 +8,11 @@ const StepWrapper = styled(VerticalWrapper)`
     flex: 1;
     justify-content: flex-start;
 
-    & > *:not(:has(> input[type="hidden"])):not(:last-child) {
+    & > *:not(h2):not(:has(> input[type="hidden"])):not(:last-child) {
         margin-bottom: 15px;
     }
 
-    & > *:has(> input[type="hidden"]):has(> p):not(:last-child) {
+    & > *:not(h2):has(> input[type="hidden"]):has(> p):not(:last-child) {
         margin-bottom: 15px;
     }
 `;
