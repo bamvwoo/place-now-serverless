@@ -1,7 +1,15 @@
 import mongoose from 'mongoose';
 
-const placeAddressSchema = new mongoose.Schema({
+const placeLocationSchema = new mongoose.Schema({
     postCode: {
+        type: String,
+        required: true
+    },
+    sido: {
+        type: String,
+        required: true
+    },
+    sigungu: {
         type: String,
         required: true
     },
@@ -9,7 +17,7 @@ const placeAddressSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    detailedAddress: {
+    buildingName: {
         type: String
     }
 });
@@ -30,30 +38,37 @@ const placeImagesSchema = new mongoose.Schema({
 });
 
 const placeSchema = new mongoose.Schema({
+    category: {
+        type: String,
+        required: true
+    },
     name: {
         type: String,
         required: true,
         unique: true
     },
-    region: {
-        type: String,
-        required: true
-    },
-    address: {
-        type: placeAddressSchema,
+    location: {
+        type: placeLocationSchema,
         required: true
     },
     images: {
         type: [placeImagesSchema],
         default: []
     },
-    approved: {
-        type: Boolean,
-        default: false
+    description: {
+        type: String
+    },
+    keywords: {
+        type: String,
+        required: true
     },
     enabled: {
         type: Boolean,
         default: true
+    },
+    approved: {
+        type: Boolean,
+        default: false
     },
     admin: {
         type: mongoose.Schema.Types.ObjectId,

@@ -7,23 +7,27 @@ import { StepButtonWrapper, StepTitle } from "../Common/Form/WizardForm";
 
 export default function RegistrationStepTwo({ setStep }) {
 
-    const { trigger, setValue, getValues } = useFormContext();
-    const { name, isAdmin } = useGetRegistrationForm();
+    const { trigger, getValues } = useFormContext();
+    const { name, isAdmin, description } = useGetRegistrationForm();
 
     const handleOnNextButtonClick = async (e) => {
         e.preventDefault();
 
-        const isValid = await trigger([ "name", "isAdmin" ]);
+        const isValid = await trigger([ "name", "description", "isAdmin" ]);
         if (isValid) {
             setStep(3);
         }
+
+        console.log(getValues());
     }
 
     return (
         <>
-            <StepTitle>장소의 이름을 입력해주세요</StepTitle>
+            <StepTitle>장소의 이름과 설명을 입력해주세요</StepTitle>
 
             <FormInput type="text" size="l" field={ name } />
+
+            <FormInput type="textarea" size="l" field={ description } />
 
             <FormInput type="checkbox" size="l" field={ isAdmin }
                 label={ 
@@ -33,7 +37,7 @@ export default function RegistrationStepTwo({ setStep }) {
                             text={ 
                                 <>
                                     관리자로 승인되면 채팅방에서 특별한 배지 <i className='fa-solid fa-certificate'></i> 가 부여되고 <br/>
-                                    예약을 받거나 장소 정보를 직접 수정할 수 있어요
+                                    예약을 받거나 장소를 직접 관리할 수 있어요
                                 </> 
                             }
                         /> 

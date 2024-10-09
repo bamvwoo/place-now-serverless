@@ -10,6 +10,9 @@ export default function Auth() {
     const { login } = useAuth();
 
     useEffect(() => {
+        const successUrl = localStorage.getItem('loginSuccessUrl') || '/';
+        localStorage.removeItem('loginSuccessUrl');
+
         const getTokenAndLogin = async () => {
             const params = Object.fromEntries(new URLSearchParams(window.location.search));
 
@@ -18,7 +21,7 @@ export default function Auth() {
 
             await login(token);
 
-            window.location.href = '/';
+            window.location.href = successUrl;
         };
 
         getTokenAndLogin();

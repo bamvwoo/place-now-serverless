@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../context/AuthContext";
 import Form from "../Common/Form/Form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormInput from "../Common/Form/FormInput";
 import GoogleOAuthContainer from "./GoogleOAuthContainer";
 import NaverOAuthContainer from "./NaverOAuthContainer";
@@ -61,53 +61,65 @@ const AuthContainer = styled(VerticalWrapper)`
     }
 `;
 
-export default function Login() {
+export default function Login({ successUrl }) {
+    successUrl = successUrl || "/";
+
     const methods = useForm({ reValidateMode: "onBlur" });
-    const { getValues } = methods;
+    const { getValues, setValue, trigger } = methods;
 
     const { login } = useAuth();
 
-    const { email, password } = useGetLoginForm();
+    const { email, password, isLoginSuccess } = useGetLoginForm();
 
-    const [ isSuccess, setIsSuccess ] = useState(null);
+    const [ isProcessing, setIsProcessing ] = useState(false);
 
-    const onValid = async (data) => {
+    const handleOnLogin = async (e) => {
+        setIsProcessing(true);
+
+        const isValid = await trigger(['email', 'password']);
+        if (!isValid) {
+            setIsProcessing(false);
+            return;
+        }
+
         const { email, password } = getValues();
 
-        setIsSuccess(null);
-
-        try {
-            const response = await axios.post("/api/auth/basic", { email, password });
+        axios.post("/api/auth/basic", { email, password })
+        .then(async (response) => {
             const token = response.data.token;
-
             await login(token);
+            window.location.href = successUrl;
+        })
+        .catch(error => {
+            setValue("isLoginSuccess", false);
+            trigger("isLoginSuccess");
 
-            window.location.href = "/";
-        } catch (error) {
-            setIsSuccess(false);
-        }
-    };
-
-    const onInvalid = (errors) => {
+            setIsProcessing(false);
+        });
     };
 
     return (
-        <Form methods={ methods } onValid={ onValid } onInvalid={ onInvalid } width="350px">
+        <Form methods={ methods } width="350px">
             <AuthContainer>
-                <GoogleOAuthContainer />
-                <NaverOAuthContainer />
+                <GoogleOAuthContainer successUrl={ successUrl } />
+                <NaverOAuthContainer successUrl={ successUrl } />
             </AuthContainer>
 
             <OrText>또는</OrText>
 
-            {
-                isSuccess !== null && !isSuccess && <InvalidText>로그인 정보를 확인해주세요</InvalidText>
-            }
             <AuthContainer>
+                <FormInput type="hidden" size="l" field={ isLoginSuccess } />
+
                 <FormInput type="text" size="l" field={ email } />
                 <FormInput type="password" size="l" field={ password } />
 
-                <FormButton type="submit" size="l" icon={ false } text="로그인" width="100%" />
+                <FormButton type="button" size="l"width="100%" onClick={ handleOnLogin }>
+                    {
+                        isProcessing ?
+                            <i className="fa-solid fa-spinner fa-spin-pulse"></i> :
+                            <>로그인</>
+                    }
+                </FormButton>
 
                 <OptionsContainer>
                     <li>

@@ -13,20 +13,20 @@ export function ChatProvider({ children }) {
     { roomId: 'chat-004' }
   ]);
 
-  useEffect(() => {
-    if (!user) return;
+  // useEffect(() => {
+  //   if (!user) return;
 
-    const intervalId = setInterval(() => {
-      let count = 0;
-      chatRooms.forEach(room => {
-        count += Math.floor(Math.random() * 10);
-      });
-      setUnreadMessages(count);
-    }, 1000);
+  //   const intervalId = setInterval(() => {
+  //     let count = 0;
+  //     chatRooms.forEach(room => {
+  //       count += Math.floor(Math.random() * 10);
+  //     });
+  //     setUnreadMessages(count);
+  //   }, 1000);
 
-    // Cleanup 함수에서 인터벌 해제
-    return () => clearInterval(intervalId);
-  }, [ user ]);
+  //   // Cleanup 함수에서 인터벌 해제
+  //   return () => clearInterval(intervalId);
+  // }, [ user ]);
 
   const subscribe = (place) => {
     setChatRooms([

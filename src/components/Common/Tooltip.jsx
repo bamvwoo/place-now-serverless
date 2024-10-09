@@ -22,6 +22,16 @@ const TextWrapper = styled.div`
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
 
+    &::before {
+        content: '';
+        position: absolute;
+        top: -10px; /* 삼각형의 높이만큼 위로 이동 */
+        left: 10px; /* 삼각형의 위치 조정 */
+        border-width: 0 10px 10px 10px; /* 삼각형의 크기 설정 */
+        border-style: solid;
+        border-color: transparent transparent #fff transparent; /* 삼각형의 색상 설정 */
+    }
+
     & > span {
         line-height: 1.5;
 
@@ -41,8 +51,8 @@ export default function Tooltip({ title, text }) {
     useEffect(() => {
         const handleMouseOver = () => {
             if (wrapperRef.current && textRef.current) {
-                textRef.current.style.top = `${textPosition.bottom + 5}px`;
-                textRef.current.style.left = `${textPosition.right + 5}px`;
+                textRef.current.style.top = `${textPosition.bottom + 20}px`;
+                textRef.current.style.left = `${textPosition.right + -30}px`;
                 textRef.current.style.display = 'block';
             }
         };

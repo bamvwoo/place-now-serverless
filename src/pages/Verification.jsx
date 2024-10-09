@@ -9,29 +9,25 @@ import { StepTitle } from "../components/Common/Form/WizardForm";
 export default function Verification() {
 
     const methods = useForm({ reValidateMode: "onBlur" });
-    const { getValues } = methods;
 
     const [ isSent, setIsSent ] = useState(false);
+    const [ isVerified, setIsVerified ] = useState(false);
 
     const { refreshToken } = useAuth();
 
-    const onValid = (data) => {
-        
-    };
+    const handleOnSuccess = () => {
+        setIsVerified(true);
+        refreshToken();
 
-    const onInvalid = (errors) => {
-
+        const successUrl = localStorage.getItem('verificationSuccessUrl') || '/';
     };
 
     return (
-        <Form methods={ methods } onValid={ onValid } onInvalid={ onInvalid } width="350px" height="100%">
+        <Form methods={ methods } width="350px" height="100%">
             {
-                getValues("isVerified") ? (
-                    <>
-                        <ResultContent success={{ title: "이메일 인증이 완료되었어요", subTitle: "이제 장소를 등록하거나 채팅방에 참여할 수 있어요" }} loop="false" />
-                    </>
+                isVerified ? (
+                    <ResultContent success={{ title: "이메일 인증이 완료되었어요", subTitle: "이제 장소를 등록하거나 채팅방에 참여할 수 있어요" }} loop="false" />
                 ) : (
-
                     <>
                         <StepTitle>
                             {
@@ -41,7 +37,7 @@ export default function Verification() {
                             }
                         </StepTitle>
 
-                        <EmailVerifier isSent={ isSent } setIsSent={ setIsSent } onSuccess={ refreshToken } />
+                        <EmailVerifier isSent={ isSent } setIsSent={ setIsSent } onSuccess={ handleOnSuccess } />
                     </>
                 )
             }

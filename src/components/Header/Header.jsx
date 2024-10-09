@@ -41,6 +41,7 @@ export default function Header() {
     };
 
     useEffect(() => {
+        console.log("work");
         document.getElementById('wrapper').className = mode;
     }, [ mode ]);
 

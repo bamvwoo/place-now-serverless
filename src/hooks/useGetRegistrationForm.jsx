@@ -4,6 +4,14 @@ export default function useGetRegistrationForm() {
 
     const { getValues } = useFormContext();
 
+    // 카테고리
+    const category = {
+        name: 'category',
+        rules: {
+            required: '카테고리를 선택해주세요'
+        }
+    };
+
     // 우편번호
     const postCode = { 
         name: 'postCode',
@@ -25,8 +33,8 @@ export default function useGetRegistrationForm() {
     };
 
     // 상세주소
-    const detailedAddress = { 
-        name: 'detailedAddress',
+    const buildingName = { 
+        name: 'buildingName',
         placeholder: '상세주소'
     };
 
@@ -38,12 +46,21 @@ export default function useGetRegistrationForm() {
             required: '장소명을 입력해주세요',
             maxLength: { value: 20, message: '장소명은 최대 20자까지 입력할 수 있어요' }
         },
-        defaultValue: getValues('detailedAddress') || ''
+        defaultValue: getValues('buildingName') || ''
     };
 
     // 장소 관리자 여부
     const isAdmin = { 
         name: 'isAdmin'
+    };
+
+    // 장소 설명
+    const description = { 
+        name: 'description',
+        placeholder: '설명',
+        rules: {
+            maxLength: { value: 200, message: '설명은 최대 200자까지 입력할 수 있어요' }
+        }
     };
 
     // 이미지
@@ -60,11 +77,13 @@ export default function useGetRegistrationForm() {
     };
 
     return {
+        category,
         postCode,
         address,
-        detailedAddress,
+        buildingName,
         name,
         isAdmin,
+        description,
         images,
         thumbnail
     };

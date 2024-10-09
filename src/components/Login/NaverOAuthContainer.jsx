@@ -1,13 +1,17 @@
+import { useNavigate } from "react-router-dom";
 import OAuthButton from "./OAuthButton";
 
-export default function NaverOAuthContainer({ setIsAuthenticating }) {
+export default function NaverOAuthContainer({ successUrl, setIsAuthenticating }) {
     const CLIENT_ID = import.meta.env.VITE_OAUTH_NAVER_CLIENT_ID;
     const REDIRECT_URI = `${import.meta.env.VITE_AUTH_REDIRECT_BASE_URI}/naver`;
     const STATE = Math.random().toString(36).substring(3, 14);
 
+    const navigate = useNavigate();
+
     const AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&state=${STATE}`;
 
     const loginByNaver = () => {
+        localStorage.setItem("loginSuccessUrl", successUrl);
         window.location.href = AUTH_URL;
     }
 

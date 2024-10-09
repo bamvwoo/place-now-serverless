@@ -22,8 +22,20 @@ export default function useGetLoginForm() {
         }
     };
 
+    // 로그인 성공 여부
+    const isLoginSuccess = {
+        name: 'isLoginSuccess',
+        rules: {
+            validate: value => {
+                return value || '로그인 정보를 확인해주세요'
+            }
+        },
+        defaultValue: false
+    };
+
     return {
         email,
-        password
+        password,
+        isLoginSuccess
     };
 }

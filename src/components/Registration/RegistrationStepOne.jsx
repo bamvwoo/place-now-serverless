@@ -17,16 +17,17 @@ const DaumPostCodeWrapper = styled.div`
 export default function RegistrationStepOne({ setStep }) {
 
     const { setValue, trigger } = useFormContext();
-    const { postCode, address, detailedAddress } = useGetRegistrationForm();
+    const { postCode, address, buildingName } = useGetRegistrationForm();
 
     const navigate = useNavigate();
     const { openModal, closeModal } = useWindow();
 
     const applyAddress = (data) => {
+        setValue("sido", data.sido);
+        setValue("sigungu", data.sigungu);
         setValue("address", data.address);
         setValue("postCode", data.zonecode);
-        setValue("detailedAddress", data.buildingName);
-        setValue("region", data.sido);
+        setValue("buildingName", data.buildingName);
 
         closeModal();
     };
@@ -38,7 +39,7 @@ export default function RegistrationStepOne({ setStep }) {
     const handleOnNextButtonClick = useCallback(async (e) => {
         e.preventDefault();
 
-        const isValid = await trigger([ "postCode", "address", "detailedAddress" ]);
+        const isValid = await trigger([ "postCode", "address", "buildingName" ]);
         if (isValid) {
             setStep(2);
         }
@@ -59,7 +60,7 @@ export default function RegistrationStepOne({ setStep }) {
                 readOnly={ true }
             />
 
-            <FormInput type="text" size="l" field={ detailedAddress } />
+            <FormInput type="text" size="l" field={ buildingName } />
 
             <StepButtonWrapper>
                 <FormButton direction="prev" size="l" text="취소" icon={ false } onClick={ () => navigate(-1) } />

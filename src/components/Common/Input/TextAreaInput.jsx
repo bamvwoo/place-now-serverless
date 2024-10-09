@@ -1,6 +1,8 @@
+import { useController, useFormContext } from "react-hook-form";
 import styled from "styled-components";
+import { InvalidText } from "../Form/FormInput";
 
-const InputBase = styled.input`
+const TextAreaBase = styled.textarea`
     width: 100%;
     background-color: transparent;
     border: none;
@@ -8,6 +10,7 @@ const InputBase = styled.input`
     border-radius: 10px;
     transition: .2s ease-in-out;
     position: relative;
+    resize: none;
 
     padding: ${props =>
         props.$size && props.$size === "s" ?
@@ -29,34 +32,13 @@ const InputBase = styled.input`
             "1rem"
     };
 
-    ${props => props.readOnly && `
-        color: #a2a2a2;
-    `}
-
-    &[type=checkbox] {
-        width: ${props =>
-            props.$size && props.$size === "s" ?
-                "10px" :
-            props.$size && props.$size === "m" ?
-                "15px" :
-            props.$size && props.$size === "l" ?
-                "20px" :
-                "15px"
-        };
-
-        height: ${props =>
-            props.$size && props.$size === "s" ?
-                "10px" :
-            props.$size && props.$size === "m" ?
-                "15px" :
-            props.$size && props.$size === "l" ?
-                "20px" :
-                "15px"
-        };
+    ${props => props.readOnly && 
+        `
+            color: #a2a2a2;
+        `
     }
 
-    &[type=text]::placeholder,
-    &[type=password]::placeholder {
+    &::placeholder {
         position: absolute;
         color: #777;
 
@@ -92,8 +74,7 @@ const InputBase = styled.input`
         cursor: not-allowed;
     }
 
-    &[type=text]:placeholder-shown,
-    &[type=password]:placeholder-shown {
+    &:placeholder-shown {
         padding: ${props =>
             props.$size && props.$size === "s" ?
                 "20px 10px 10px 10px" :
@@ -111,4 +92,52 @@ const InputBase = styled.input`
     }
 `;
 
-export default InputBase;
+export default function TextAreaInput({ field: fieldData, ...props }) {
+    const { control } = useFormContext();
+
+    const {
+        field,
+        fieldState: { invalid, error }
+    } = useController({
+        name: fieldData.name,
+        control,
+        rules: fieldData.rules,
+        defaultValue: fieldData.defaultValue || ''
+    });
+
+    const handleOnChange = (e) => {
+        field.onChange(e);
+        props.onChange && props.onChange(e);
+    };
+
+    return (
+        <>
+            <TextAreaBase 
+                id={ field.name }
+                className={ invalid ? "form-is-invalid" : "" }
+                placeholder={ fieldData.placeholder }
+                value={ field.value }
+                rows={
+                    props.size === "s" ?
+                        2 :
+                    props.size === "m" ?
+                        4 :
+                    props.size === "l" ?
+                        6 :
+                        4
+                }
+                readOnly={ props.readOnly }
+                $size={ props.size }
+
+                onChange={ handleOnChange }
+            >
+                { field.defaultValue }
+            </TextAreaBase>
+
+            {
+                invalid &&
+                    <InvalidText $size={ props.size }><i className="fa-solid fa-triangle-exclamation"></i> { error?.message }</InvalidText> 
+            }
+        </>
+    )
+}

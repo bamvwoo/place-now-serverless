@@ -1,5 +1,4 @@
 import { axiosInstance, useAuth } from "../context/AuthContext";
-import VerificationGuide from "../components/Registration/VerificationGuide";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import WizardForm from "../components/Common/Form/WizardForm";
@@ -11,8 +10,6 @@ import RegistrationStepFour from "../components/Registration/RegistrationStepFou
 
 export default function Registration() {
 
-    const { user } = useAuth();
-
     const methods = useForm({ reValidateMode: "onBlur" });
 
     const [ step, setStep ] = useState(1);
@@ -23,7 +20,7 @@ export default function Registration() {
 
         const formData = new FormData();
         for (const key in data) {
-            if (key === 'images') {
+            if (key === 'images' && data[key]) {
                 Array.from(data[key]).forEach(file => {
                     formData.append('images', file);
                 });
@@ -38,24 +35,16 @@ export default function Registration() {
         setStep(4);
     };
 
-    const onInvalid = (errors) => {
-
-    };
-
     return(
         <>
             {
-                user?.email ? (
-                    <WizardForm methods={ methods } step={ step } setStep={ setStep } onValid={ onValid } onInvalid={ onInvalid } width="500px" height="100%">
-                        { step === 1 &&  <RegistrationStepOne /> }
-                        { step === 2 &&  <RegistrationStepTwo /> }
-                        { step === 3 && !isLoading && <RegistrationStepThree /> }
-                        { step === 3 && isLoading && <ResultContent loading={ true } /> }
-                        { step === 4 && <RegistrationStepFour /> }
-                    </WizardForm>
-                ) : (
-                    <VerificationGuide />
-                )
+                <WizardForm methods={ methods } step={ step } setStep={ setStep } onValid={ onValid } width="500px" height="100%">
+                    { step === 1 &&  <RegistrationStepOne /> }
+                    { step === 2 &&  <RegistrationStepTwo /> }
+                    { step === 3 && !isLoading && <RegistrationStepThree /> }
+                    { step === 3 && isLoading && <ResultContent loading={ true } /> }
+                    { step === 4 && <RegistrationStepFour /> }
+                </WizardForm>
             }
         </>
     )

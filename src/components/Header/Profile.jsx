@@ -4,7 +4,7 @@ import MyPage from "../MyPage/MyPage";
 import CryptoJS from 'crypto-js';
 import { useAuth } from "../../context/AuthContext";
 import { useChat } from "../../context/ChatContext";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { HorizontalWrapper } from "../Common/Wrapper";
 
 // 해시 함수를 사용하여 고유한 색상 코드 생성
@@ -31,7 +31,7 @@ const Wrapper = styled(HorizontalWrapper)`
     cursor: pointer;
     position: relative;
     padding: 5px 7px;
-    border-radius: 5px;
+    border-radius: 10px;
     transition: .2s ease-in-out;
 
     &:hover {
@@ -79,6 +79,7 @@ const UnreadMark = styled.div`
 
 export default function Profile() {
     /* States */
+    const [ profileImage, setProfileImage ] = useState(null);
 
     /* Custom Hooks  */
     const { user } = useAuth();
@@ -95,11 +96,36 @@ export default function Profile() {
         toggleSidebar(<MyPage />);
     };
 
+    useEffect(() => {
+        if (user && user.profile) {
+            const cachedImage = localStorage.getItem(`profileImage_${user._id}`);
+            if (cachedImage) {
+                setProfileImage(cachedImage);
+            } else {
+                fetch(user.profile)
+                    .then(response => {
+                        if (response.ok) {
+                            return response.blob();
+                        }
+                        throw new Error('Network response was not ok.');
+                    })
+                    .then(blob => {
+                        const imageUrl = URL.createObjectURL(blob);
+                        setProfileImage(imageUrl);
+                        localStorage.setItem(`profileImage_${user._id}`, imageUrl);
+                    })
+                    .catch(error => {
+                        console.error('Failed to fetch profile image:', error);
+                    });
+            }
+        }
+    }, [user]);
+
     return (
         <Wrapper onClick={ openMyPage }>
             {
                 user.profile
-                ? <img src={ user.profile } alt="Profile" width="40" height="40" />
+                ? <img src={ profileImage } alt="Profile" width="40" height="40" />
                 : <DefaultProfileImage $backgroundColor={ backgroundColor }><span>{ user.name[0] }</span></DefaultProfileImage>
             }
             

@@ -1,7 +1,9 @@
 import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
 import OAuthButton from "./OAuthButton";
+import { useNavigate } from "react-router-dom";
+import { useWindow } from "../../context/WindowContext";
 
-export default function GoogleOAuthContainer() {
+export default function GoogleOAuthContainer(props) {
     const CLIENT_ID = import.meta.env.VITE_OAUTH_GOOGLE_CLIENT_ID;
 
     return (
@@ -9,7 +11,7 @@ export default function GoogleOAuthContainer() {
             {
                 CLIENT_ID && (
                     <GoogleOAuthProvider clientId={ CLIENT_ID }>
-                        <GoogleLoginButton />
+                        <GoogleLoginButton { ...props } />
                     </GoogleOAuthProvider>
                 )
             }
@@ -17,9 +19,15 @@ export default function GoogleOAuthContainer() {
     )
 }
 
-const GoogleLoginButton = () => {
+const GoogleLoginButton = ({ successUrl }) => {
+    const navigate = useNavigate();
+    const { closeModal } = useWindow();
+
     const handleGoogleLoginSuccess = (response) => {
-        window.location.href = "/auth/google?access_token=" + response.access_token;
+        closeModal();
+        
+        localStorage.setItem("loginSuccessUrl", successUrl);
+        navigate(`/auth/google?access_token=${response.access_token}`);
     };
 
     const handleGoogleLoginFailure = (error) => {

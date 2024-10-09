@@ -6,44 +6,51 @@ const AuthContext = createContext();
 export const axiosInstance = axios.create();
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(localStorage.getItem('token') || '');
-  const [user, setUser] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [ token, setToken ] = useState(localStorage.getItem('token') || '');
+  const [ user, setUser ] = useState(null);
+  const [ isAdmin, setIsAdmin ] = useState(false);
+  const [ isLoading, setIsLoading ] = useState(true);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 요청 인터셉터 설정
-    axiosInstance.interceptors.request.use(
-      config => {
-        config.headers.Authorization = `Bearer ${token}`;
-        return config;
-      },
-      error => {
-        return Promise.reject(error);
-      }
-    );
-
-    // 응답 인터셉터 설정
-    axiosInstance.interceptors.response.use(
-      response => response,
-      error => {
-        /*
-        if (error.response.data.forward) {
-          sendError(error);
-        } else {
-          alert(error.response.data.error);
+    const init = async () => {
+      // 요청 인터셉터 설정
+      axiosInstance.interceptors.request.use(
+        config => {
+          config.headers.Authorization = `Bearer ${token}`;
+          return config;
+        },
+        error => {
+          return Promise.reject(error);
         }
-        */
+      );
 
-        return Promise.reject(error);
+      // 응답 인터셉터 설정
+      axiosInstance.interceptors.response.use(
+        response => response,
+        error => {
+          /*
+          if (error.response.data.forward) {
+            sendError(error);
+          } else {
+            alert(error.response.data.error);
+          }
+          */
+
+          return Promise.reject(error);
+        }
+      );
+
+      const localToken = token || localStorage.getItem('token');
+      if (localToken) {
+        await login(localToken);
       }
-    );
 
-    const localToken = token || localStorage.getItem('token');
-    if (localToken) {
-      login(localToken);
-    }
+      setIsLoading(false);
+    };
+
+    init();
   }, [ token ]);
 
   const login = async (token) => {
@@ -94,7 +101,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, isAdmin, sendError, refreshToken }}>
+    <AuthContext.Provider value={{ user, token, login, logout, isAdmin, sendError, refreshToken, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

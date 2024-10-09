@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import TextInput from "../Input/TextInput";
 import CheckboxInput from "../Input/CheckboxInput";
 import FileInput from "../Input/FileInput";
+import TextAreaInput from "../Input/TextAreaInput";
 
 const Wrapper = styled(VerticalWrapper)`
     align-items: flex-start;
@@ -58,6 +59,11 @@ export default function FormInput({ type, field, ...props }) {
             {
                 (type === 'checkbox') &&
                     <CheckboxInput field={ field } { ...props } />
+            }
+
+            {
+                (type === 'textarea') &&
+                    <TextAreaInput field={ field } { ...props } />
             }
         </Wrapper>
     )

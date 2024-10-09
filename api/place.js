@@ -4,7 +4,6 @@ import mongoose from 'mongoose';
 import { Formidable } from 'formidable';
 import { upload } from "../lib/uploadUtil.js";
 import Place from "../models/Place.js";
-import User from "../models/User.js";
 import { getUserById } from "../lib/userUtil.js";
 
 export const config = {
@@ -13,65 +12,80 @@ export const config = {
     },
 };
 
-export default async function handler(req, res) {
-    try {
-        const { database } = await connectToDatabase();
-        const collection = database.collection("places");
+const doGet = async (req, res) => {
+    const { database } = await connectToDatabase();
+    const collection = database.collection("places");
+    
+    let result;
+    if (req.query.id) {
+        result = await collection.findOne({ _id: mongoose.Types.ObjectId(req.query.id) });
+    } else {
+        result = await collection.find({}).toArray();
+    }
 
-        if (req.method === 'GET') {
-            let result;
+    return res.status(200).json(result);
+};
 
-            if (req.query.id) {
-                result = await collection.findOne({ _id: mongoose.Types.ObjectId(req.query.id) });
-            } else {
-                result = await collection.find({}).toArray();
+const parseFormData = async (req) => {
+    const user = verifyToken(req).decoded;
+
+    const form = new Formidable();
+    return new Promise((resolve, reject) => {
+        form.parse(req, async (err, fields, files) => {
+            if (err) {
+                reject({ error: 'Internal server error' });
+                return;
             }
 
-            return res.status(200).json(result);
-        } else if (req.method === 'POST') {
-            let user;
-            let isAdmin = false;
-            try {
-                user = verifyToken(req).decoded;
-                isAdmin = user.role === 'administrator';
-            } catch (error) {
-                return res.status(401).json({ error: 'Unauthorized' });
-            }
-            
-            const form = new Formidable();
-            form.parse(req, async (err, fields, files) => {
-                if (err) {
-                    return res.status(500).json({ error: 'Internal server error' });
-                }
-                
+            let images;
+            if (files["images"] && files["images"].length > 0) {
                 const thumbnailIndex = fields.thumbnail;
 
-                const images = await upload(files["images"]);
+                images = await upload(files["images"]);
                 images[thumbnailIndex].thumbnail = true;
+            }
 
-                const isPlaceAdmin = fields.isAdmin[0] === 'true';
+            const isPlaceAdmin = fields.isAdmin[0] === 'true';
+            const creator = await getUserById(user._id);
+            const keywords = `${fields.name}|${fields.address[0]}|${fields.buildingName[0]}|${fields.description[0]}`;
 
-                const creator = await getUserById(user._id);
-                const placeData = {
-                    name: fields.name[0],
-                    address: {
-                        postCode: fields.postCode[0],
-                        address: fields.address[0],
-                        detailedAddress: fields.detailedAddress[0],
-                    },
-                    region: fields.region[0],
-                    images: images,
-                    approved: isAdmin,
-                    admin: (isPlaceAdmin ? creator : null),
-                    creator: creator
-                };
+            const placeData = {
+                name: fields.name[0],
+                location: {
+                    postCode: fields.postCode[0],
+                    sido: fields.sido[0],
+                    sigungu: fields.sigungu[0],
+                    address: fields.address[0],
+                    buildingName: fields.buildingName[0]
+                },
+                description: fields.description[0],
+                keywords: keywords,
+                images: images,
+                admin: (isPlaceAdmin ? creator : null),
+                creator: creator
+            };
 
-                // Place 인스턴스 생성 및 저장
-                const place = new Place(placeData);
-                await place.save();
+            resolve(placeData);
+        });
+    });
+};
 
-                return res.status(201).json(placeData);
-            });
+const doPost = async (req, res) => {
+    const placeData = await parseFormData(req);
+
+    // Place 인스턴스 생성 및 저장
+    const place = new Place(placeData);
+    await place.save();
+
+    return res.status(201).json(placeData);
+};
+
+export default async function handler(req, res) {
+    try {
+        if (req.method === 'GET') {
+            doGet(req, res);
+        } else if (req.method === 'POST') {
+            doPost(req, res);
         } else {
             return res.status(405).json({ error: 'Method not allowed' });
         }
