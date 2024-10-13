@@ -37,6 +37,7 @@ header {
     width: 100%;
     height: var(--global-header-height);
     padding: 0 var(--global-padding);
+    position: relative;
 }
 
 nav {

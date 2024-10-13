@@ -2,11 +2,12 @@ import logoLight from "../../assets/images/logo-light.svg";
 import logoDark from "../../assets/images/logo-dark.svg";
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Login from "../Login/Login";
 import styled from "styled-components";
 import { useWindow } from "../../context/WindowContext";
 import Profile from "./Profile";
+import GlobalSearchInput from "./GlobalSearchInput";
 
 const GlobalLogo = styled.img`
     width: 30px;
@@ -41,13 +42,14 @@ export default function Header() {
     };
 
     useEffect(() => {
-        console.log("work");
         document.getElementById('wrapper').className = mode;
     }, [ mode ]);
 
     return (
         <header>
             <GlobalLogo src={logo} alt="Logo" onClick={ () => { window.location.href = '/' } } />
+
+            <GlobalSearchInput />
             {
                 user ? (
                     <Profile />

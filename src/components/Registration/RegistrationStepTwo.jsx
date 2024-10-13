@@ -27,8 +27,6 @@ export default function RegistrationStepTwo({ setStep }) {
 
             <FormInput type="text" size="l" field={ name } />
 
-            <FormInput type="textarea" size="l" field={ description } />
-
             <FormInput type="checkbox" size="l" field={ isAdmin }
                 label={ 
                     <>  
@@ -44,6 +42,9 @@ export default function RegistrationStepTwo({ setStep }) {
                     </>
                 }
             />
+            
+            <FormInput type="textarea" size="l" field={ description } />
+
 
             <StepButtonWrapper>
                 <FormButton direction="prev" size="l" onClick={ () => setStep(1) } />

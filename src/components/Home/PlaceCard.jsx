@@ -47,6 +47,7 @@ const Wrapper = styled.li`
 
 const PlaceInfo = styled(HorizontalWrapper)`
     justify-content: flex-start;
+    align-items: center;
     width: 100%;
     padding: 10px 20px;
     z-index: 1;

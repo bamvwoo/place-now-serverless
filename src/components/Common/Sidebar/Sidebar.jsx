@@ -11,13 +11,13 @@ const openAnimation = (rightPosition) => keyframes`
   }
 
   70% {
-    right: ${rightPosition + 10}px;
+    right: 60px;
     transform: scaleX(1.02) perspective(1000px) rotateY(-5deg);
   }
 
   100% {
     border-radius: 20px;
-    right: ${rightPosition}px;
+    right: 50px;
     transform: scaleX(1) rotateY(0deg);
   }
 `;
@@ -25,12 +25,12 @@ const openAnimation = (rightPosition) => keyframes`
 const closeAnimation = (rightPosition) => keyframes`
   0% {
     border-radius: 20px;
-    right: ${rightPosition}px;
+    right: 50px;
     transform: scaleX(1) perspective(1000px) rotateY(0deg);
   }
 
   30% {
-    right: ${rightPosition + 20}px;
+    right: 70px;
     transform: scaleX(1.02) perspective(1000px) rotateY(5deg);
   }
 
@@ -58,18 +58,7 @@ const Wrapper = styled(VerticalWrapper)`
 `;
 
 const Sidebar = forwardRef(({ isClosing, close, children }, ref) => {
-  const [ rightPosition, setRightPosition ] = useState(0);
-
-  
-
   useEffect(() => {
-    const wrapper = document.getElementById('wrapper');
-    const computedStyle = getComputedStyle(wrapper);
-    const marginRight = computedStyle.marginRight;
-    const marginRightValue = parseFloat(marginRight);
-
-    setRightPosition(marginRightValue);
-
     const handleClickOutside = (event) => {
       if (ref.current && !ref.current.contains(event.target)) {
         close();
@@ -92,7 +81,7 @@ const Sidebar = forwardRef(({ isClosing, close, children }, ref) => {
   }, []);
 
   return (
-    <Wrapper ref={ ref } $isClosing={ isClosing } $rightPosition={ rightPosition }>
+    <Wrapper ref={ ref } $isClosing={ isClosing }>
       <SidebarHeader close={ close } />
       {children}
     </Wrapper>

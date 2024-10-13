@@ -31,7 +31,7 @@ const Wrapper = styled(HorizontalWrapper)`
     cursor: pointer;
     position: relative;
     padding: 5px 7px;
-    border-radius: 10px;
+    border-radius: 15px;
     transition: .2s ease-in-out;
 
     &:hover {
