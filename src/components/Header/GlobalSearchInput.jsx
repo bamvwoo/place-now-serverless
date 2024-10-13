@@ -63,9 +63,9 @@ export default function GlobalSearchInput() {
         }
 
         const keyword = e.target.value;
-        if (keyword.length > 5) {
+        if (keyword.length >= 3 && keyword.length % 3 === 0) {
             setSuggestions([ "서울특별시 강남구", "서울특별시 강북구", "서울특별시 강서구", "서울특별시 강동구", "서울특별시 강북구" ]);
-        } else {
+        } else if (keyword.length === 0) {
             setSuggestions([]);
         }
     };
