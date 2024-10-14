@@ -15,10 +15,16 @@ export const config = {
 const doGet = async (req, res) => {
     const { database } = await connectToDatabase();
     const collection = database.collection("places");
+
+    const { id, keyword } = req.query;
     
     let result;
-    if (req.query.id) {
+    if (id) {
         result = await collection.findOne({ _id: mongoose.Types.ObjectId(req.query.id) });
+    } else if (keyword) {
+        result = await collection.find({
+            keywords: { $regex: keyword, $options: 'i' }
+        }).limit(5).toArray();
     } else {
         result = await collection.find({}).toArray();
     }

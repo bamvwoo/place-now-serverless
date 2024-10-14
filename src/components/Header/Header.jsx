@@ -49,7 +49,11 @@ export default function Header() {
         <header>
             <GlobalLogo src={logo} alt="Logo" onClick={ () => { window.location.href = '/' } } />
 
-            <GlobalSearchInput />
+            {
+                !location.pathname.startsWith('/auth') &&
+                    <GlobalSearchInput />
+            }
+            
             {
                 user ? (
                     <Profile />

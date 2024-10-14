@@ -7,28 +7,36 @@ const Wrapper = styled.ul`
     gap: 5px;
     position: absolute;
     width: 100%;
-    top: calc(100% + 10px);
+    top: calc(100% - 3px);
     left: 3px;
-    padding: 5px;
-    border-radius: 15px;
-    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.1);
+    padding: 5px 5px 10px 5px;
+    border: none;
+    border-radius: 0 0 15px 15px;
+    box-shadow: -3px -1px 0px var(--main-std-blue-color);
+    background-color: #f9f9f9;
+    animation: fadeIn .2s ease-in-out;
 `;
 
 const SuggetionItem = styled.li`
     cursor: pointer;
-    animation: fadeIn ${props => (props.$index * 0.3) + "s"} ease-in-out;
+    animation: fadeIn ${props => (props.$index * 0.2) + "s"} ease-in-out;
     border-radius: 10px;
     padding: 10px;
 
     &:hover {
-        background-color: #f9f9f9;
+        background-color: #e9e9e9;
     }
 `;
 
-const GlobalSearchSuggetionList = forwardRef(({ suggestions, setSuggestions, search }, ref) => {
+const GlobalSearchSuggetionList = forwardRef(({ inputRef, suggestions, setSuggestions, search }, ref) => {
 
     const handleOnSearch = (e) => {
         const keyword = e.target.innerText;
+
+        if (inputRef.current) {
+            inputRef.current.value = keyword;
+        }
+
         search(keyword);
     };
 
