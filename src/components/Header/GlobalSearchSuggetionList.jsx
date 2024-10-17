@@ -1,19 +1,13 @@
-import { forwardRef } from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.ul`
     display: flex;
     flex-direction: column;
     gap: 5px;
-    position: absolute;
     width: 100%;
-    top: calc(100% - 3px);
-    left: 3px;
     padding: 5px 5px 10px 5px;
     border: none;
-    border-radius: 0 0 15px 15px;
-    box-shadow: -3px -1px 0px var(--main-std-blue-color);
-    background-color: #f9f9f9;
+    background-color: transparent;
     animation: fadeIn .2s ease-in-out;
 `;
 
@@ -28,8 +22,7 @@ const SuggetionItem = styled.li`
     }
 `;
 
-const GlobalSearchSuggetionList = forwardRef(({ inputRef, suggestions, setSuggestions, search }, ref) => {
-
+export default function GlobalSearchSuggetionList({ inputRef, suggestions, setSuggestions, search }) {
     const handleOnSearch = (e) => {
         const keyword = e.target.innerText;
 
@@ -41,16 +34,12 @@ const GlobalSearchSuggetionList = forwardRef(({ inputRef, suggestions, setSugges
     };
 
     return (
-        <Wrapper ref={ref}>
+        <Wrapper>
             {
                 suggestions.map((suggestion, index) => (
                     <SuggetionItem key={ index } $index={ index } onClick={ handleOnSearch }>{ suggestion }</SuggetionItem>
                 ))
             }
         </Wrapper>
-    )
-});
-
-GlobalSearchSuggetionList.displayName = 'GlobalSearchSuggetionList';
-
-export default GlobalSearchSuggetionList;
+    );
+}

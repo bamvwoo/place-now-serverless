@@ -7,7 +7,7 @@ import Login from "../Login/Login";
 import styled from "styled-components";
 import { useWindow } from "../../context/WindowContext";
 import Profile from "./Profile";
-import GlobalSearchInput from "./GlobalSearchInput";
+import GlobalSearch from "./GlobalSearch";
 
 const GlobalLogo = styled.img`
     width: 30px;
@@ -51,7 +51,7 @@ export default function Header() {
 
             {
                 !location.pathname.startsWith('/auth') &&
-                    <GlobalSearchInput />
+                    <GlobalSearch />
             }
             
             {
