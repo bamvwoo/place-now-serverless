@@ -1,6 +1,18 @@
 import mongoose from 'mongoose';
 
 const placeLocationSchema = new mongoose.Schema({
+    type: {
+        type: String,
+        enum: ['Point'],
+        required: true
+    },
+    coordinates: {
+        type: [Number],
+        required: true
+    }
+});
+
+const placeLocationInfoSchema = new mongoose.Schema({
     postCode: {
         type: String,
         required: true
@@ -38,10 +50,6 @@ const placeImagesSchema = new mongoose.Schema({
 });
 
 const placeSchema = new mongoose.Schema({
-    category: {
-        type: String,
-        required: true
-    },
     name: {
         type: String,
         required: true,
@@ -49,6 +57,10 @@ const placeSchema = new mongoose.Schema({
     },
     location: {
         type: placeLocationSchema,
+        required: true
+    },
+    locationInfo: {
+        type: placeLocationInfoSchema,
         required: true
     },
     images: {
@@ -82,6 +94,8 @@ const placeSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
+
+placeSchema.index({ location: '2dsphere' });
 
 const Place = mongoose.model('Place', placeSchema);
 

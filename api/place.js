@@ -5,6 +5,7 @@ import { Formidable } from 'formidable';
 import { upload } from "../lib/uploadUtil.js";
 import Place from "../models/Place.js";
 import { getUserById } from "../lib/userUtil.js";
+import { type } from "os";
 
 export const config = {
     api: {
@@ -58,6 +59,10 @@ const parseFormData = async (req) => {
             const placeData = {
                 name: fields.name[0],
                 location: {
+                    type: 'Point',
+                    coordinates: [parseFloat(fields.lng[0]), parseFloat(fields.lat[0])]
+                },
+                locationInfo: {
                     postCode: fields.postCode[0],
                     sido: fields.sido[0],
                     sigungu: fields.sigungu[0],

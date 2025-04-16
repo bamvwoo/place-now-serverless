@@ -23,6 +23,20 @@ export default function RegistrationStepOne({ setStep }) {
     const { openModal, closeModal } = useWindow();
 
     const applyAddress = (data) => {
+        console.log(data);
+
+        const geocoder = new window.kakao.maps.services.Geocoder();
+
+        geocoder.addressSearch(data.address, (result, status) => {
+            if (status === window.kakao.maps.services.Status.OK) {
+                const lat = result[0].y;
+                const lng = result[0].x;
+
+                setValue("lat", lat);
+                setValue("lng", lng);
+            }
+        });
+
         setValue("sido", data.sido);
         setValue("sigungu", data.sigungu);
         setValue("address", data.address);
